@@ -15,59 +15,49 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        # Show system status
         backup = get_setting("auto_backup", "ON")
         maint = get_setting("maintenance_mode", "OFF")
         ai = get_setting("ai_global", "ON")
 
         status_text = (
-            "🛠 <b>System Control Panel</b>\n\n"
-            f"🔄 <b>Auto Backup:</b> <code>{backup}</code>\n"
-            f"🚧 <b>Maintenance:</b> <code>{maint}</code>\n"
-            f"🤖 <b>Global AI:</b> <code>{ai}</code>\n\n"
-            "<b>Commands:</b>\n"
-            "• <code>$sys backup on|off</code>\n"
-            "• <code>$sys maintenance on|off</code>\n"
-            "• <code>$sys ai on|off</code>"
+            "<b>SYSTEM CONTROL PANEL</b>\n\n"
+            f"AUTO_BACKUP: <code>{backup}</code>\n"
+            f"MAINTENANCE: <code>{maint}</code>\n"
+            f"AI_GLOBAL: <code>{ai}</code>\n\n"
+            "<b>OPERATIONS:</b>\n"
+            "• $sys backup on|off\n"
+            "• $sys maintenance on|off\n"
+            "• $sys ai on|off"
         )
         return await msg.reply_text(status_text, parse_mode="HTML")
 
     action = context.args[0].lower()
     if len(context.args) < 2:
-        return await msg.reply_text("❌ Usage: <code>$sys <feature> on|off</code>", parse_mode="HTML")
+        return await msg.reply_text("ERROR: Target state required (on/off).", parse_mode="HTML")
     
     val = context.args[1].upper()
     if val not in ("ON", "OFF"):
-        return await msg.reply_text("❌ Value must be <b>ON</b> or <b>OFF</b>.", parse_mode="HTML")
+        return await msg.reply_text("ERROR: Invalid state.", parse_mode="HTML")
 
     if action == "backup":
         set_setting("auto_backup", val)
         if val == "OFF":
-            # Remove from job queue
             jobs = context.application.job_queue.get_jobs_by_name("auto_backup")
-            for job in jobs:
-                job.schedule_removal()
-            text = "✅ <b>Auto Backup: DISABLED</b>\nExisting backup tasks removed."
+            for job in jobs: job.schedule_removal()
+            text = "SUCCESS: Auto-backup routine suspended."
         else:
-            # Re-schedule in job queue
-            context.application.job_queue.run_repeating(
-                backup_database, 
-                interval=60 * 60 * 12, # 12 hours
-                first=10,
-                name="auto_backup"
-            )
-            text = "✅ <b>Auto Backup: ENABLED</b>\nScheduled every 12 hours."
-        
+            context.application.job_queue.run_repeating(backup_database, interval=60 * 60 * 12, first=10, name="auto_backup")
+            text = "SUCCESS: Auto-backup routine scheduled (12h)."
         return await msg.reply_text(text, parse_mode="HTML")
 
     if action == "maintenance":
         set_setting("maintenance_mode", val)
-        text = f"✅ <b>Maintenance Mode: {val}</b>\nNon-admin users will be blocked."
+        text = f"SUCCESS: Maintenance mode set to {val}."
         return await msg.reply_text(text, parse_mode="HTML")
 
     if action == "ai":
         set_setting("ai_global", val)
-        text = f"✅ <b>Global AI: {val}</b>\nAll AI services (Groq/Gemini) toggled."
+        text = f"SUCCESS: Global AI availability set to {val}."
         return await msg.reply_text(text, parse_mode="HTML")
 
-    return await msg.reply_text("❌ Unknown feature.", parse_mode="HTML")
+    return await msg.reply_text("ERROR: Module undefined.", parse_mode="HTML")

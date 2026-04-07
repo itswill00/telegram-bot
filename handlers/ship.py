@@ -10,34 +10,31 @@ from database.ship_db import (
     get_users_pool,
     set_ship_last_time,
     get_ship_last_time,
-    _ship_state_has_updated_at,
     add_user,
-    _db,
     _ship_db_init,
 )
 
-SHIP_COOLDOWN = 60 * 60 * 24  # 24 hours
+SHIP_COOLDOWN = 60 * 60 * 24
 
 SHIP_MESSAGES = [
-    "🥰 You look so comfortable with each other",
-    "💗 The vibes are soft and understanding",
-    "🌸 Your chemistry looks natural",
-    "💞 Like you're calming each other down without realizing",
-    "✨ You both look more alive together",
-    "🫶 There's a sense of security there",
-    "🌷 Conversations must flow easily",
-    "💫 Your energy is warm",
-    "🤍 Simple yet deeply felt",
-    "🌼 You seem to support each other",
+    "Compatibility score indicates high synchronization potential.",
+    "Data analysis suggests a stable and understanding dynamic.",
+    "Interaction patterns reflect natural synergy.",
+    "Subconscious alignment detected between subjects.",
+    "Collaboration between these profiles appears optimal.",
+    "Security and trust metrics are within the upper percentiles.",
+    "Communication flow is predicted to be seamless.",
+    "Thermal energy metrics suggest a warm interaction.",
+    "A simple yet profound connection is evidenced.",
+    "Mutual support protocols are active."
 ]
 
 SHIP_ENDING = [
-    "Hope you stay close! 🤍",
-    "Cute if it's real 🥹",
-    "Wishing the best ✨",
-    "Maybe this is a sign 🌸",
-    "Take it slow 💗",
-    "Enjoy the moment 🫶",
+    "Analysis completed.",
+    "Prediction based on current metrics.",
+    "Synchronized.",
+    "Protocol active.",
+    "End of report.",
 ]
 
 def tag(u):
@@ -50,13 +47,11 @@ async def _is_chat_member(bot, chat_id: int, user_id: int) -> bool:
     except Exception:
         return False
         
-        
 def format_remaining(seconds: int) -> str:
     h = seconds // 3600
     m = (seconds % 3600) // 60
     s = seconds % 60
     return f"{h:02d}:{m:02d}:{s:02d}"
-
 
 async def ship_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.effective_message
@@ -70,73 +65,37 @@ async def ship_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if now - last_time < SHIP_COOLDOWN:
         remain = SHIP_COOLDOWN - (now - last_time)
         return await msg.reply_text(
-            f"⏳ <b>Ship is on cooldown</b>\n\n"
-            f"Next pair can be chosen in:\n"
+            f"<b>COOLDOWN ACTIVE</b>\n\n"
+            f"Next analysis available in:\n"
             f"<code>{format_remaining(remain)}</code>",
             parse_mode="HTML",
         )
 
     add_user(chat.id, msg.from_user)
-
-    users = []
-
-    if msg.reply_to_message and msg.reply_to_message.from_user:
-        u = msg.reply_to_message.from_user
-        if await _is_chat_member(context.bot, chat.id, u.id):
-            add_user(chat.id, u)
-            users.append({"id": u.id, "name": str(u.first_name or "Unknown")})
-
-    for ent in msg.entities or []:
-        if ent.type == "text_mention" and ent.user:
-            u = ent.user
-            if await _is_chat_member(context.bot, chat.id, u.id):
-                add_user(chat.id, u)
-                users.append({"id": u.id, "name": str(u.first_name or "Unknown")})
-
     pool = get_users_pool(chat.id)
 
-    if len(users) < 2:
-        pool_ids = [p for p in pool if p.get("id") is not None]
-        if len(pool_ids) < 2:
-            return await msg.reply_text("❌ Not enough people to ship yet.")
+    if len(pool) < 2:
+        return await msg.reply_text("<b>ERROR:</b> Insufficient data pool for analysis.")
 
-        picked = None
-        for _ in range(12):
-            a, b = random.sample(pool_ids, 2)
-            ok_a = await _is_chat_member(context.bot, chat.id, int(a["id"]))
-            ok_b = await _is_chat_member(context.bot, chat.id, int(b["id"]))
-            if ok_a and ok_b:
-                picked = (a, b)
-                break
-
-        if not picked:
-            return await msg.reply_text("❌ No active members found for shipping.")
-
-        users = [picked[0], picked[1]]
-
-    u1, u2 = users[:2]
+    pool_ids = [p for p in pool if p.get("id") is not None]
+    picked = random.sample(pool_ids, 2)
+    u1, u2 = picked[0], picked[1]
 
     percent = random.randint(50, 100)
     msg_text = random.choice(SHIP_MESSAGES)
     ending = random.choice(SHIP_ENDING)
 
     text = (
-        f"💖 <b>SHIP RESULT</b>\n\n"
-        f"👤 {tag(u1)}\n"
-        f"👤 {tag(u2)}\n\n"
-        f"❤️ <b>Love Meter:</b> <code>{percent}%</code>\n\n"
-        f"{msg_text}\n"
+        f"<b>COMPATIBILITY ANALYSIS REPORT</b>\n\n"
+        f"SUBJECT A: {tag(u1)}\n"
+        f"SUBJECT B: {tag(u2)}\n\n"
+        f"SYNC RATE: <code>{percent}%</code>\n\n"
+        f"METRICS: {msg_text}\n"
         f"<i>{ending}</i>"
     )
 
-    await msg.reply_text(
-        text,
-        parse_mode="HTML",
-        disable_web_page_preview=True,
-    )
-
+    await msg.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
     set_ship_last_time(chat.id, now)
-
 
 try:
     _ship_db_init()

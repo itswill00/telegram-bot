@@ -22,24 +22,24 @@ LOCAL_BOT_API_PORT = int(os.getenv("LOCAL_BOT_API_PORT", "8081"))
 PREFER_LOCAL_BOT_API = os.getenv("PREFER_LOCAL_BOT_API", "1").strip().lower() not in ("0", "false", "no")
 
 
-class EmojiFormatter(logging.Formatter):
-    EMOJI = {
-        logging.INFO: "➜",
-        logging.WARNING: "⚠️",
-        logging.ERROR: "❌",
-        logging.CRITICAL: "💥",
+class TechnicalFormatter(logging.Formatter):
+    LEVEL_PREFIX = {
+        logging.INFO: "[INFO]",
+        logging.WARNING: "[WARN]",
+        logging.ERROR: "[ERR ]",
+        logging.CRITICAL: "[CRIT]",
     }
 
     def format(self, record):
-        emoji = self.EMOJI.get(record.levelno, "•")
-        record.msg = f"{emoji} {record.msg}"
+        prefix = self.LEVEL_PREFIX.get(record.levelno, "[LOG ]")
+        record.msg = f"{prefix} {record.msg}"
         return super().format(record)
 
 
 def setup_logger():
     handler = logging.StreamHandler()
     handler.setFormatter(
-        EmojiFormatter("[%(asctime)s] %(message)s", "%H:%M:%S")
+        TechnicalFormatter("%(asctime)s %(message)s", "%H:%M:%S")
     )
 
     root = logging.getLogger()
@@ -73,7 +73,7 @@ def _build_application():
 
     if PREFER_LOCAL_BOT_API and _local_bot_api_available(LOCAL_BOT_API_HOST, LOCAL_BOT_API_PORT):
         base = f"http://{LOCAL_BOT_API_HOST}:{LOCAL_BOT_API_PORT}"
-        log.info(f"✓ Using local Telegram Bot API at {base}")
+        log.info(f"Using local Telegram Bot API at {base}")
         builder = (
             builder
             .base_url(f"{base}/bot")
@@ -81,9 +81,9 @@ def _build_application():
         )
     else:
         if PREFER_LOCAL_BOT_API:
-            log.warning("Local Telegram Bot API unavailable, falling back to official Telegram Bot API")
+            log.warning("Local Telegram Bot API unavailable, using remote endpoint")
         else:
-            log.info("✓ Local Telegram Bot API disabled, using official Telegram Bot API")
+            log.info("Local Telegram Bot API disabled, using remote endpoint")
 
     return builder.build()
 
@@ -94,77 +94,72 @@ async def post_init(app):
     try:
         await app.bot.delete_webhook(drop_pending_updates=True)
     except Exception as e:
-        log.warning(f"Failed to clear webhook/pending updates: {e}")
+        log.warning(f"Failed to clear webhook: {e}")
 
     try:
         me = await app.bot.get_me()
         BOT_USERNAME = (me.username or "").lower()
-        if BOT_USERNAME:
-            log.info(f"✓ Bot username loaded: @{BOT_USERNAME}")
-        else:
-            log.info("✓ Bot username loaded")
+        log.info(f"Identity loaded: @{BOT_USERNAME}" if BOT_USERNAME else "Identity loaded")
     except Exception as e:
-        log.warning(f"Failed to get bot username: {e}")
+        log.warning(f"Failed to load identity: {e}")
 
     try:
         await app.bot.set_my_commands([
-            ("start", "Check bot status"),
-            ("donate", "Support bot development"),
-            ("help", "Show help menu"),
-            ("settings", "User settings"),
-            ("quiz", "Random quiz"),
-            ("ping", "Check latency"),
-            ("ship", "Choose a couple"),
-            ("stats", "System statistics"),
-            ("dl", "Download video"),
-            ("ask", "Ask Gemini AI"),
-            ("music", "Search music"),
-            ("groq", "Ask Groq AI"),
-            ("gsearch", "Google search"),
-            ("tr", "Translate text"),
+            ("start", "Initialize bot session"),
+            ("donate", "Support development"),
+            ("help", "Access command documentation"),
+            ("settings", "Configure user preferences"),
+            ("quiz", "Execute technical assessment"),
+            ("ping", "Measure network latency"),
+            ("ship", "Run compatibility analysis"),
+            ("stats", "View system metrics"),
+            ("dl", "Process media download"),
+            ("ask", "Query Gemini AI engine"),
+            ("music", "Query audio repository"),
+            ("groq", "Query Groq AI engine"),
+            ("gsearch", "Execute web search"),
+            ("tr", "Execute text translation"),
         ])
-        log.info("✓ Bot commands set")
+        log.info("Global command set synchronized")
     except Exception as e:
-        log.warning(f"Failed to set bot commands: {e}")
+        log.warning(f"Failed to synchronize commands: {e}")
 
     try:
         cmds = await app.bot.get_my_commands()
         app.bot_data["commands"] = cmds
-        log.info("✓ Cached bot commands: " + ", ".join(c.command for c in cmds))
-    except Exception as e:
-        log.warning(f"Failed to cache bot commands: {e}")
+    except Exception:
+        pass
 
     # Initialize System Settings
     try:
         init_system_db()
-        log.info("✓ System settings database initialized")
+        log.info("System configuration database initialized")
     except Exception as e:
-        log.warning(f"Failed to initialize system settings: {e}")
+        log.warning(f"Configuration initialization error: {e}")
 
     # Auto backup based on setting
     if app.job_queue and get_setting("auto_backup", "ON") == "ON":
         app.job_queue.run_repeating(
             backup_database, 
-            interval=60 * 60 * 12, # 12 hours
-            first=10, # run first backup 10 seconds after startup
+            interval=60 * 60 * 12,
+            first=10,
             name="auto_backup"
         )
-        log.info("✓ Auto backup job scheduled (12h)")
+        log.info("Automated backup routine scheduled (12h cycle)")
     else:
-        log.info("✓ Auto backup job is disabled (OFF)")
+        log.info("Automated backup routine is currently suspended")
 
     await startup_tasks(app)
-    log.info("✓ Startup tasks executed")
+    log.info("Boot sequence completed successfully")
 
 
 async def post_shutdown(app):
     await close_http_session()
-    log.info("HTTP session closed")
+    log.info("HTTP session pool terminated")
 
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Log the error and send a telegram message to notify the developer."""
-    log.error("Exception while handling an update:", exc_info=context.error)
+    log.error("Exception during update processing:", exc_info=context.error)
 
     if not LOG_CHAT_ID:
         return
@@ -172,16 +167,14 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     import traceback
     import html
 
-    # traceback.format_exception returns a list of strings
     tb_list = traceback.format_exception(None, context.error, context.error.__traceback__)
     tb_string = "".join(tb_list)
 
-    # Build the message
     message = (
-        f"<b>Error Terdeteksi pada Sistem Bot</b>\n"
-        f"Tipe: {type(context.error).__name__}\n"
-        f"Pesan: {html.escape(str(context.error))}\n\n"
-        f"<b>Traceback:</b>\n"
+        f"<b>CRITICAL SYSTEM ERROR</b>\n"
+        f"TYPE: {type(context.error).__name__}\n"
+        f"DESC: {html.escape(str(context.error))}\n\n"
+        f"<b>TRACEBACK:</b>\n"
         f"<pre>{html.escape(tb_string[-3500:])}</pre>" 
     )
 
@@ -191,13 +184,13 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
             text=message,
             parse_mode="HTML"
         )
-    except Exception as e:
-        log.error(f"Failed to send error report to Telegram: {e}")
+    except Exception:
+        pass
 
 
 def main():
     setup_logger()
-    log.info("Initializing bot")
+    log.info("Initializing system kernel")
 
     app = _build_application()
 
@@ -209,9 +202,8 @@ def main():
     register_messages(app)
     register_callbacks(app)
 
-    log.info("--- SYSTEM INITIALIZED ---")
-    log.info("Handlers registered successfully")
-    log.info("Service: Polling active")
+    log.info("--- SYSTEM ONLINE ---")
+    log.info("Polling service active")
 
     app.run_polling(
         allowed_updates=Update.ALL_TYPES,

@@ -15,17 +15,15 @@ from utils.config import OWNER_ID
 async def maintenance_filter(update, context):
     user = update.effective_user
     if user.id in OWNER_ID:
-        return # Skip for owner
+        return False
 
     maint = get_setting("maintenance_mode", "OFF")
     if maint == "ON":
         await update.message.reply_text(
-            "🚧 <b>BOT UNDER MAINTENANCE</b>\n\n"
-            "We are currently performing system updates. Please check back later.",
+            "<b>STATUS: SYSTEM MAINTENANCE</b>\n\n"
+            "Server is currently undergoing scheduled updates. Access restricted.",
             parse_mode="HTML"
         )
-        # We don't return anything to stop further handlers from executing if needed
-        # but in PTB, we need to handle this in groups or stop the event.
         return True
     return False
 
@@ -34,13 +32,11 @@ async def ai_reply_router(update, context):
     if not msg or not msg.reply_to_message:
         return
 
-    # Check Maintenance
     if await maintenance_filter(update, context):
         return
 
-    # Check AI Global Toggle
     if get_setting("ai_global", "ON") == "OFF":
-        return await msg.reply_text("🤖 AI services are currently disabled by the administrator.")
+        return await msg.reply_text("<b>SYSTEM:</b> AI engines are currently offline.")
 
     user_id = msg.from_user.id
     reply_mid = msg.reply_to_message.message_id
@@ -53,30 +49,24 @@ async def ai_reply_router(update, context):
 
     if reply_mid in _GROQ_ACTIVE_USERS.values():
         return await msg.reply_text(
-            "😒 <b>Who are you?</b>\n"
-            "I haven't started a conversation with you yet.\n"
-            "Please type /groq first.",
+            "<b>UNAUTHORIZED:</b>\n"
+            "Active session required. Initialize with /groq.",
             parse_mode="HTML"
         )
 
     if reply_mid in _AI_ACTIVE_USERS.values():
         return await msg.reply_text(
-            "😒 <b>Who are you?</b>\n"
-            "I haven't started a conversation with you yet.\n"
-            "Please type /ask first.",
+            "<b>UNAUTHORIZED:</b>\n"
+            "Active session required. Initialize with /ask.",
             parse_mode="HTML"
         )
 
     return
 
 async def global_maint_check(update, context):
-    # This is a dummy handler just to check maintenance for non-commands
-    if await maintenance_filter(update, context):
-        # We can stop propagation by not calling next or using groups
-        pass
+    await maintenance_filter(update, context)
 
 def register_messages(app):
-    # Higher group priority for maintenance check
     app.add_handler(
         MessageHandler(filters.ALL & ~filters.COMMAND, global_maint_check),
         group=-2,

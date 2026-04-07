@@ -15,9 +15,8 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        # Tampilkan daftar key yang ada
         if not os.path.exists(ENV_PATH):
-            return await msg.reply_text("❌ <code>.env</code> file not found.", parse_mode="HTML")
+            return await msg.reply_text("STATUS: .env file not found.", parse_mode="HTML")
         
         with open(ENV_PATH, "r") as f:
             lines = f.readlines()
@@ -27,14 +26,14 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 key = line.split("=")[0].strip()
-                keys.append(f"• <code>{key}</code>")
+                keys.append(f"- {key}")
         
         text = (
-            "⚙️ <b>Environment Variables</b>\n\n"
+            "<b>ENVIRONMENT CONFIGURATION</b>\n\n"
             + "\n".join(keys) + "\n\n"
-            "<b>Usage:</b>\n"
-            "• <code>$env GET KEY</code>\n"
-            "• <code>$env SET KEY=VALUE</code>"
+            "<b>COMMANDS:</b>\n"
+            "• $env GET &lt;KEY&gt;\n"
+            "• $env SET &lt;KEY&gt;=&lt;VALUE&gt;"
         )
         return await msg.reply_text(text, parse_mode="HTML")
 
@@ -44,40 +43,35 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         key = context.args[1].strip()
         val = os.getenv(key)
         if val is None:
-            return await msg.reply_text(f"❌ Key <code>{key}</code> not found.", parse_mode="HTML")
+            return await msg.reply_text(f"ERROR: Key {key} undefined.", parse_mode="HTML")
         
         return await msg.reply_text(
-            f"🔑 <b>{key}</b>\n"
-            f"<code>{html.escape(val)}</code>",
+            f"IDENT: {key}\n"
+            f"VALUE: <code>{html.escape(val)}</code>",
             parse_mode="HTML"
         )
 
     if action == "SET" and len(context.args) > 1:
         raw = " ".join(context.args[1:]).strip()
         if "=" not in raw:
-            return await msg.reply_text("❌ Format must be <code>KEY=VALUE</code>", parse_mode="HTML")
+            return await msg.reply_text("ERROR: Malformed syntax. Use KEY=VALUE.", parse_mode="HTML")
         
         key, val = raw.split("=", 1)
         key = key.strip()
         val = val.strip()
 
         try:
-            # Update file .env
             set_key(ENV_PATH, key, val)
-            
-            # Update os.environ (Hot Reload)
             os.environ[key] = val
-            
-            # Optional: Reload dotenv to be sure
             load_dotenv(ENV_PATH, override=True)
 
             return await msg.reply_text(
-                f"✅ <b>Success!</b>\n"
-                f"Key <code>{key}</code> has been updated.\n\n"
-                "<i>Changes are applied immediately (Hot Reloaded).</i>",
+                f"SUCCESS: Configuration updated.\n"
+                f"KEY: {key}\n"
+                "STATUS: Hot-reload completed.",
                 parse_mode="HTML"
             )
         except Exception as e:
-            return await msg.reply_text(f"❌ <b>Error:</b>\n<code>{html.escape(str(e))}</code>", parse_mode="HTML")
+            return await msg.reply_text(f"CRITICAL ERROR: {html.escape(str(e))}", parse_mode="HTML")
 
-    return await msg.reply_text("❌ Unknown action. Use <b>GET</b> or <b>SET</b>.", parse_mode="HTML")
+    return await msg.reply_text("ERROR: Unknown action protocol.", parse_mode="HTML")

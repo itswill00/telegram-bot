@@ -33,46 +33,26 @@ async def _typing_loop(bot, chat_id, stop: asyncio.Event):
 
 def _is_gemini_quota_error(status: Optional[int], text: str) -> bool:
     blob = f"{status or ''} {text or ''}".lower()
-
-    keys = [
-        "429",
-        "quota",
-        "resource_exhausted",
-        "rate limit",
-        "rate_limit",
-        "too many requests",
-        "exceeded your current quota",
-        "tokens per minute",
-        "token per minute",
-        "daily limit",
-    ]
-
+    keys = ["429", "quota", "resource_exhausted", "rate limit", "too many requests"]
     return any(k in blob for k in keys)
 
 
 def _ai_history_to_groq(history: list) -> list:
     out = []
-
     for item in history:
         user_text = (item or {}).get("user")
         ai_text = (item or {}).get("ai")
-
-        if user_text:
-            out.append({"role": "user", "content": user_text})
-
-        if ai_text:
-            out.append({"role": "assistant", "content": ai_text})
-
+        if user_text: out.append({"role": "user", "content": user_text})
+        if ai_text: out.append({"role": "assistant", "content": ai_text})
     return out
 
 
 async def build_ai_prompt(user_id: int, user_prompt: str) -> str:
     history = AI_MEMORY.get(user_id, {"history": []})["history"]
-
     lines = []
     for h in history:
-        lines.append(f"User: {h['user']}")
-        lines.append(f"AI: {h['ai']}")
+        lines.append(f"U: {h['user']}")
+        lines.append(f"A: {h['ai']}")
 
     try:
         contexts = await retrieve_context(user_prompt, LOCAL_CONTEXTS, top_k=3)
@@ -80,37 +60,33 @@ async def build_ai_prompt(user_id: int, user_prompt: str) -> str:
         contexts = []
 
     if contexts:
-        lines.append("=== KONTEKS LOKAL ===")
+        lines.append("--- CONTEXT DATA ---")
         lines.extend(contexts)
-        lines.append("=== END KONTEKS ===")
+        lines.append("--- END CONTEXT ---")
 
-    lines.append(f"User: {user_prompt}")
+    lines.append(f"U: {user_prompt}")
     return "\n".join(lines)
 
 
 async def ask_ai_gemini(
     prompt: str,
-    model: str = "gemini-2.5-flash",
+    model: str = "gemini-2.0-flash",
 ) -> tuple[bool, str, Optional[int]]:
     if not GEMINI_API_KEY:
-        return False, "API key Gemini belum diset.", None
+        return False, "API key missing.", None
 
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{model}:generateContent"
-    )
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
     payload = {
         "system_instruction": {
             "parts": [
                 {
                     "text": (
-                        "Detect the user's language automatically.\n"
-                        "If the user speaks Indonesian: Use natural, modern, and casual Indonesian (Gen-Z/slang-aware style).\n"
-                        "If the user speaks English: Use professional, clear, and concise English.\n"
-                        "Identity: You are Kiyoshi Bot, created by @HirohitoKiyoshi.\n"
-                        "Personality: Intelligent, tech-savvy, and modern. Get straight to the point.\n"
-                        "Always use appropriate emojis to make the conversation lively."
+                        "IDENT: Kiyoshi Bot\n"
+                        "ARCH: @HirohitoKiyoshi\n"
+                        "TONE: Professional Technical\n"
+                        "EMOJI: FORBIDDEN\n"
+                        "LOGIC: Automatic language detection. Formal Indonesian or Technical English."
                     )
                 }
             ]
@@ -129,20 +105,16 @@ async def ask_ai_gemini(
         async with session.post(
             url,
             json=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-goog-api-key": GEMINI_API_KEY,
-            },
+            headers={"Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY},
             timeout=aiohttp.ClientTimeout(total=60),
         ) as resp:
             if resp.status != 200:
                 return False, await resp.text(), resp.status
-
             data = await resp.json()
 
         candidates = data.get("candidates") or []
         if not candidates:
-            return True, "Model tidak memberikan jawaban.", 200
+            return True, "NULL_RESPONSE", 200
 
         parts = candidates[0].get("content", {}).get("parts", [])
         if parts:
@@ -165,24 +137,15 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if msg.text and msg.text.startswith("/ask"):
         prompt = " ".join(context.args) if context.args else ""
-
         AI_MEMORY.pop(user_id, None)
         _AI_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
-            return await msg.reply_text(
-                "Contoh:\n"
-                "/ask apa itu relativitas?"
-            )
+            return await msg.reply_text("<b>USAGE:</b> <code>/ask &lt;query&gt;</code>", parse_mode="HTML")
 
     elif msg.reply_to_message:
         if user_id not in _AI_ACTIVE_USERS:
-            return await msg.reply_text(
-                "😒 Lu siapa?\n"
-                "Gue belum ngobrol sama lu.\n"
-                "Ketik /ask dulu.",
-                parse_mode="HTML",
-            )
+            return await msg.reply_text("<b>ERROR:</b> Session required. Use /ask.")
         prompt = (msg.text or "").strip()
 
     if not prompt:
@@ -193,19 +156,13 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         final_prompt = await build_ai_prompt(user_id, prompt)
-
         ok, raw, status = await ask_ai_gemini(final_prompt)
 
         if not ok:
             if _is_gemini_quota_error(status, raw):
                 history = AI_MEMORY.get(user_id, {"history": []})["history"]
                 groq_history = _ai_history_to_groq(history)
-
-                raw = await ask_groq_text(
-                    prompt=prompt,
-                    history=groq_history,
-                    use_search=False,
-                )
+                raw = await ask_groq_text(prompt=prompt, history=groq_history, use_search=False)
             else:
                 raise RuntimeError(raw)
 
@@ -230,4 +187,4 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         typing.cancel()
         AI_MEMORY.pop(user_id, None)
         _AI_ACTIVE_USERS.pop(user_id, None)
-        await msg.reply_text(f"❌ Error: {html.escape(str(e))}")
+        await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")

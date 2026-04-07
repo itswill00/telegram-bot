@@ -11,18 +11,18 @@ def _help_cb(user_id: int, action: str) -> str:
 def help_main_keyboard(user_id: int):
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Features", callback_data=_help_cb(user_id, "features")),
-            InlineKeyboardButton("AI Chat", callback_data=_help_cb(user_id, "ai")),
+            InlineKeyboardButton("SYSTEM FEATURES", callback_data=_help_cb(user_id, "features")),
+            InlineKeyboardButton("AI ENGINES", callback_data=_help_cb(user_id, "ai")),
         ],
         [
-            InlineKeyboardButton("Utilities", callback_data=_help_cb(user_id, "utils")),
-            InlineKeyboardButton("Privacy", callback_data=_help_cb(user_id, "privacy")),
+            InlineKeyboardButton("UTILITIES", callback_data=_help_cb(user_id, "utils")),
+            InlineKeyboardButton("PRIVACY POLICY", callback_data=_help_cb(user_id, "privacy")),
         ],
         [
-            InlineKeyboardButton("Settings", callback_data=_help_cb(user_id, "settings")),
+            InlineKeyboardButton("GLOBAL SETTINGS", callback_data=_help_cb(user_id, "settings")),
         ],
         [
-            InlineKeyboardButton("Close", callback_data=_help_cb(user_id, "close")),
+            InlineKeyboardButton("TERMINATE", callback_data=_help_cb(user_id, "close")),
         ],
     ])
 
@@ -34,98 +34,91 @@ def help_settings_keyboard(user_id: int):
             InlineKeyboardButton("Welcome", callback_data=_help_cb(user_id, "wlc")),
         ],
         [
-            InlineKeyboardButton("User Setting", callback_data=_help_cb(user_id, "user_setting")),
+            InlineKeyboardButton("User Settings", callback_data=_help_cb(user_id, "user_setting")),
         ],
         [
-            InlineKeyboardButton("Back", callback_data=_help_cb(user_id, "menu")),
-            InlineKeyboardButton("Close", callback_data=_help_cb(user_id, "close")),
+            InlineKeyboardButton("BACK", callback_data=_help_cb(user_id, "menu")),
+            InlineKeyboardButton("TERMINATE", callback_data=_help_cb(user_id, "close")),
         ],
     ])
 
 
 def help_back_keyboard(user_id: int):
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("Back", callback_data=_help_cb(user_id, "menu"))],
-        [InlineKeyboardButton("Close", callback_data=_help_cb(user_id, "close"))],
+        [InlineKeyboardButton("BACK", callback_data=_help_cb(user_id, "menu"))],
+        [InlineKeyboardButton("TERMINATE", callback_data=_help_cb(user_id, "close"))],
     ])
 
 
 def help_settings_back_keyboard(user_id: int):
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("Back", callback_data=_help_cb(user_id, "settings"))],
-        [InlineKeyboardButton("Close", callback_data=_help_cb(user_id, "close"))],
+        [InlineKeyboardButton("BACK", callback_data=_help_cb(user_id, "settings"))],
+        [InlineKeyboardButton("TERMINATE", callback_data=_help_cb(user_id, "close"))],
     ])
 
 
 HELP_TEXT = {
     "menu": (
-        "📖 <b>Help Menu</b>\n"
-        "Select a category to see available commands."
+        "<b>SYSTEM DOCUMENTATION</b>\n"
+        "Select a module below to view detailed specifications."
     ),
 
     "features": (
-        "<b>Main Features</b>\n\n"
-        "• <code>/dl</code> — Download videos from supported platforms\n"
-        "• <code>/weather</code> — Get weather information\n"
-        "• <code>/music</code> — Search music\n"
-        "• <code>/gsearch</code> — Search on Google\n"
-        "• <code>/tr</code> — Translate text between languages\n"
-        "• <code>/trlist</code> — List supported languages\n"
-        "• <code>/ship</code> — Choose a couple\n"
-        "• <code>/reminder</code> — Schedule a reminder\n"
-        "• <code>/waifu</code> — Get a waifu\n"
-        "• <code>/kurs</code> — Currency conversion\n"
-        "• <code>/q</code> — Create quote sticker\n"
-        "• <code>/kang</code> — Add sticker to your pack\n"
+        "<b>SYSTEM FEATURES</b>\n\n"
+        "• /dl - Remote media download engine\n"
+        "• /weather - Meteorological data query\n"
+        "• /music - Audio repository search\n"
+        "• /gsearch - Web indexing service\n"
+        "• /tr - Multi-language translation engine\n"
+        "• /trlist - Supported language specifications\n"
+        "• /ship - Social compatibility analysis\n"
+        "• /reminder - Temporal notification scheduler\n"
+        "• /waifu - Graphical asset generator\n"
+        "• /kurs - Financial exchange rate engine\n"
+        "• /q - Dynamic quote-to-sticker converter\n"
+        "• /kang - Sticker pack synchronization\n"
     ),
 
     "ai": (
-        "<b>AI Chat</b>\n\n"
-        "• <code>/ask</code> — Chat with Gemini AI\n"
-        "• <code>/groq</code> — Chat with Groq AI\n"
+        "<b>AI ENGINES</b>\n\n"
+        "• /ask - Google Gemini 2.0 Flash engine\n"
+        "• /groq - Groq Llama-3 technical engine\n"
     ),
 
     "utils": (
-        "<b>Utilities</b>\n\n"
-        "• <code>/ping</code> — Check bot response time\n"
-        "• <code>/stats</code> — Bot & system statistics\n"
-        "• <code>/ip</code> — IP address lookup\n"
-        "• <code>/domain</code> — Domain information\n"
-        "• <code>/whoisdomain</code> — Detailed domain lookup\n"
+        "<b>SYSTEM UTILITIES</b>\n\n"
+        "• /ping - Latency measurement\n"
+        "• /stats - Resource utilization metrics\n"
+        "• /ip - IP metadata lookup\n"
+        "• /domain - Domain registry indexing\n"
+        "• /whoisdomain - Extended WHOIS protocol query\n"
     ),
 
     "privacy": (
-        "<b>User Privacy</b>\n\n"
-        "By using this bot, you understand and agree that:\n\n"
-        "• The bot owner may view and store command history\n"
-        "• Recorded data may include:\n"
-        "  - Telegram user ID\n"
-        "  - Username (if available)\n"
-        "  - Commands used\n"
-        "  - Timestamp\n\n"
-        "This data is only used for:\n"
-        "• Development & Maintenance\n"
-        "• Service improvement\n\n"
-        "<b>❗ Do not send passwords or other sensitive data.</b>\n\n"
-        "By using this bot, you are considered to have agreed to this policy."
+        "<b>PRIVACY PROTOCOL</b>\n\n"
+        "User agreement and data handling specifications:\n\n"
+        "• Data Collection: Commands, timestamps, and identifiers are logged for system optimization.\n"
+        "• Usage: Information is utilized solely for maintenance and debugging.\n"
+        "• Security: Avoid transmission of sensitive credentials or private keys.\n\n"
+        "Continuing interaction constitutes full agreement to these terms."
     ),
 
     "settings": (
-        "<b>Bot Settings</b>\n\n"
-        "Select a category below to see detailed options."
+        "<b>SYSTEM CONFIGURATION</b>\n\n"
+        "Select a configuration module below."
     ),
 
     "autodl": (
-        "<b>Auto Download Link</b>\n\n"
-        "• <code>/autodl enable</code> — Enable automatic link detection\n"
-        "• <code>/autodl disable</code> — Disable automatic link detection\n"
-        "• <code>/autodl status</code> — Check status\n\n"
+        "<b>Auto Download Protocol</b>\n\n"
+        "• /autodl enable - Activate link detection\n"
+        "• /autodl disable - Deactivate link detection\n"
+        "• /autodl status - View current status\n\n"
     ),
 
     "wlc": (
-        "<b>Welcome Settings</b>\n\n"
-        "• <code>/wlc enable</code> — Enable welcome messages\n"
-        "• <code>/wlc disable</code> — Disable welcome messages\n\n"
+        "<b>Welcome Protocol</b>\n\n"
+        "• /wlc enable - Activate new member greeting\n"
+        "• /wlc disable - Deactivate new member greeting\n\n"
     ),
 }
 
@@ -155,7 +148,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         owner_id = int(parts[1])
     except Exception:
         try:
-            await q.answer("Invalid help menu.", show_alert=True)
+            await q.answer("CRITICAL: Invalid help session.", show_alert=True)
         except Exception:
             pass
         return
@@ -165,7 +158,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if q.from_user.id != owner_id:
         try:
             await q.answer(
-                "Only the user who opened this menu can access it",
+                "UNAUTHORIZED: Session restricted to initiator.",
                 show_alert=True
             )
         except Exception:
