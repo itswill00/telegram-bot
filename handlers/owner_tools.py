@@ -38,21 +38,21 @@ def is_blacklisted(user_id: int) -> bool:
 
 # --- IMPROVED EVAL TOOLS ---
 
-import ast
-
 async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Executes arbitrary Python code natively with AST return transformation."""
+    """Executes arbitrary Python code with async support."""
     if update.effective_user.id not in OWNER_ID:
         return
 
+    # Join the arguments to get the full code
     code = " ".join(context.args)
     if not code:
-        return await update.message.reply_text("Contoh: <code>$eval 1 + 1</code>", parse_mode="HTML")
+        return await update.message.reply_text("Contoh: <code>$eval print(1+1)</code>", parse_mode="HTML")
 
+    # Clean the code from backticks if user wraps it in a code block
     if code.startswith("```") and code.endswith("```"):
         code = "\n".join(code.split("\n")[1:-1])
-    code = code.strip()
 
+    # Provide useful local variables
     env = {
         "update": update,
         "context": context,
@@ -66,52 +66,48 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "OWNER_ID": OWNER_ID,
     }
 
+    # Output capture
     stdout = io.StringIO()
-    try:
-        parsed_body = ast.parse(code)
-        
-        # Modify last statement to return its value if it's an expression
-        if parsed_body.body and isinstance(parsed_body.body[-1], ast.Expr):
-            ret_node = ast.Return(value=parsed_body.body[-1].value)
-            ast.copy_location(ret_node, parsed_body.body[-1])
-            parsed_body.body[-1] = ret_node
-            
-        # Wrap everything inside an async function
-        wrapper = ast.parse("async def __aexec(): pass")
-        wrapper.body[0].body = parsed_body.body
-        ast.fix_missing_locations(wrapper)
+    
+    # Pre-formatting for multiline support
+    to_compile = f"async def func():\n" + "\n".join(f"    {line}" for line in code.split("\n"))
 
-        exec(compile(wrapper, filename="<ast>", mode="exec"), env)
-        func = env["__aexec"]
+    try:
+        # Define the function
+        exec(to_compile, env)
+        func = env["func"]
         
-        start_time = time.perf_counter()
+        # Execute and redirect stdout
         with redirect_stdout(stdout):
-            returned_value = await func()
-        duration = time.perf_counter() - start_time
-        
+            start_time = time.time()
+            await func()
+            duration = time.time() - start_time
+            
         output = stdout.getvalue()
         
-        # Formatting result natively
-        result_text = f"<b>[ EVALUASI SUKSES ]</b>  —  <code>{duration:.4f}s</code>\n"
+        # Format the response in In/Out style
+        result_text = (
+            f"<b>In:</b>\n"
+            f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
+            f"<b>Out:</b> (<code>{duration:.4f}s</code>)\n"
+        )
         
         if output:
-            result_text += f"\n<b>Stdout:</b>\n<pre><code>{html.escape(output[:3500])}</code></pre>"
-            
-        if returned_value is not None:
-            # Prevent token overflow if object is massive
-            val_str = str(returned_value)
-            type_str = type(returned_value).__name__
-            result_text += f"\n<b>Return</b> (<code>{type_str}</code>)<b>:</b>\n<pre><code>{html.escape(val_str[:3500])}</code></pre>"
-            
-        if not output and returned_value is None:
-            result_text += "\n<i>(Executed without return/stdout)</i>"
-            
+            if len(output) > 3500:
+                output = output[:3500] + "\n[Output truncated...]"
+            result_text += f"<pre><code>{html.escape(output)}</code></pre>"
+        else:
+            result_text += "<i>No output returned.</i>"
+
         await update.message.reply_text(result_text, parse_mode="HTML")
 
     except Exception:
+        # Capture error and traceback
         error_msg = traceback.format_exc()
         error_text = (
-            f"<b>[ TRACEBACK EXCEPTION ]</b>\n"
+            f"<b>In:</b>\n"
+            f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
+            f"<b>Error:</b>\n"
             f"<pre><code>{html.escape(error_msg[-3500:])}</code></pre>"
         )
         await update.message.reply_text(error_text, parse_mode="HTML")
