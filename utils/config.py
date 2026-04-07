@@ -22,6 +22,10 @@ def require_env_list(key: str) -> set[int]:
         if x.strip().isdigit()
     }
     
+def get_env(name: str, default=None):
+    value = os.getenv(name)
+    return value if value and value.strip() else default
+
 # Bot token
 BOT_TOKEN = require_env("BOT_TOKEN")
 
@@ -42,11 +46,11 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # groq & caca
 GROQ_KEY = os.getenv("GROQ_API_KEY")
-GROQ_BASE = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
-GROQ_MODEL2 = "moonshotai/kimi-k2-instruct"
-GROQ_TIMEOUT = int(os.getenv("GROQ_TIMEOUT", "30"))
-COOLDOWN = int(os.getenv("GROQ_COOLDOWN", "2"))
+GROQ_BASE = get_env("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
+GROQ_MODEL = get_env("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL2 = "llama-3.3-70b-versatile"
+GROQ_TIMEOUT = int(get_env("GROQ_TIMEOUT", "30"))
+COOLDOWN = int(get_env("GROQ_COOLDOWN", "2"))
 GROQ_MEMORY = {}
 META_MEMORY = {}
 
