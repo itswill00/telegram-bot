@@ -3,6 +3,12 @@
 import os
 import socket
 import logging
+import asyncio
+try:
+    import uvloop
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+except ImportError:
+    pass
 from telegram import Update
 from telegram.ext import ApplicationBuilder, JobQueue, ContextTypes
 
@@ -43,9 +49,12 @@ def setup_logger():
     )
 
     root = logging.getLogger()
-    root.setLevel(logging.INFO)
+    root.setLevel(logging.WARNING)
     root.handlers.clear()
     root.addHandler(handler)
+
+    # Set specific level for our bot logger
+    log.setLevel(logging.INFO)
 
 
 log = logging.getLogger(__name__)
@@ -65,10 +74,10 @@ def _build_application():
         .token(BOT_TOKEN)
         .job_queue(JobQueue())
         .concurrent_updates(True)
-        .connect_timeout(30)
-        .read_timeout(60 * 20)
-        .write_timeout(60 * 20)
-        .pool_timeout(60)
+        .connect_timeout(10)
+        .read_timeout(10)
+        .write_timeout(10)
+        .pool_timeout(5)
     )
 
     if PREFER_LOCAL_BOT_API and _local_bot_api_available(LOCAL_BOT_API_HOST, LOCAL_BOT_API_PORT):
