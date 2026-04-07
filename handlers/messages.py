@@ -26,17 +26,17 @@ async def ai_reply_router(update, context):
 
     if reply_mid in _GROQ_ACTIVE_USERS.values():
         return await msg.reply_text(
-            "😒 Lu siapa?\n"
-            "Gue belum ngobrol sama lu.\n"
-            "Ketik /groq dulu.",
+            "😒 <b>Who are you?</b>\n"
+            "I haven't started a conversation with you yet.\n"
+            "Please type /groq first.",
             parse_mode="HTML"
         )
 
     if reply_mid in _AI_ACTIVE_USERS.values():
         return await msg.reply_text(
-            "😒 Lu siapa?\n"
-            "Gue belum ngobrol sama lu.\n"
-            "Ketik /ask dulu.",
+            "😒 <b>Who are you?</b>\n"
+            "I haven't started a conversation with you yet.\n"
+            "Please type /ask first.",
             parse_mode="HTML"
         )
 

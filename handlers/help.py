@@ -81,9 +81,8 @@ HELP_TEXT = {
 
     "ai": (
         "<b>AI Chat</b>\n\n"
-        "• <code>/ai</code> — Chat with Gemini AI\n"
-        "• <code>/ask</code> — Chat with ChatGPT\n"
-        "• <code>/groq</code> — Chat with Groq\n"
+        "• <code>/ask</code> — Chat with Gemini AI\n"
+        "• <code>/groq</code> — Chat with Groq AI\n"
     ),
 
     "utils": (
@@ -97,31 +96,30 @@ HELP_TEXT = {
 
     "privacy": (
         "<b>User Privacy</b>\n\n"
-        "By using this bot, users understand and agree that:\n\n"
-        "• The bot owner may view and store the command history used by users\n"
-        "• The recorded data may include:\n"
+        "By using this bot, you understand and agree that:\n\n"
+        "• The bot owner may view and store command history\n"
+        "• Recorded data may include:\n"
         "  - Telegram user ID\n"
         "  - Username (if available)\n"
         "  - Commands used\n"
-        "  - Usage time (timestamp)\n\n"
-        "This data is used only for:\n"
-        "• Development\n"
-        "• Maintenance\n"
+        "  - Timestamp\n\n"
+        "This data is only used for:\n"
+        "• Development & Maintenance\n"
         "• Service improvement\n\n"
-        "<b>❗ Do not send passwords, identification numbers, or other sensitive data.</b>\n\n"
-        "By continuing to use this bot, users are considered to have agreed to this policy."
+        "<b>❗ Do not send passwords or other sensitive data.</b>\n\n"
+        "By using this bot, you are considered to have agreed to this policy."
     ),
 
     "settings": (
         "<b>Bot Settings</b>\n\n"
-        "Select a menu below to see detailed options for each feature."
+        "Select a category below to see detailed options."
     ),
 
     "autodl": (
         "<b>Auto Download Link</b>\n\n"
         "• <code>/autodl enable</code> — Enable automatic link detection\n"
         "• <code>/autodl disable</code> — Disable automatic link detection\n"
-        "• <code>/autodl status</code> — Check auto-detect status\n\n"
+        "• <code>/autodl status</code> — Check status\n\n"
     ),
 
     "wlc": (
@@ -157,7 +155,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         owner_id = int(parts[1])
     except Exception:
         try:
-            await q.answer("Menu help tidak valid.", show_alert=True)
+            await q.answer("Invalid help menu.", show_alert=True)
         except Exception:
             pass
         return

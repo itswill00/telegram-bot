@@ -116,7 +116,7 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = InlineKeyboardMarkup([
             [
                 InlineKeyboardButton(
-                    "🏷️ Daftar Tag Waifu",
+                    "🏷️ Waifu Tag List",
                     url="https://www.waifu.im/tags"
                 )
             ]
@@ -127,7 +127,7 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "• <code>/waifu random</code>\n"
             "• <code>/waifu maid</code>\n"
             "• <code>/waifu raiden-shogun</code>\n\n"
-            "Klik tombol di bawah untuk lihat tag 👇",
+            "Click the button below to see more tags 👇",
             parse_mode="HTML",
             disable_web_page_preview=True,
             reply_markup=keyboard
@@ -144,7 +144,7 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if status != 200:
         return await msg.reply_text(f"❌ API Error ({status})")
     if not img:
-        return await msg.reply_text("❌ Waifu tidak ditemukan 😭")
+        return await msg.reply_text("❌ Waifu not found 😭")
 
     _push(key, img)
 
@@ -171,7 +171,7 @@ async def waifu_next_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.answer()
 
     if user.id != owner_id:
-        return await q.answer("Bukan punya lu.", show_alert=True)
+        return await q.answer("Not your session.", show_alert=True)
 
     key = _state_key(chat_id, owner_id)
     _cleanup(key)
@@ -181,7 +181,7 @@ async def waifu_next_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if status != 200:
         return await q.answer("API error", show_alert=True)
     if not img:
-        return await q.answer("Waifu kosong.", show_alert=True)
+        return await q.answer("No more waifus.", show_alert=True)
 
     _push(key, img)
 
@@ -211,12 +211,12 @@ async def waifu_pref_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.answer()
 
     if user.id != owner_id:
-        return await q.answer("Bukan punya lu.", show_alert=True)
+        return await q.answer("Not your session.", show_alert=True)
 
     key = _state_key(chat_id, owner_id)
     img = _pop(key)
     if not img:
-        return await q.answer("Ga ada waifu sebelumnya.", show_alert=True)
+        return await q.answer("No previous waifu found.", show_alert=True)
 
     tag = _WAIFU_LAST_TAG.get(key)
 

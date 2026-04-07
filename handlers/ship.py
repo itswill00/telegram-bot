@@ -16,27 +16,27 @@ from database.ship_db import (
     _ship_db_init,
 )
 
-SHIP_COOLDOWN = 60 * 60 * 24  # 24 jam
+SHIP_COOLDOWN = 60 * 60 * 24  # 24 hours
 
 SHIP_MESSAGES = [
-    "🥰 Kalian keliatan nyaman satu sama lain",
-    "💗 Vibes-nya lembut dan saling ngerti",
-    "🌸 Cocoknya tuh keliatan natural",
-    "💞 Kayak saling nenangin tanpa sadar",
-    "✨ Bareng-bareng keliatan lebih hidup",
-    "🫶 Ada rasa aman di situ",
-    "🌷 Kalo ngobrol pasti nyambung",
-    "💫 Energinya bikin hangat",
-    "🤍 Sederhana tapi kerasa",
-    "🌼 Keliatan saling support",
+    "🥰 You look so comfortable with each other",
+    "💗 The vibes are soft and understanding",
+    "🌸 Your chemistry looks natural",
+    "💞 Like you're calming each other down without realizing",
+    "✨ You both look more alive together",
+    "🫶 There's a sense of security there",
+    "🌷 Conversations must flow easily",
+    "💫 Your energy is warm",
+    "🤍 Simple yet deeply felt",
+    "🌼 You seem to support each other",
 ]
 
 SHIP_ENDING = [
-    "Semoga selalu akur ya 🤍",
-    "Lucu kalo beneran 🥹",
-    "Doain yang terbaik ✨",
-    "Siapa tau ini pertanda 🌸",
-    "Pelan-pelan aja 💗",
+    "Hope you stay close! 🤍",
+    "Cute if it's real 🥹",
+    "Wishing the best ✨",
+    "Maybe this is a sign 🌸",
+    "Take it slow 💗",
     "Enjoy the moment 🫶",
 ]
 
@@ -70,8 +70,8 @@ async def ship_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if now - last_time < SHIP_COOLDOWN:
         remain = SHIP_COOLDOWN - (now - last_time)
         return await msg.reply_text(
-            f"⏳ <b>Ship masih cooldown</b>\n\n"
-            f"Pasangan berikutnya bisa dipilih dalam:\n"
+            f"⏳ <b>Ship is on cooldown</b>\n\n"
+            f"Next pair can be chosen in:\n"
             f"<code>{format_remaining(remain)}</code>",
             parse_mode="HTML",
         )
@@ -98,7 +98,7 @@ async def ship_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(users) < 2:
         pool_ids = [p for p in pool if p.get("id") is not None]
         if len(pool_ids) < 2:
-            return await msg.reply_text("❌ Belum cukup orang buat di-ship.")
+            return await msg.reply_text("❌ Not enough people to ship yet.")
 
         picked = None
         for _ in range(12):
@@ -110,7 +110,7 @@ async def ship_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 break
 
         if not picked:
-            return await msg.reply_text("❌ Belum menemukan 2 member aktif untuk di-ship.")
+            return await msg.reply_text("❌ No active members found for shipping.")
 
         users = [picked[0], picked[1]]
 

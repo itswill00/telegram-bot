@@ -108,12 +108,12 @@ async def post_init(app):
     try:
         await app.bot.set_my_commands([
             ("start", "Check bot status"),
-            ("donate", "Support bot"),
+            ("donate", "Support bot development"),
             ("help", "Show help menu"),
-            ("settings", "User setting"),
-            ("quiz", "random soal"),
+            ("settings", "User settings"),
+            ("quiz", "Random quiz"),
             ("ping", "Check latency"),
-            ("ship", "Choose couple"),
+            ("ship", "Choose a couple"),
             ("stats", "System statistics"),
             ("dl", "Download video"),
             ("ask", "Ask Gemini AI"),
