@@ -12,7 +12,6 @@ from handlers.speedtest import speedtest_cmd
 from handlers.ping import ping_cmd
 from handlers.weather import weather_cmd
 from handlers.dl.handlers import dl_cmd, autodl_cmd
-from handlers.helpowner import helpowner_cmd
 from handlers.welcome import wlc_cmd, start_verify_pm
 from handlers.ship import ship_cmd
 from handlers.reminder import reminder_cmd
@@ -49,7 +48,7 @@ from handlers.admin_panel import admin_cmd
 from handlers.owner_tools import eval_cmd, sh_cmd, ban_cmd, unban_cmd
 from handlers.owner_env import env_cmd
 from handlers.owner_sys import sys_cmd
-from handlers.owner_help import owner_help_cmd
+from handlers.helpowner import helpowner_cmd
 from handlers.owner_backup import direct_backup_cmd
 from handlers.owner_restore import restore_cmd
 from handlers.owner_hotreload import hotreload_cmd
@@ -64,7 +63,8 @@ ADMIN_COMMANDS = [
     ("backup", direct_backup_cmd, False),
     ("restore", restore_cmd, False),
     ("hotreload", hotreload_cmd, False),
-    ("help", owner_help_cmd, False),
+    ("help", helpowner_cmd, False),
+    ("helpowner", helpowner_cmd, False),
     ("banuser", ban_cmd, False),
     ("unbanuser", unban_cmd, False),
     ("cookies", cookies_cmd, False),
@@ -110,7 +110,6 @@ COMMAND_HANDLERS = [
     ("domain", domain_cmd, True),
     ("tr", tr_cmd, True),
     ("trlist", trlist_cmd, True),
-    ("helpowner", helpowner_cmd, True),
     ("wlc", wlc_cmd, True),
     ("ask", ai_cmd, False),
     ("groq", groq_query, False),
