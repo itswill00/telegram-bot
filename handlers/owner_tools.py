@@ -52,7 +52,9 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if code.startswith("```") and code.endswith("```"):
         code = "\n".join(code.split("\n")[1:-1])
 
-    # Provide useful local variables
+    import json, math, re, datetime, subprocess, random, urllib, requests, aiohttp, inspect, telegram
+    
+    # Provide useful local variables and heavily declared modules
     env = {
         "update": update,
         "context": context,
@@ -63,6 +65,17 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "os": os,
         "sys": sys,
         "time": time,
+        "json": json,
+        "math": math,
+        "re": re,
+        "datetime": datetime,
+        "subprocess": subprocess,
+        "random": random,
+        "urllib": urllib,
+        "requests": requests,
+        "aiohttp": aiohttp,
+        "inspect": inspect,
+        "telegram": telegram,
         "OWNER_ID": OWNER_ID,
     }
 
