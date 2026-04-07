@@ -99,48 +99,68 @@ async def is_admin_or_owner(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         return False
 
 
+def wlc_keyboard(chat_id: int):
+    status = "✅ AKTIF" if chat_id in WELCOME_ENABLED_CHATS else "❌ MATI"
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(f"Status: {status}", callback_data="wlc_toggle:ignore"),
+        ],
+        [
+            InlineKeyboardButton("✅ Hidupkan", callback_data=f"wlc_toggle:{chat_id}:enable"),
+            InlineKeyboardButton("❌ Matikan", callback_data=f"wlc_toggle:{chat_id}:disable"),
+        ],
+        [
+            InlineKeyboardButton("Tutup Menu", callback_data=f"wlc_toggle:{chat_id}:close")
+        ]
+    ])
+
 async def wlc_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global WELCOME_ENABLED_CHATS
-
     msg = update.message
     chat = update.effective_chat
-    if not msg or not chat:
-        return
+    if not msg or not chat: return
+    
+    if chat.type == "private":
+        return await msg.reply_text("<b>ERROR:</b> Perintah ini wajib digunakan di dalam Grup.", parse_mode="HTML")
 
     if not await is_admin_or_owner(update, context):
-        return
+        return await msg.reply_text("<b>ERROR:</b> Hanya Admin / Owner yang dapat menyetel ini.", parse_mode="HTML")
 
-    arg = ""
-    if context.args:
-        arg = (context.args[0] or "").strip().lower()
-    else:
-        raw = (msg.text or "").strip()
-        parts = raw.split(maxsplit=1)
-        if len(parts) == 2:
-            arg = parts[1].strip().split()[0].lower()
-
-    if not arg:
-        return await msg.reply_text(
-            "Usage:\n"
-            "<code>/wlc enable</code>\n"
-            "<code>/wlc disable</code>",
-            parse_mode="HTML"
-        )
-
-    if arg == "enable":
-        WELCOME_ENABLED_CHATS.add(chat.id)
-        save_welcome_chats(WELCOME_ENABLED_CHATS)
-        return await msg.reply_text("<b>Welcome message enabled.</b>", parse_mode="HTML")
-
-    if arg == "disable":
-        WELCOME_ENABLED_CHATS.discard(chat.id)
-        save_welcome_chats(WELCOME_ENABLED_CHATS)
-        return await msg.reply_text("<b>Welcome message disabled.</b>", parse_mode="HTML")
-
-    return await msg.reply_text(
-        "Use <code>enable</code> or <code>disable</code>.",
+    await msg.reply_text(
+        "<b>⚙️ Pengaturan Fitur Keamanan (Welcome)</b>\n"
+        "Gunakan menu interaktif di bawah ini untuk menghidupkan Captcha/Welcome Message:",
+        reply_markup=wlc_keyboard(chat.id),
         parse_mode="HTML"
     )
+
+async def wlc_toggle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global WELCOME_ENABLED_CHATS
+    q = update.callback_query
+    
+    parts = q.data.split(':')
+    if len(parts) != 3 or parts[1] == "ignore":
+        return await q.answer()
+        
+    chat_id = int(parts[1])
+    action = parts[2]
+    
+    if action == "close":
+        await q.answer()
+        return await q.message.delete()
+        
+    if action == "enable":
+        WELCOME_ENABLED_CHATS.add(chat_id)
+        save_welcome_chats(WELCOME_ENABLED_CHATS)
+        await q.answer("Pengaturan Disimpan: AKTIF")
+    elif action == "disable":
+        WELCOME_ENABLED_CHATS.discard(chat_id)
+        save_welcome_chats(WELCOME_ENABLED_CHATS)
+        await q.answer("Pengaturan Disimpan: MATI")
+        
+    try:
+        await q.edit_message_reply_markup(reply_markup=wlc_keyboard(chat_id))
+    except Exception:
+        pass
 
 
 async def welcome_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):

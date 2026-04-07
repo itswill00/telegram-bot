@@ -2,12 +2,12 @@ from telegram.ext import CallbackQueryHandler
 
 from handlers.help import help_callback
 from handlers.gsearch import gsearch_callback
-from handlers.dl.handlers import dl_callback, dlask_callback, dlres_callback
+from handlers.dl.handlers import dl_callback, dlask_callback, dlres_callback, autodl_toggle_callback
 from handlers.helpowner import helpowner_callback
 from handlers.reminder import reminder_cancel_cb
 from handlers.update import update_cb
 from handlers.waifu import waifu_next_cb, waifu_pref_cb
-from handlers.welcome import verify_answer_callback
+from handlers.welcome import verify_answer_callback, wlc_toggle_callback
 from handlers.music import music_callback
 from handlers.quiz import quiz_callback
 from handlers.broadcast import broadcast_callback
@@ -31,4 +31,6 @@ def register_callbacks(app):
     app.add_handler(CallbackQueryHandler(quiz_callback, pattern=r"^quizans:"))
     app.add_handler(CallbackQueryHandler(broadcast_callback, pattern=r"^broadcast:"))
     app.add_handler(CallbackQueryHandler(setting_callback, pattern=r"^setting:"))
+    app.add_handler(CallbackQueryHandler(wlc_toggle_callback, pattern=r"^wlc_toggle:"))
+    app.add_handler(CallbackQueryHandler(autodl_toggle_callback, pattern=r"^autodl_toggle:"))
     

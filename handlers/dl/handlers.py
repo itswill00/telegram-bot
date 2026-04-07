@@ -190,6 +190,22 @@ async def _is_admin_or_owner(update: Update, context: ContextTypes.DEFAULT_TYPE)
     except Exception:
         return False
 
+def autodl_keyboard(chat_id: int, is_enabled: bool):
+    from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+    status = "✅ AKTIF" if is_enabled else "❌ MATI"
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(f"Status AutoDL: {status}", callback_data="autodl_toggle:ignore"),
+        ],
+        [
+            InlineKeyboardButton("✅ Hidupkan", callback_data=f"autodl_toggle:{chat_id}:enable"),
+            InlineKeyboardButton("❌ Matikan", callback_data=f"autodl_toggle:{chat_id}:disable"),
+        ],
+        [
+            InlineKeyboardButton("Tutup Menu", callback_data=f"autodl_toggle:{chat_id}:close")
+        ]
+    ])
+
 async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
     msg = update.message
@@ -199,40 +215,15 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not await _is_admin_or_owner(update, context):
-        return await msg.reply_text("<b>You are not an admin</b>", parse_mode="HTML")
+        return await msg.reply_text("<b>ERROR:</b> Hanya Admin / Owner yang dapat menyetel ini.", parse_mode="HTML")
 
     groups = load_auto_dl()
     arg = context.args[0].lower() if context.args else ""
 
-    if arg == "enable":
-        groups.add(chat.id)
-        save_auto_dl(groups)
-        return await msg.reply_text(
-            "Auto-detect link <b>ENABLED</b> in this group.",
-            parse_mode="HTML",
-        )
-
-    if arg == "disable":
-        groups.discard(chat.id)
-        save_auto_dl(groups)
-        return await msg.reply_text(
-            "Auto-detect link <b>DISABLED</b> in this group.",
-            parse_mode="HTML",
-        )
-
-    if arg == "status":
-        if chat.id in groups:
-            return await msg.reply_text("Auto-detect Status: <b>ENABLED</b>", parse_mode="HTML")
-        return await msg.reply_text("Auto-detect Status: <b>DISABLED</b>", parse_mode="HTML")
-
-    if arg == "list":
-        if user_id not in OWNER_ID:
-            return
-
+    if arg == "list" and user_id in OWNER_ID:
         if not groups:
-            return await msg.reply_text("No groups with auto-detect enabled.", parse_mode="HTML")
-
-        lines = ["<b>Groups with Auto-detect Enabled:</b>\n"]
+            return await msg.reply_text("Tidak ada grup dengan Auto-detect nyala.", parse_mode="HTML")
+        lines = ["<b>Daftar Grup Auto-detect Aktif:</b>\n"]
         for gid in groups:
             try:
                 c = await context.bot.get_chat(gid)
@@ -240,17 +231,44 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 lines.append(f"• {title}")
             except Exception:
                 lines.append(f"• <code>{gid}</code>")
-
         return await msg.reply_text("\n".join(lines), parse_mode="HTML")
 
-    return await msg.reply_text(
-        "<b>Usage:</b>\n"
-        "<code>/autodl enable</code>\n"
-        "<code>/autodl disable</code>\n"
-        "<code>/autodl status</code>\n"
-        "<code>/autodl list</code>",
-        parse_mode="HTML",
+    is_enabled = chat.id in groups
+    await msg.reply_text(
+        "<b>⚙️ Pengaturan Fitur Auto-Download</b>\n"
+        "Gunakan menu di bawah untuk mengontrol pendeteksian pengunduh otomatis di grup ini:",
+        reply_markup=autodl_keyboard(chat.id, is_enabled),
+        parse_mode="HTML"
     )
+
+async def autodl_toggle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    parts = q.data.split(':')
+    if len(parts) != 3 or parts[1] == "ignore":
+        return await q.answer()
+        
+    chat_id = int(parts[1])
+    action = parts[2]
+    
+    if action == "close":
+        await q.answer()
+        return await q.message.delete()
+        
+    groups = load_auto_dl()
+    if action == "enable":
+        groups.add(chat_id)
+        save_auto_dl(groups)
+        await q.answer("Pengaturan Disimpan: AKTIF")
+    elif action == "disable":
+        groups.discard(chat_id)
+        save_auto_dl(groups)
+        await q.answer("Pengaturan Disimpan: MATI")
+        
+    is_enabled = chat_id in groups
+    try:
+        await q.edit_message_reply_markup(reply_markup=autodl_keyboard(chat_id, is_enabled))
+    except Exception:
+        pass
 
 
 async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
