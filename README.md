@@ -77,5 +77,5 @@ python bot.py
 Semua data tersimpan secara lokal di direktori `data/` dalam format JSON yang dapat dibaca manusia. Tidak ada data yang dikirim ke server pihak ketiga selain penyedia API AI yang Anda gunakan.
 
 ---
-**Pengembang:** @Hirohitokiyoshi
+**Pengembang:** noticesa
 **Lisensi:** GPL-3.0
