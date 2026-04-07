@@ -1,4 +1,5 @@
 import html
+import asyncio
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -11,11 +12,22 @@ async def direct_backup_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not msg or not user or user.id not in OWNER_ID:
         return
 
+    # Self-Cleaning Protocol: Temporary status message
     status_msg = await msg.reply_text("<b>INITIALIZING:</b> Database compression sequence...", parse_mode="HTML")
 
     success = await perform_backup(context.bot, msg.chat_id)
 
     if success:
-        await status_msg.edit_text("<b>SUCCESS:</b> Backup transmitted successfully.", parse_mode="HTML")
+        # Delete temporary status upon success
+        try:
+            await status_msg.delete()
+        except Exception:
+            pass
     else:
         await status_msg.edit_text("<b>ERROR:</b> Internal backup routine failed.", parse_mode="HTML")
+        # Auto-delete error message after 10 seconds to keep chat clean
+        await asyncio.sleep(10)
+        try:
+            await status_msg.delete()
+        except Exception:
+            pass

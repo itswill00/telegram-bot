@@ -19,9 +19,10 @@ async def maintenance_filter(update, context):
 
     maint = get_setting("maintenance_mode", "OFF")
     if maint == "ON":
+        # Professional tools only warn once or stay silent. 
+        # We will send a formal notice.
         await update.message.reply_text(
-            "<b>STATUS: SYSTEM MAINTENANCE</b>\n\n"
-            "Server is currently undergoing scheduled updates. Access restricted.",
+            "<b>STATUS: SYSTEM MAINTENANCE</b>\nAccess restricted.",
             parse_mode="HTML"
         )
         return True
@@ -36,35 +37,27 @@ async def ai_reply_router(update, context):
         return
 
     if get_setting("ai_global", "ON") == "OFF":
-        return await msg.reply_text("<b>SYSTEM:</b> AI engines are currently offline.")
+        return
 
     user_id = msg.from_user.id
     reply_mid = msg.reply_to_message.message_id
 
+    # Logic: Only respond if the user is the owner of the session.
+    # Silent Logic: No "Unauthorized" messages to prevent group spam.
     if _GROQ_ACTIVE_USERS.get(user_id) == reply_mid:
         return await groq_query(update, context)
 
     if _AI_ACTIVE_USERS.get(user_id) == reply_mid:
         return await ai_cmd(update, context)
 
-    if reply_mid in _GROQ_ACTIVE_USERS.values():
-        return await msg.reply_text(
-            "<b>UNAUTHORIZED:</b>\n"
-            "Active session required. Initialize with /groq.",
-            parse_mode="HTML"
-        )
-
-    if reply_mid in _AI_ACTIVE_USERS.values():
-        return await msg.reply_text(
-            "<b>UNAUTHORIZED:</b>\n"
-            "Active session required. Initialize with /ask.",
-            parse_mode="HTML"
-        )
-
     return
 
 async def global_maint_check(update, context):
-    await maintenance_filter(update, context)
+    # Quietly filter messages during maintenance
+    maint = get_setting("maintenance_mode", "OFF")
+    if maint == "ON" and update.effective_user.id not in OWNER_ID:
+        # Stop further processing without replying to every single text
+        return
 
 def register_messages(app):
     app.add_handler(
@@ -72,42 +65,11 @@ def register_messages(app):
         group=-2,
     )
 
-    app.add_handler(
-        MessageHandler(filters.ALL, collect_chat),
-        group=0,
-    )
-
-    app.add_handler(
-        MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome_handler),
-        group=1,
-    )
-
-    app.add_handler(
-        MessageHandler(filters.TEXT & filters.REPLY, reply_del_handler),
-        group=2,
-    )
-
-    app.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, dollar_router),
-        group=3,
-    )
-
-    app.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, auto_dl_detect),
-        group=4,
-    )
-
-    app.add_handler(
-        MessageHandler(filters.ALL, log_commands),
-        group=99,
-    )
-    
-    app.add_handler(
-        MessageHandler(filters.ALL & ~filters.COMMAND, user_collector),
-        group=1
-    )
-    
-    app.add_handler(
-        MessageHandler(filters.REPLY & filters.TEXT & ~filters.COMMAND, ai_reply_router),
-        group=-1
-    )
+    app.add_handler(MessageHandler(filters.ALL, collect_chat), group=0)
+    app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome_handler), group=1)
+    app.add_handler(MessageHandler(filters.TEXT & filters.REPLY, reply_del_handler), group=2)
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, dollar_router), group=3)
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, auto_dl_detect), group=4)
+    app.add_handler(MessageHandler(filters.ALL, log_commands), group=99)
+    app.add_handler(MessageHandler(filters.ALL & ~filters.COMMAND, user_collector), group=1)
+    app.add_handler(MessageHandler(filters.REPLY & filters.TEXT & ~filters.COMMAND, ai_reply_router), group=-1)

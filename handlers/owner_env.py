@@ -1,6 +1,7 @@
 import os
 import html
 import logging
+import asyncio
 from telegram import Update
 from telegram.ext import ContextTypes
 from dotenv import load_dotenv, set_key
@@ -43,39 +44,41 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     action = context.args[0].upper()
 
-    # Protocol: PULL (Download)
     if action == "PULL":
         if not os.path.exists(ENV_PATH):
             return await msg.reply_text("ERROR: .env file missing.")
         
-        await msg.reply_text("INITIALIZING: Transmission of configuration file...")
-        with open(ENV_PATH, "rb") as f:
-            return await context.bot.send_document(
-                chat_id=msg.chat_id,
-                document=f,
-                filename=".env",
-                caption="<b>CONFIDENTIAL:</b> Current Environment Configuration."
-            )
+        status_msg = await msg.reply_text("INITIALIZING: Transmission of configuration file...")
+        try:
+            with open(ENV_PATH, "rb") as f:
+                await context.bot.send_document(
+                    chat_id=msg.chat_id,
+                    document=f,
+                    filename=".env",
+                    caption="<b>CONFIDENTIAL:</b> Current Environment Configuration."
+                )
+            await status_msg.delete()
+        except Exception:
+            await status_msg.edit_text("ERROR: Transmission failed.")
+        return
 
-    # Protocol: PUSH (Upload via Reply)
     if action == "PUSH":
         if not msg.reply_to_message or not msg.reply_to_message.document:
-            return await msg.reply_text("ERROR: Target document required. Reply to a .env file with $env PUSH.")
+            return await msg.reply_text("ERROR: Target document required.")
         
-        doc = msg.reply_to_message.document
-        await msg.reply_text("INITIALIZING: Configuration overwrite sequence...")
-        
+        status_msg = await msg.reply_text("INITIALIZING: Configuration overwrite sequence...")
         try:
+            doc = msg.reply_to_message.document
             new_file = await context.bot.get_file(doc.file_id)
             await new_file.download_to_drive(ENV_PATH)
-            
-            # Hot reload
             load_dotenv(ENV_PATH, override=True)
-            return await msg.reply_text("SUCCESS: Configuration overwritten and hot-reloaded.")
+            await status_msg.edit_text("SUCCESS: Configuration overwritten and hot-reloaded.")
+            await asyncio.sleep(5)
+            await status_msg.delete()
         except Exception as e:
-            return await msg.reply_text(f"CRITICAL ERROR: {html.escape(str(e))}")
+            await status_msg.edit_text(f"CRITICAL ERROR: {html.escape(str(e))}")
+        return
 
-    # Existing Logic: GET
     if action == "GET" and len(context.args) > 1:
         key = context.args[1].strip()
         val = os.getenv(key)
@@ -88,7 +91,6 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML"
         )
 
-    # Existing Logic: SET
     if action == "SET" and len(context.args) > 1:
         raw = " ".join(context.args[1:]).strip()
         if "=" not in raw:
@@ -103,13 +105,16 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             os.environ[key] = val
             load_dotenv(ENV_PATH, override=True)
 
-            return await msg.reply_text(
+            res_msg = await msg.reply_text(
                 f"SUCCESS: Configuration updated.\n"
                 f"KEY: {key}\n"
                 "STATUS: Hot-reload completed.",
                 parse_mode="HTML"
             )
+            await asyncio.sleep(5)
+            await res_msg.delete()
         except Exception as e:
-            return await msg.reply_text(f"CRITICAL ERROR: {html.escape(str(e))}", parse_mode="HTML")
+            await msg.reply_text(f"CRITICAL ERROR: {html.escape(str(e))}", parse_mode="HTML")
+        return
 
     return await msg.reply_text("ERROR: Unknown action protocol.", parse_mode="HTML")

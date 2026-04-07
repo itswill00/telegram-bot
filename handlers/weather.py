@@ -16,7 +16,8 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await msg.reply_text("USAGE: /weather <location>", parse_mode="HTML")
 
     city = " ".join(context.args).strip()
-    status_msg = await msg.reply_text(f"QUERY: Fetching meteorological data for {city.upper()}...", parse_mode="HTML")
+    # Initial minimalist status
+    status_msg = await msg.reply_text(f"QUERY: Fetching data for {city.upper()}...", parse_mode="HTML")
 
     session = await get_http_session()
     url = f"https://wttr.in/{city}?format=j1"
@@ -25,10 +26,14 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
             if resp.status != 200:
-                return await status_msg.edit_text("ERROR: Remote server unreachable.")
+                await status_msg.edit_text("ERROR: Remote server unreachable.")
+                await asyncio.sleep(5)
+                return await status_msg.delete()
             data = await resp.json()
     except Exception:
-        return await status_msg.edit_text("ERROR: Connection timeout.")
+        await status_msg.edit_text("ERROR: Connection timeout.")
+        await asyncio.sleep(5)
+        return await status_msg.delete()
 
     try:
         current = data.get("current_condition", [{}])[0]
@@ -50,4 +55,6 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"CLOUD COVER : {cloud}%\n\n"
         f"TIMESTAMP : {time.strftime('%Y-%m-%d %H:%M:%S')}"
     )
+    
+    # Overwrite status with final report
     await status_msg.edit_text(report, parse_mode="HTML")
