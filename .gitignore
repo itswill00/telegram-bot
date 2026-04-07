@@ -1,0 +1,9 @@
+# Python virtual environment
+venv/
+.env/
+.env
+data/
+*.zip
+__pycache__/
+*.pyc
+*.sqlite3
