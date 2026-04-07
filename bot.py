@@ -11,8 +11,9 @@ from handlers.commands import register_commands
 from handlers.callbacks import register_callbacks
 from handlers.messages import register_messages
 from utils.startup import startup_tasks
-from utils.config import BOT_TOKEN
+from utils.config import BOT_TOKEN, LOG_CHAT_ID
 from utils.backup import backup_database
+from database.system_db import get_setting, init_system_db
 
 BOT_USERNAME = None
 
@@ -133,8 +134,15 @@ async def post_init(app):
     except Exception as e:
         log.warning(f"Failed to cache bot commands: {e}")
 
-    # Auto backup every 12 hours
-    if app.job_queue:
+    # Initialize System Settings
+    try:
+        init_system_db()
+        log.info("✓ System settings database initialized")
+    except Exception as e:
+        log.warning(f"Failed to initialize system settings: {e}")
+
+    # Auto backup based on setting
+    if app.job_queue and get_setting("auto_backup", "ON") == "ON":
         app.job_queue.run_repeating(
             backup_database, 
             interval=60 * 60 * 12, # 12 hours
@@ -142,6 +150,8 @@ async def post_init(app):
             name="auto_backup"
         )
         log.info("✓ Auto backup job scheduled (12h)")
+    else:
+        log.info("✓ Auto backup job is disabled (OFF)")
 
     await startup_tasks(app)
     log.info("✓ Startup tasks executed")

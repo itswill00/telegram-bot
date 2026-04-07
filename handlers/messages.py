@@ -9,11 +9,38 @@ from handlers.welcome import welcome_handler
 from utils.user_collector import user_collector
 from handlers.groq import groq_query, _GROQ_ACTIVE_USERS
 from handlers.gemini import ai_cmd, _AI_ACTIVE_USERS
+from database.system_db import get_setting
+from utils.config import OWNER_ID
+
+async def maintenance_filter(update, context):
+    user = update.effective_user
+    if user.id in OWNER_ID:
+        return # Skip for owner
+
+    maint = get_setting("maintenance_mode", "OFF")
+    if maint == "ON":
+        await update.message.reply_text(
+            "🚧 <b>BOT UNDER MAINTENANCE</b>\n\n"
+            "We are currently performing system updates. Please check back later.",
+            parse_mode="HTML"
+        )
+        # We don't return anything to stop further handlers from executing if needed
+        # but in PTB, we need to handle this in groups or stop the event.
+        return True
+    return False
 
 async def ai_reply_router(update, context):
     msg = update.message
     if not msg or not msg.reply_to_message:
         return
+
+    # Check Maintenance
+    if await maintenance_filter(update, context):
+        return
+
+    # Check AI Global Toggle
+    if get_setting("ai_global", "ON") == "OFF":
+        return await msg.reply_text("🤖 AI services are currently disabled by the administrator.")
 
     user_id = msg.from_user.id
     reply_mid = msg.reply_to_message.message_id
@@ -41,8 +68,20 @@ async def ai_reply_router(update, context):
         )
 
     return
-    
+
+async def global_maint_check(update, context):
+    # This is a dummy handler just to check maintenance for non-commands
+    if await maintenance_filter(update, context):
+        # We can stop propagation by not calling next or using groups
+        pass
+
 def register_messages(app):
+    # Higher group priority for maintenance check
+    app.add_handler(
+        MessageHandler(filters.ALL & ~filters.COMMAND, global_maint_check),
+        group=-2,
+    )
+
     app.add_handler(
         MessageHandler(filters.ALL, collect_chat),
         group=0,

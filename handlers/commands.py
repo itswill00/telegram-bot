@@ -48,6 +48,7 @@ from handlers.moderation import (
 from handlers.admin_panel import admin_cmd
 from handlers.owner_tools import eval_cmd, sh_cmd, ban_cmd, unban_cmd
 from handlers.owner_env import env_cmd
+from handlers.owner_sys import sys_cmd
 
 # Admin commands use '$' prefix
 ADMIN_COMMANDS = [
@@ -55,6 +56,7 @@ ADMIN_COMMANDS = [
     ("eval", eval_cmd, False),
     ("sh", sh_cmd, False),
     ("env", env_cmd, False),
+    ("sys", sys_cmd, False),
     ("banuser", ban_cmd, False),
     ("unbanuser", unban_cmd, False),
     ("cookies", cookies_cmd, False),
