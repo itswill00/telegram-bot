@@ -7,9 +7,6 @@ from handlers.dl.handlers import auto_dl_detect
 from handlers.bot_dollar import dollar_router
 from handlers.welcome import welcome_handler
 from utils.user_collector import user_collector
-from handlers.caca import meta_query
-from utils.caca_memory import get_last_message_id as meta_db_get_last_message_id
-from utils.caca_memory import has_last_message_id as meta_db_has_last_message_id
 from handlers.groq import groq_query, _GROQ_ACTIVE_USERS
 from handlers.gemini import ai_cmd, _AI_ACTIVE_USERS
 
@@ -23,10 +20,6 @@ async def ai_reply_router(update, context):
 
     if _GROQ_ACTIVE_USERS.get(user_id) == reply_mid:
         return await groq_query(update, context)
-
-    meta_mid = await meta_db_get_last_message_id(user_id)
-    if meta_mid == reply_mid:
-        return await meta_query(update, context)
 
     if _AI_ACTIVE_USERS.get(user_id) == reply_mid:
         return await ai_cmd(update, context)
@@ -44,14 +37,6 @@ async def ai_reply_router(update, context):
             "😒 Lu siapa?\n"
             "Gue belum ngobrol sama lu.\n"
             "Ketik /ask dulu.",
-            parse_mode="HTML"
-        )
-
-    if await meta_db_has_last_message_id(reply_mid):
-        return await msg.reply_text(
-            "😒 Lu siapa?\n"
-            "Gue belum ngobrol sama lu.\n"
-            "Ketik /caca dulu.",
             parse_mode="HTML"
         )
 
@@ -97,4 +82,3 @@ def register_messages(app):
         MessageHandler(filters.REPLY & filters.TEXT & ~filters.COMMAND, ai_reply_router),
         group=-1
     )
-    

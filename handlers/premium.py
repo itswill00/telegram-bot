@@ -5,8 +5,6 @@ from telegram.ext import ContextTypes
 
 from utils.config import OWNER_ID
 from database import premium_service
-from database import caca_db
-from utils import caca_memory
 
 
 def extract_user_id_from_args(args: list[str]) -> int | None:
@@ -95,9 +93,6 @@ async def premium_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
         premium_service.remove(uid)
-        caca_db.remove_mode(uid)
-        await caca_memory.clear(uid)
-        await caca_memory.clear_last_message_id(uid)
         return await msg.reply_text(
             f"<b>Premium removed</b>: <code>{uid}</code>",
             parse_mode="HTML"

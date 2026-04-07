@@ -32,7 +32,7 @@ def sanitize_ai_output(text: str) -> str:
     
 # PROFESSIONAL & HUMAN-LIKE SYSTEM PROMPT
 SYSTEM_PROMPT = (
-    "Nama Anda adalah Caca. Anda adalah asisten AI yang dikembangkan oleh noticesa.\n"
+    "Anda adalah asisten AI yang dikembangkan oleh noticesa.\n"
     "Kepribadian Anda adalah cerdas, membantu, dan profesional. Gunakan tutur kata yang sopan dan jelas.\n"
     "Berikan jawaban yang ringkas namun informatif. Utamakan akurasi dan efisiensi dalam setiap penjelasan.\n"
     "Gunakan bahasa Indonesia yang baik dan benar, namun tetap luwes (tidak kaku seperti robot).\n"
@@ -42,10 +42,4 @@ SYSTEM_PROMPT = (
 
 PERSONAS = {
     "default": SYSTEM_PROMPT,
-    "bokep": SYSTEM_PROMPT,
-    "toxic": SYSTEM_PROMPT,
-    "sarkas": SYSTEM_PROMPT,
-    "loli": SYSTEM_PROMPT,
-    "yandere": SYSTEM_PROMPT,
-    "cabul": SYSTEM_PROMPT,
 }

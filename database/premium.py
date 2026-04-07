@@ -2,11 +2,11 @@ import os
 import time
 import sqlite3
 
-CACA_DB_PATH = "data/caca.sqlite3"
+PREMIUM_DB_PATH = "data/premium.sqlite3"
 
 def _db():
     os.makedirs("data", exist_ok=True)
-    con = sqlite3.connect(CACA_DB_PATH)
+    con = sqlite3.connect(PREMIUM_DB_PATH)
     con.execute("PRAGMA journal_mode=WAL;")
     con.execute("PRAGMA synchronous=NORMAL;")
     return con
