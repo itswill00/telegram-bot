@@ -118,10 +118,8 @@ async def post_init(app):
             ("dl", "Download video"),
             ("ask", "Ask Gemini AI"),
             ("music", "Search music"),
-            ("caca", "Chat sama caca 😍"),
             ("groq", "Ask Groq AI"),
             ("gsearch", "Google search"),
-            ("asupan", "Asupan 😋"),
             ("tr", "Translate text"),
         ])
         log.info("✓ Bot commands set")

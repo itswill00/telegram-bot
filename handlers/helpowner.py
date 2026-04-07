@@ -2,7 +2,6 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.ext import ContextTypes
 
 from utils.config import OWNER_ID
-from utils.text import bold, code, italic, underline, link, mono
 
 
 def helpowner_keyboard():
@@ -26,19 +25,16 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• <code>/update</code> — Update system Bot.\n"
         "• <code>/speedtest</code> — Run server speed test.\n"
         "• <code>/broadcast</code> — Announcement.\n"
-        "• <code>/autodel</code> — Manage auto delete asupan settings.\n"
         "• <code>/wlc</code> — Configure welcome message.\n"
         "• <code>/restart</code> — Restart the bot.\n\n"
 
         "<b>Access & Billing</b>\n"
         "• <code>/cookies</code> — Update cookies via Telegram.\n"
         "• <code>/premium</code> — Manage premium users.\n\n"
-
-        "<b>Asupan Management</b>\n"
-        "• <code>/asupann</code> — Manage asupan.\n\n"
-
-        "<b>Caca Settings</b>\n"
-        "• <code>/cacaa</code> — enable/disable/list/status.\n"
+        "<b>Moderation Tools</b>\n"
+        "• <code>/ban</code> — Ban a user.\n"
+        "• <code>/unban</code> — Unban a user.\n"
+        "• <code>/sudolist</code> — List sudo users.\n"
     )
 
     await msg.reply_text(
@@ -58,4 +54,3 @@ async def helpowner_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
         await q.message.delete()
     except Exception:
         pass
-

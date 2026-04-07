@@ -30,15 +30,7 @@ def help_main_keyboard(user_id: int):
 def help_settings_keyboard(user_id: int):
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Asupan", callback_data=_help_cb(user_id, "asupan")),
-            InlineKeyboardButton("AutoDel", callback_data=_help_cb(user_id, "autodel")),
-        ],
-        [
             InlineKeyboardButton("AutoDL", callback_data=_help_cb(user_id, "autodl")),
-            InlineKeyboardButton("Caca", callback_data=_help_cb(user_id, "cacaa")),
-        ],
-        [
-            InlineKeyboardButton("NSFW", callback_data=_help_cb(user_id, "nsfw")),
             InlineKeyboardButton("Welcome", callback_data=_help_cb(user_id, "wlc")),
         ],
         [
@@ -74,7 +66,6 @@ HELP_TEXT = {
     "features": (
         "<b>Main Features</b>\n\n"
         "• <code>/dl</code> — Download videos from supported platforms\n"
-        "• <code>/asupan</code> — Random TikTok content\n"
         "• <code>/weather</code> — Get weather information\n"
         "• <code>/music</code> — Search music\n"
         "• <code>/gsearch</code> — Search on Google\n"
@@ -93,7 +84,6 @@ HELP_TEXT = {
         "• <code>/ai</code> — Chat with Gemini AI\n"
         "• <code>/ask</code> — Chat with ChatGPT\n"
         "• <code>/groq</code> — Chat with Groq\n"
-        "• <code>/caca</code> — Caca Chat Bot\n"
     ),
 
     "utils": (
@@ -127,40 +117,11 @@ HELP_TEXT = {
         "Select a menu below to see detailed options for each feature."
     ),
 
-    "asupan": (
-        "<b>Asupan Settings</b>\n\n"
-        "• <code>/asupann enable</code> — Enable asupan in the group\n"
-        "• <code>/asupann disable</code> — Disable asupan in the group\n"
-        "• <code>/asupann status</code> — Check asupan status\n\n"
-    ),
-
-    "autodel": (
-        "<b>Auto Delete Asupan</b>\n\n"
-        "• <code>/autodel enable</code> — Enable auto-delete for asupan\n"
-        "• <code>/autodel disable</code> — Disable auto-delete for asupan\n"
-        "• <code>/autodel status</code> — Check auto-delete status\n\n"
-    ),
-
     "autodl": (
         "<b>Auto Download Link</b>\n\n"
         "• <code>/autodl enable</code> — Enable automatic link detection\n"
         "• <code>/autodl disable</code> — Disable automatic link detection\n"
         "• <code>/autodl status</code> — Check auto-detect status\n\n"
-    ),
-
-    "cacaa": (
-        "<b>Caca Settings</b>\n\n"
-        "• <code>/mode</code> — Change Caca persona (Premium Only)\n"
-        "• <code>/cacaa enable</code> — Enable Caca in the group\n"
-        "• <code>/cacaa disable</code> — Disable Caca in the group\n"
-        "• <code>/cacaa status</code> — Check Caca status\n\n"
-    ),
-
-    "nsfw": (
-        "<b>NSFW Settings</b>\n\n"
-        "• <code>/nsfw enable</code> — Enable NSFW in the group\n"
-        "• <code>/nsfw disable</code> — Disable NSFW in the group\n"
-        "• <code>/nsfw status</code> — Check NSFW status\n\n"
     ),
 
     "wlc": (
@@ -246,7 +207,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = HELP_TEXT.get(action)
     if text:
-        if action in ("asupan", "autodel", "autodl", "cacaa", "nsfw", "wlc"):
+        if action in ("autodl", "wlc"):
             kb = help_settings_back_keyboard(owner_id)
         else:
             kb = help_back_keyboard(owner_id)
@@ -256,4 +217,3 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=kb,
             parse_mode="HTML"
         )
-

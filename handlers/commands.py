@@ -1,6 +1,5 @@
 from telegram.ext import CommandHandler, PrefixHandler
 
-from handlers.nsfw import nsfw_cmd
 from handlers.networking import whoisdomain_cmd, ip_cmd, domain_cmd
 from handlers.broadcast import broadcast_cmd
 from handlers.start import start_cmd
@@ -34,12 +33,6 @@ from handlers.kang import kang_cmd
 from handlers.setting import setting_cmd
 from handlers.dl.instagram_scrape import ig_cmd
 
-from handlers.caca import (
-    meta_query,
-    cacaa_cmd,
-    mode_cmd,
-)
-
 from handlers.moderation import (
     moderation_cmd, 
     ban_cmd, 
@@ -50,12 +43,6 @@ from handlers.moderation import (
     addsudo_cmd,
     rmsudo_cmd,
     sudolist_cmd,
-)
-    
-from handlers.asupan import (
-    asupan_cmd,
-    asupann_cmd,
-    autodel_cmd,
 )
 
 from handlers.admin_panel import admin_cmd
@@ -99,14 +86,10 @@ COMMAND_HANDLERS = [
     ("music", music_cmd, False),
     ("autodl", autodl_cmd, False),
     ("waifu", waifu_cmd, False),
-    ("caca", meta_query, False),
-    ("cacaa", cacaa_cmd, False),
-    ("mode", mode_cmd, False),
     ("premium", premium_cmd, False),
     ("quiz", quiz_cmd, False),
     ("ship", ship_cmd, True),
     ("reminder", reminder_cmd, False),
-    ("autodel", autodel_cmd, True),
     ("help", help_cmd, True),
     ("menu", help_cmd, True),
     ("ping", ping_cmd, True),
@@ -123,9 +106,6 @@ COMMAND_HANDLERS = [
     ("speedtest", speedtest_cmd, False),
     ("gsearch", gsearch_cmd, False),
     ("dl", dl_cmd, False),
-    ("asupan", asupan_cmd, False),
-    ("asupann", asupann_cmd, False),
-    ("nsfw", nsfw_cmd, False),
 ]
 
 def register_commands(app):
@@ -142,4 +122,3 @@ def register_commands(app):
             CommandHandler(name, handler, block=blocking),
             group=-1
         )
-        

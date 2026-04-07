@@ -3,54 +3,14 @@ from telegram.ext import ContextTypes
 import aiohttp
 import time
 import os
-import sqlite3
 
 from utils.http import get_http_session
-
-NSFW_DB = "data/nsfw.sqlite3"
 
 _WAIFU_LAST_TAG = {}
 _WAIFU_HISTORY = {}
 _WAIFU_TS = {}
 
 EXPIRE_SEC = 30 * 60
-
-
-def _nsfw_db_init():
-    os.makedirs("data", exist_ok=True)
-    con = sqlite3.connect(NSFW_DB)
-    try:
-        con.execute("PRAGMA journal_mode=WAL;")
-        con.execute("PRAGMA synchronous=NORMAL;")
-        con.execute(
-            """
-            CREATE TABLE IF NOT EXISTS nsfw_groups (
-                chat_id INTEGER PRIMARY KEY,
-                enabled INTEGER NOT NULL DEFAULT 1,
-                updated_at REAL NOT NULL
-            )
-            """
-        )
-        con.commit()
-    finally:
-        con.close()
-
-
-def _is_nsfw_enabled(chat_id: int, chat_type: str) -> bool:
-    if chat_type == "private":
-        return True
-
-    _nsfw_db_init()
-    con = sqlite3.connect(NSFW_DB)
-    try:
-        cur = con.execute(
-            "SELECT enabled FROM nsfw_groups WHERE chat_id=?",
-            (int(chat_id),),
-        )
-        row = cur.fetchone()
-        return bool(row and int(row[0]) == 1)
-    finally:
-        con.close()
 
 
 def _state_key(chat_id: int, user_id: int):
@@ -121,16 +81,16 @@ def _parse_cb(data: str):
 
 async def _fetch_waifu(tag: str | None):
     params = {
-        "IsNsfw": "All",
-        "Gif": "False"
+        "is_nsfw": "false",
+        "gif": "false"
     }
 
     if tag:
-        params["IncludedTags"] = tag
+        params["included_tags"] = tag
 
     session = await get_http_session()
     async with session.get(
-        "https://api.waifu.im/images",
+        "https://api.waifu.im/search",
         params=params,
         timeout=aiohttp.ClientTimeout(total=15)
     ) as resp:
@@ -138,7 +98,7 @@ async def _fetch_waifu(tag: str | None):
             return None, resp.status
         data = await resp.json()
 
-    images = data.get("items")
+    images = data.get("images")
     if not images:
         return None, 200
 
@@ -151,9 +111,6 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if not msg or not chat or not user:
         return
-
-    if not _is_nsfw_enabled(chat.id, chat.type):
-        return await msg.reply_text("❌ NSFW tidak diaktifkan di grup ini.")
 
     if not context.args:
         keyboard = InlineKeyboardMarkup([
@@ -214,7 +171,7 @@ async def waifu_next_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.answer()
 
     if user.id != owner_id:
-        return await q.answer("Bukan punya lu goblok.", show_alert=True)
+        return await q.answer("Bukan punya lu.", show_alert=True)
 
     key = _state_key(chat_id, owner_id)
     _cleanup(key)
@@ -254,7 +211,7 @@ async def waifu_pref_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.answer()
 
     if user.id != owner_id:
-        return await q.answer("Bukan punya lu goblok.", show_alert=True)
+        return await q.answer("Bukan punya lu.", show_alert=True)
 
     key = _state_key(chat_id, owner_id)
     img = _pop(key)
@@ -272,9 +229,3 @@ async def waifu_pref_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=_build_kb(chat_id, owner_id, img)
     )
     await q.answer()
-
-
-try:
-    _nsfw_db_init()
-except Exception:
-    pass
