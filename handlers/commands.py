@@ -50,6 +50,7 @@ from handlers.owner_tools import eval_cmd, sh_cmd, ban_cmd, unban_cmd
 from handlers.owner_env import env_cmd
 from handlers.owner_sys import sys_cmd
 from handlers.owner_help import owner_help_cmd
+from handlers.owner_backup import direct_backup_cmd
 
 # Admin commands use '$' prefix
 ADMIN_COMMANDS = [
@@ -58,6 +59,7 @@ ADMIN_COMMANDS = [
     ("sh", sh_cmd, False),
     ("env", env_cmd, False),
     ("sys", sys_cmd, False),
+    ("backup", direct_backup_cmd, False),
     ("help", owner_help_cmd, False),
     ("banuser", ban_cmd, False),
     ("unbanuser", unban_cmd, False),
