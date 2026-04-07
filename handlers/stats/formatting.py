@@ -48,32 +48,23 @@ def build_fallback_text(stats):
     sysi = stats["sys"]
     runtime = stats["runtime"]
 
-    lines = []
-    lines.append("System Stats")
-    lines.append("")
-    lines.append(f"Host: {sysi['hostname']}")
-    lines.append(f"OS: {sysi['os']}")
-    lines.append(f"Kernel: {sysi['kernel']}")
-    lines.append(f"Python: {sysi['python']}")
-    lines.append(f"Uptime: {sysi['uptime']}")
-    lines.append("")
-    lines.append(f"CPU: {cpu['load']:.1f}% | Cores: {cpu['cores']} | Freq: {cpu['freq']}")
-    lines.append(f"RAM: {humanize_bytes(ram['used'])}/{humanize_bytes(ram['total'])} ({ram['pct']:.1f}%)")
-    if swap["total"]:
-        lines.append(f"SWAP: {humanize_bytes(swap['used'])}/{humanize_bytes(swap['total'])} ({swap['pct']:.1f}%)")
-    else:
-        lines.append("SWAP: N/A")
-    lines.append(f"DISK(/): {humanize_bytes(disk['used'])}/{humanize_bytes(disk['total'])} (used {disk['pct']:.1f}%)")
-    lines.append(f"DISK FREE: {humanize_bytes(disk['free'])}")
-    lines.append(f"NET: RX {humanize_bytes(net['rx'])} | TX {humanize_bytes(net['tx'])}")
-    lines.append("")
-    lines.append(f"yt-dlp: {runtime['ytdlp']}")
-    lines.append(f"Node: {runtime['node']}")
-    lines.append(f"Deno: {runtime['deno']}")
-    lines.append(f"PTB: {runtime['ptb']}")
-    lines.append(f"aiohttp: {runtime['aiohttp']}")
-    lines.append(f"requests: {runtime['requests']}")
-    lines.append(f"Pillow: {runtime['pillow']}")
-    lines.append(f"psutil: {runtime['psutil']}")
-    lines.append(f"aiofiles: {runtime['aiofiles']}")
-    return "\n".join(lines)
+    swap_str = f"{humanize_bytes(swap['used'])}/{humanize_bytes(swap['total'])} ({swap['pct']:.1f}%)" if swap["total"] else "N/A"
+
+    return (
+        f"📊 <b>Struktur Perangkat Server</b>\n"
+        f"<code>────────────────────────</code>\n"
+        f"🖥 <b>Sistem Operasi</b>\n"
+        f"• Host: <code>{sysi['hostname']}</code>\n"
+        f"• OS/Kernel: <code>{sysi['os']} | {sysi['kernel']}</code>\n"
+        f"• Uptime: <code>{sysi['uptime']}</code>\n\n"
+        f"⚙️ <b>Performa Perangkat Keras</b>\n"
+        f"• Prosesor: <code>{cpu['load']:.1f}%</code> (<code>{cpu['cores']} Core</code> | <code>{cpu['freq']}</code>)\n"
+        f"• Memori RAM: <code>{humanize_bytes(ram['used'])} / {humanize_bytes(ram['total'])}</code> (<code>{ram['pct']:.1f}%</code>)\n"
+        f"• Memori SWAP: <code>{swap_str}</code>\n"
+        f"• Ruang DISK (/): <code>{humanize_bytes(disk['used'])} / {humanize_bytes(disk['total'])}</code> <i>(Sisa: {humanize_bytes(disk['free'])})</i>\n"
+        f"• Jaringan I/O: Tunda RX <code>{humanize_bytes(net['rx'])}</code> | TX <code>{humanize_bytes(net['tx'])}</code>\n\n"
+        f"🛠 <b>Lingkungan Pustaka (Runtime)</b>\n"
+        f"• Python: <code>{sysi['python']}</code> | Node: <code>{runtime['node']}</code>\n"
+        f"• yt-dlp: <code>{runtime['ytdlp']}</code> | PTB: <code>{runtime['ptb']}</code>\n"
+        f"• aiohttp: <code>{runtime['aiohttp']}</code>"
+    )

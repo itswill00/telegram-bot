@@ -13,11 +13,10 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        return await msg.reply_text("USAGE: /weather <location>", parse_mode="HTML")
+        return await msg.reply_text("ℹ️ <b>Panduan:</b> <code>/weather [lokasi]</code>", parse_mode="HTML")
 
     city = " ".join(context.args).strip()
-    # Initial minimalist status
-    status_msg = await msg.reply_text(f"QUERY: Fetching data for {city.upper()}...", parse_mode="HTML")
+    status_msg = await msg.reply_text(f"⛅️ <i>Mengumpulkan data cuaca untuk {city.title()}...</i>", parse_mode="HTML")
 
     session = await get_http_session()
     url = f"https://wttr.in/{city}?format=j1"
@@ -26,12 +25,12 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
             if resp.status != 200:
-                await status_msg.edit_text("ERROR: Remote server unreachable.")
+                await status_msg.edit_text("❌ <b>Error:</b> Server data cuaca tidak dapat dihubungi.", parse_mode="HTML")
                 await asyncio.sleep(5)
                 return await status_msg.delete()
             data = await resp.json()
     except Exception:
-        await status_msg.edit_text("ERROR: Connection timeout.")
+        await status_msg.edit_text("❌ <b>Error:</b> Koneksi terputus.", parse_mode="HTML")
         await asyncio.sleep(5)
         return await status_msg.delete()
 
@@ -44,17 +43,17 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         wind = f"{current.get('windspeedKmph','N/A')} km/h"
         cloud = current.get("cloudcover", "N/A")
     except Exception:
-        return await status_msg.edit_text("ERROR: Data parsing failure.")
+        return await status_msg.edit_text("❌ <b>Error:</b> Kegagalan membaca data struktur.", parse_mode="HTML")
 
     report = (
-        f"<b>METEOROLOGICAL REPORT: {city.upper()}</b>\n\n"
-        f"CONDITION : {weather_desc}\n"
-        f"TEMPERATURE : {temp_c} C (FEELS: {feels} C)\n"
-        f"HUMIDITY : {humidity}%\n"
-        f"WIND SPEED : {wind}\n"
-        f"CLOUD COVER : {cloud}%\n\n"
-        f"TIMESTAMP : {time.strftime('%Y-%m-%d %H:%M:%S')}"
+        f"⛅️ <b>Pemantauan Cuaca — {city.title()}</b>\n"
+        f"<code>────────────────────────</code>\n"
+        f"• <b>Kondisi:</b> <code>{weather_desc}</code>\n"
+        f"• <b>Temperatur:</b> <code>{temp_c}°C</code> <i>(Terasa: {feels}°C)</i>\n"
+        f"• <b>Kelembaban:</b> <code>{humidity}%</code>\n"
+        f"• <b>Angin:</b> <code>{wind}</code>\n"
+        f"• <b>Awan:</b> <code>{cloud}%</code>\n\n"
+        f"⏳ <i>Pembaruan: {time.strftime('%Y-%m-%d %H:%M:%S')}</i>"
     )
     
-    # Overwrite status with final report
     await status_msg.edit_text(report, parse_mode="HTML")
