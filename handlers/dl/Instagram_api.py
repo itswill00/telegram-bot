@@ -255,7 +255,7 @@ async def instagram_api_download(
         }
 
     except Exception as e:
-        print("[INSTAGRAM SONZAI FAILED]", repr(e))
+        print("Instagram Sonzai Failed", repr(e))
 
     try:
         await bot.edit_message_text(

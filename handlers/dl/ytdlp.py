@@ -161,7 +161,7 @@ async def gallerydl_fallback(
                 parse_mode="HTML",
             )
         except Exception as e:
-            print("[TG EDIT ERROR]", e)
+            print("Tg Edit Error", e)
 
         cmd = [GALLERY_DL]
 
@@ -302,7 +302,7 @@ async def ytdlp_download(
     async def run(cmd):
         nonlocal update_interval
 
-        print("\n[YTDLP CMD]")
+        print("\nYtdlp Cmd")
         print(" ".join(cmd))
 
         proc = await asyncio.create_subprocess_exec(
@@ -318,7 +318,7 @@ async def ytdlp_download(
                 break
 
             raw = line.decode(errors="ignore").strip()
-            print("[YTDLP STDOUT]", raw)
+            print("Ytdlp Stdout", raw)
 
             if "|" not in raw:
                 continue
@@ -345,21 +345,21 @@ async def ytdlp_download(
                         parse_mode="HTML",
                     )
                 except Exception as e:
-                    print("[TG EDIT ERROR]", e)
+                    print("Tg Edit Error", e)
 
                 last_edit = now
 
         stdout, stderr = await proc.communicate()
 
         if stdout:
-            print("\n[YTDLP STDOUT REMAIN]")
+            print("\nYtdlp Stdout Remain")
             print(stdout.decode(errors="ignore"))
 
         if stderr:
-            print("\n[YTDLP STDERR]")
+            print("\nYtdlp Stderr")
             print(stderr.decode(errors="ignore"))
 
-        print("[YTDLP EXIT CODE]", proc.returncode)
+        print("Ytdlp Exit Code", proc.returncode)
         return proc.returncode
 
     start_ts = __import__("time").time()
@@ -439,7 +439,7 @@ async def ytdlp_download(
                             "title": _extract_title_from_path(picked, job_id),
                         }
             
-                print("[YTDLP] video failed → trying gallery-dl fallback")
+                print("Ytdlp video failed → trying gallery-dl fallback")
             
                 fallback = await gallerydl_fallback(
                     url=url,
@@ -482,7 +482,7 @@ async def ytdlp_download(
         key=lambda p: (media_priority(p), -os.path.getmtime(p)),
     )
 
-    print("[YTDLP OUTPUT FILES]", files)
+    print("Ytdlp Output Files", files)
     if not files:
         return None
 

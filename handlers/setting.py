@@ -47,7 +47,6 @@ def _settings_text(user_id: int) -> str:
     s = get_user_settings(user_id)
     return (
         f"<b>USER CONFIGURATION MATRIX</b>\n"
-        f"<code>────────────────────────────────────────</code>\n"
         f"• AutoDL [Group Engine] : <code>{_fmt_bool(s['force_autodl'])}</code>\n"
         f"• Default DL Format     : <code>{_fmt_autodl_format(s['autodl_format'])}</code>\n"
         f"• Video Resolution      : <code>{_fmt_res(s['youtube_resolution'])}</code>\n"

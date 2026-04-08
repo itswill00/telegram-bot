@@ -26,12 +26,11 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 data = await r.json()
 
-            lines = ["<b>[ VALID CURRENCIES INDEX ]</b>\n<code>──────────────────────────</code>\n"]
             for code, name in sorted(data.items()):
                 lines.append(f"• <b>{code}</b> — {name}")
 
             lines.append(
-                "\n<code>[DATA SOURCE]</code>\n"
+                "\n<code>Data Source</code>\n"
                 f"• <a href=\"{ECB_SOURCE_URL}\">European Central Bank</a>"
             )
 
@@ -46,8 +45,7 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if len(args) < 2:
         return await msg.reply_text(
-            "<b>[ FINANCIAL EXCHANGE ENGINE ]</b>\n"
-            "<code>─────────────────────────────</code>\n"
+            "<b>Financial Exchange Engine </b>\n"
             "Syntax:\n"
             "• <code>/kurs [amount] FROM TO</code>\n\n"
             "Examples:\n"
@@ -92,8 +90,7 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return await msg.reply_text("Invalid currency code.")
 
         await msg.reply_text(
-            "<b>[ FOREX CONVERSION REPORT ]</b>\n"
-            "<code>─────────────────────────────</code>\n"
+            "<b>Forex Conversion Report </b>\n"
             f"• Source   : <code>{amount:g} {from_cur}</code>\n"
             f"• Target   : <code>{rate:,.2f} {to_cur}</code>\n\n"
             f"• Date     : <code>{date}</code>\n"

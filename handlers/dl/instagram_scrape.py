@@ -54,7 +54,7 @@ async def igdl_download_for_fallback(bot, chat_id: int, reply_to: int, status_ms
             downloaded.append(await _download_remote_media(media_url, source=source))
         except Exception as e:
             failed_count += 1
-            print("[IG SCRAPER DOWNLOAD ERROR]", media_url, repr(e))
+            print("Ig Scraper Download Error", media_url, repr(e))
             continue
 
     if not downloaded:
@@ -609,7 +609,7 @@ async def ig_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 downloaded.append(await _download_remote_media(media_url, source=source))
             except Exception as e:
                 failed_count += 1
-                print("[IG SCRAPER DOWNLOAD ERROR]", media_url, repr(e))
+                print("Ig Scraper Download Error", media_url, repr(e))
                 continue
 
         if not downloaded:

@@ -60,13 +60,11 @@ def help_settings_back_keyboard(user_id: int):
 HELP_TEXT = {
     "menu": (
         "<b>SYSTEM DOCUMENTATION</b>\n"
-        "<code>────────────────────────────────────────</code>\n"
         "<i>Select a module below to view detailed specifications.</i>"
     ),
 
     "features": (
-        "<b>[ SYSTEM FEATURES ]</b>\n"
-        "<code>──────────────────────</code>\n"
+        "<b>System Features </b>\n"
         "• <code>/dl</code>        : Remote media download engine\n"
         "• <code>/weather</code>   : Meteorological data query\n"
         "• <code>/music</code>     : Audio repository search\n"
@@ -82,15 +80,13 @@ HELP_TEXT = {
     ),
 
     "ai": (
-        "<b>[ AI ENGINES ]</b>\n"
-        "<code>──────────────────────</code>\n"
+        "<b>Ai Engines </b>\n"
         "• <code>/ask</code>  : Google Gemini 2.0 Flash engine\n"
         "• <code>/groq</code> : Groq Llama-3 technical engine\n"
     ),
 
     "utils": (
-        "<b>[ SYSTEM UTILITIES ]</b>\n"
-        "<code>──────────────────────</code>\n"
+        "<b>System Utilities </b>\n"
         "• <code>/ping</code>        : Latency measurement\n"
         "• <code>/stats</code>       : Resource metrics\n"
         "• <code>/ip</code>          : IP metadata lookup\n"
@@ -99,8 +95,7 @@ HELP_TEXT = {
     ),
 
     "privacy": (
-        "<b>[ PRIVACY PROTOCOL ]</b>\n"
-        "<code>──────────────────────</code>\n"
+        "<b>Privacy Protocol </b>\n"
         "• <b>Collection:</b> Commands and timestamps logged for optimization.\n"
         "• <b>Usage:</b> Solely for technical maintenance.\n"
         "• <b>Security:</b> Avoid sending sensitive credentials.\n\n"
@@ -108,22 +103,19 @@ HELP_TEXT = {
     ),
 
     "settings": (
-        "<b>[ SYSTEM CONFIGURATION ]</b>\n"
-        "<code>───────────────────────────</code>\n"
+        "<b>System Configuration </b>\n"
         "<i>Select a configuration module below.</i>"
     ),
 
     "autodl": (
-        "<b>[ AUTO DOWNLOAD PROTOCOL ]</b>\n"
-        "<code>────────────────────────────</code>\n"
+        "<b>Auto Download Protocol </b>\n"
         "• <code>/autodl enable</code>  : Activate link detection\n"
         "• <code>/autodl disable</code> : Deactivate link detection\n"
         "• <code>/autodl status</code>  : View boolean state\n"
     ),
 
     "wlc": (
-        "<b>[ WELCOME PROTOCOL ]</b>\n"
-        "<code>──────────────────────</code>\n"
+        "<b>Welcome Protocol </b>\n"
         "• <code>/wlc enable</code>  : Activate greeting routine\n"
         "• <code>/wlc disable</code> : Terminate greeting routine\n"
     ),

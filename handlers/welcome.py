@@ -127,7 +127,7 @@ async def wlc_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await msg.reply_text("<b>ERROR:</b> Hanya Admin / Owner yang dapat menyetel ini.", parse_mode="HTML")
 
     await msg.reply_text(
-        "<b>[ SECURITY & WELCOME CONTROLS ]</b>\n"
+        "<b>Security & Welcome Controls </b>\n"
         "Gunakan menu interaktif di bawah ini untuk menghidupkan Captcha/Welcome Message:",
         reply_markup=wlc_keyboard(chat.id),
         parse_mode="HTML"
@@ -185,8 +185,7 @@ async def welcome_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chatname = chat.title or "this group"
 
         caption = (
-            f"<b>[ ACCESS GRANTED ]</b>\n"
-            f"<code>────────────────────────</code>\n"
+            f"<b>Access Granted </b>\n"
             f"User Identity : <code>{fullname}</code>\n"
             f"Registry ID   : <code>{user.id}</code>\n"
             f"Sys Username  : {username}\n\n"

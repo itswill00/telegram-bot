@@ -21,7 +21,7 @@ async def is_joined_support_channel(
         return member.status in ("member", "administrator", "creator")
 
     except Exception as e:
-        log.warning(f"[JOIN CHECK ERROR] {e}")
+        log.warning(f"Join Check Error {e}")
         return False
 
 
@@ -79,6 +79,6 @@ async def require_join_or_block(
         )
 
     except Exception as e:
-        log.warning(f"[JOIN BLOCK ERROR] {e}")
+        log.warning(f"Join Block Error {e}")
 
     return False

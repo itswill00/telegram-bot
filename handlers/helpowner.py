@@ -17,9 +17,8 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = (
         "<b>SYSTEM COMMAND INDEX</b>\n"
-        "<code>────────────────────────────────────────</code>\n\n"
 
-        "<b>[ SYSTEM ]</b>  —  Prefix: <code>$</code>\n"
+        "<b>System </b>  —  Prefix: <code>$</code>\n"
         "• <code>$admin</code>     : Buka panel admin\n"
         "• <code>$stats</code>     : Tampilkan metrik server\n"
         "• <code>$sh</code> / <code>eval</code> : Eksekusi shell / python\n"
@@ -30,7 +29,7 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• <code>$backup</code>    : Generate arsip ZIP\n"
         "• <code>$restore</code>   : Restore DB via ZIP\n\n"
 
-        "<b>[ MODERATION ]</b>  —  Prefix: <code>$</code>\n"
+        "<b>Moderation </b>  —  Prefix: <code>$</code>\n"
         "• <code>$ban</code>       : Ban dari grup\n"
         "• <code>$unban</code>     : Cabut ban grup\n"
         "• <code>$mute</code>      : Restriksi chat\n"
@@ -41,7 +40,7 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• <code>$groups</code>    : Identifikasi daftar grup\n"
         "• <code>$broadcast</code> : Transmisi pesan massal\n\n"
 
-        "<b>[ UTILITIES ]</b>  —  Prefix: <code>/</code>\n"
+        "<b>Utilities </b>  —  Prefix: <code>/</code>\n"
         "• <code>/wlc</code>       : Konfigurasi welcome menu\n"
         "• <code>/autodl</code>    : Konfigurasi auto-download\n"
         "• <code>/ask</code>       : Query AI text\n"

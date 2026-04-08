@@ -14,7 +14,6 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     name = (user.first_name or "").strip() or "Anonymous"
     text = (
         f"<b>SYSTEM DAEMON ONLINE</b>\n"
-        f"<code>────────────────────────────────────────</code>\n"
         f"• USER IDENTITY : <code>{name}</code>\n"
         f"• REGISTRY ID   : <code>{user.id}</code>\n"
         f"• STATUS        : <code>ACTIVE</code>\n\n"

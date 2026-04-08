@@ -72,7 +72,7 @@ async def update_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "<b>Update successful!</b>\n\n"
 
     if changelog:
-        text += "<b>[ CHANGELOG ]</b>\n"
+        text += "<b>Changelog </b>\n"
         text += changelog + "\n\n"
     else:
         text += "<i>No changelog detected.</i>\n\n"

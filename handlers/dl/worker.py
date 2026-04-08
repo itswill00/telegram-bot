@@ -273,7 +273,7 @@ async def download_non_tiktok(
                 status_msg_id=status_msg_id,
             )
         except Exception as e:
-            print("[INSTAGRAM API FALLBACK TO YTDLP]", e)
+            print("Instagram Api Fallback To Ytdlp", e)
 
     if is_youtube_url(raw_url):
         try:

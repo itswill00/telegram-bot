@@ -42,7 +42,7 @@ def _pop(key):
 
 
 def _build_caption(img, tag):
-    cap = "<b>[ ANIME METADATA ]</b>\n"
+    cap = "<b>Anime Metadata </b>\n"
     if tag:
         cap += f"• Tag    : <code>{tag}</code>\n"
     artist = img.get("artist") or {}
@@ -54,11 +54,11 @@ def _build_caption(img, tag):
 def _build_kb(chat_id: int, user_id: int, img):
     prefix = f"waifu:{int(chat_id)}:{int(user_id)}"
     rows = [[
-        InlineKeyboardButton("[ PREV ]", callback_data=f"{prefix}:pref"),
-        InlineKeyboardButton("[ NEXT ]", callback_data=f"{prefix}:next")
+        InlineKeyboardButton("Prev ", callback_data=f"{prefix}:pref"),
+        InlineKeyboardButton("Next ", callback_data=f"{prefix}:next")
     ]]
     if img.get("source"):
-        rows.append([InlineKeyboardButton("[ SOURCE ]", url=img["source"])])
+        rows.append([InlineKeyboardButton("Source ", url=img["source"])])
     return InlineKeyboardMarkup(rows)
 
 
@@ -116,15 +116,14 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = InlineKeyboardMarkup([
             [
                 InlineKeyboardButton(
-                    "[ TAG METADATA INDEX ]",
+                    "Tag Metadata Index ",
                     url="https://www.waifu.im/tags"
                 )
             ]
         ])
 
         return await msg.reply_text(
-            "<b>[ ANIME GENERATOR MODULE ]</b>\n"
-            "<code>────────────────────────</code>\n"
+            "<b>Anime Generator Module </b>\n"
             "• <code>/waifu random</code>\n"
             "• <code>/waifu maid</code>\n"
             "• <code>/waifu raiden-shogun</code>\n\n"
@@ -143,9 +142,9 @@ async def waifu_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     img, status = await _fetch_waifu(tag)
     if status != 200:
-        return await msg.reply_text(f"<b>[ API ERROR ]</b> Status Code: {status}")
+        return await msg.reply_text(f"<b>Api Error </b> Status Code: {status}")
     if not img:
-        return await msg.reply_text("<b>[ NOT FOUND ]</b> Asset not available.")
+        return await msg.reply_text("<b>Not Found </b> Asset not available.")
 
     _push(key, img)
 

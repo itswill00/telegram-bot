@@ -144,7 +144,7 @@ async def get_resolutions(url: str) -> list[dict]:
             if res:
                 return res
         except Exception as e:
-            print("[SONZAI YOUTUBE RESOLUTION FAILED]", e)
+            print("Sonzai Youtube Resolution Failed", e)
 
         return []
 
