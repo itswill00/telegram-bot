@@ -1,61 +1,102 @@
-# Telegram Enterprise Architecture Daemon
+# Axon (Enterprise AI Assistant)
 
-A high-performance Telegram Assistant engineered as a robust Unix control hub, dynamic code executor, wide-scale utility dispatcher, and persistent AI interface. The entire front-end has been rigorously restructured to eliminate visual gimmicks, establishing a cold, monochromatic aesthetic akin to native terminal operations.
-
-## Core Infrastructure
-
-The system runs on deep modifications of the asynchronous framework:
-- **Asynchronous SQLite Pooling:** Block-free I/O architecture. Database connectors (System Settings, User Configs, Auto-DL toggles) are proxied through an `asyncio.to_thread` executor to sustain multi-group concurrent requests without stalling the main event loop.
-- **Persistent AI Memory State:** Unlike conventional bots operating on volatile memory arrays, the LLMs leverage a dedicated SQLite ledger to house user interaction history. Utterly immune to amnesia caused by service restarts or hot-reload deployments (`$update`).
-
-## "The Stoic Unix" Interface Standarization
-
-All communicative outputs strictly adhere to a monochrome, emoji-free ANSI format, emulating the environment of a top-tier developer daemon:
-- Precision-aligned block layouts using `<code>` syntax tags.
-- Uppercase arrays for system logs (`[ DOWNLOAD PROTOCOL ]`, `[ SYSTEM CONFIGURATION ]`, etc).
-
-## AI Engine Integration
-- **`/ask`** — Anchored to Google Gemini 2.0 Flash for agile, dynamic logic and generic querying.
-- **`/groq`** — Bound to Groq LLaMA-3 infrastructure, optimized for technical code breakdown and ultra-low latency computational reasoning.
-
-## Network & Utility Workloads
-1. **Remote Downloader (AutoDL):** Seamless URL detector powered by `yt-dlp`. Interprets media sources autonomously with native support for target audio conversions and unwatermarked extractions.
-2. **Technical Utilities:** Features ultra-precise delay probing (`/ping`), IP geolocation (`/ip`), WHOIS Registry Indexing (`/whoisdomain`), and DNS extraction records (`/domain`).
-3. **Multi-layer Environment:** Provides automated localization (`/tr`), compatibility modeling (`/ship`), and real-time forex indexing (`/kurs`).
-
-## Advanced Shell Administration ($ Root Command)
-Privileged access strictly gated through environments mapped by the asynchronous `OWNER_ID` parameter:
-- **`$eval <kode>`** — Multi-line Python execution interpreter mapping runtime modules parallel to the bot's core memory. Standard libraries (`math`, `json`, `os`, `asyncio`, etc.) are persistently bound for immediate manipulation without repetitive imports.
-- **`$sh <kode>`** — PTY piped shell access routing native Linux terminal tasks (`apt`, `git`, `ls`, etc.) straight into the interactive chat window.
-- **`$update` / `$hotreload`** — Background repository pulling mechanism triggering instant structural compilation with sub-second downtime.
+A high-performance Telegram Bot engineered as a robust Unix control hub, dynamic code executor, wide-scale utility dispatcher, and persistent AI interface. Built with a pure asynchronous architecture for maximum scalability and low-latency response cycles.
 
 ---
 
-## Environment Config (`.env`)
-Clone or export the fundamental parameters on the system root prior to initialization:
+## Core Features
 
-| Variable | Security / Description |
-| :--- | :--- |
-| `BOT_TOKEN` | Identity routing credential granted by `@BotFather`. |
-| `OWNER_ID` | Telegram Account UID mapped as root control authority. |
-| `LOG_CHAT_ID` | Private terminal pipe for critical systemic traceback monitoring. |
-| `GEMINI_API_KEY` | Google Cloud generic inferencing auth. |
-| `GROQ_API_KEY` | Groq Cloud lightning inferencing auth. |
+### Advanced AI Integration
+- **Hybrid AI Engine**: Leverages Google Gemini 2.0 Flash for web-integrated reasoning and Groq LLaMA-3 for high-speed technical/computational logic.
+- **Failover Mechanism**: Automatically switches between AI providers during quota exhaustion or service outages.
+- **RAG (Retrieval-Augmented Generation)**: Capable of ingesting local markdown documentation to provide context-aware responses.
+- **Persistent AI Memory**: Conversational history is maintained across service restarts via highly optimized SQLite ledgers.
 
-## Initialization Parameters
+### High-Speed Media Acquisition
+- **Universal Downloader**: Integrated support for TikTok (no watermark), YouTube (4K/MP3), Instagram (Reels/Stories), X/Twitter, and 100+ platforms via yt-dlp and gallery-dl.
+- **Automated Pipeline (AutoDL)**: Passive link detection in groups for scheduled or instant acquisition.
+- **Local Bot API Support**: Bypasses Telegram's 50MB limit, allowing uploads of up to 2GB via local server integration.
 
-This engine expects an active Python 3.9+ environment and FFmpeg binaries mounted on the host (WSL / Ubuntu / CentOS / Termux):
+### Network & System Utilities
+- **Technical Probing**: Precision-latency measurement (/ping), IP Geolocation (/ip), WHOIS Registry indexing, and DNS record extraction (/domain).
+- **Meteorological Data**: Real-time professional weather reports for any global node.
+- **Technical Localization**: Accurate cross-language translation with professional formatting.
 
+---
+
+## User Documentation
+
+General commands accessible to all registered nodes:
+
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| /ask <query> | Query the AI engine (Web-enabled) | /ask what is the current BTC price? |
+| /groq <query> | Query the Groq engine (Pure logic/code) | /groq write a BFS algorithm in C++ |
+| /dl <url> | Process media acquisition from link | /dl https://tiktok.com/... |
+| /tr <text> | Execute professional translation | /tr Good morning |
+| /weather <loc> | Fetch meteorological report | /weather Jakarta |
+| /ip <addr> | Perform IP Geolocation scan | /ip 8.8.8.8 |
+| /stats | View system performance metrics | /stats |
+
+---
+
+## Owner Administration ($ Root Access)
+
+Privileged commands restricted to the root architect:
+
+### System Control Panel ($sys)
+- $sys status: Monitor all active system modules.
+- $sys maintenance on|off: Restrict bot responses to the owner only.
+- $sys ai on|off: Toggle global AI availability.
+- $sys backup on|off: Schedule automated 12h database backup routines.
+
+### Engineering Tools
+- $eval <python>: Execute Python code directly into the live runtime.
+- $sh <command>: Execute native Linux/WSL shell commands.
+- $update: Pull latest repository changes and synchronize structural logic.
+- $restart: Force-kill and respawn the bot process.
+- $env: Inspect environment mapping (critical secrets redacted).
+
+---
+
+## Technical Initialization
+
+### System Prerequisites
+- Python 3.12+
+- FFmpeg (Media processing binaries)
+- WSL (on Windows) or Linux (Ubuntu/Debian)
+
+### Installation Sequence
 ```bash
-# 1. Fetch System Core
-git clone <repository_url> telebot
+# 1. Fetch Core Repository
+git clone https://github.com/itswill00/telegram-bot.git telebot
 cd telebot
 
-# 2. Virtual Environment Projection (Recommended)
-python3 -m venv venv
-source venv/bin/activate
+# 2. Project Projection (Virtual Environment)
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Dependency Alignment
 pip install -r requirements.txt
 
-# 3. Mount Daemon
-python bot.py
+# 4. Environment Configuration
+cp .example.env .env
+# Edit .env with your credentials
+
+# 5. Core Execution
+python main.py
 ```
+
+### Environment Parameters (.env)
+- BOT_TOKEN: Telegram Identity Token.
+- OWNER_ID: Account UID for root authority.
+- GEMINI_API_KEY: Google Cloud auth.
+- GROQ_API_KEY: Groq Cloud auth.
+- LOCAL_BOT_API_HOST: Local API endpoint (Default: 127.0.0.1).
+
+---
+
+## Metadata
+Proyect governed under the GNU General Public License v3.0. Developed for high-performance productivity and automation.
+
+**Architect: @HirohitoKiyoshi**

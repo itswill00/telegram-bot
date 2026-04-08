@@ -97,7 +97,7 @@ async def ask_ai_gemini(
             "parts": [
                 {
                     "text": (
-                        "IDENT: Kiyoshi Bot\n"
+                        "IDENT: Axon\n"
                         "ARCH: @HirohitoKiyoshi\n"
                         "TONE: Professional Technical\n"
                         "EMOJI: FORBIDDEN\n"

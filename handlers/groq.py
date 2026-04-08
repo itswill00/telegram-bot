@@ -28,7 +28,7 @@ from database.ai_memory_db import get_ai_history, save_ai_history, clear_ai_hist
 _GROQ_ACTIVE_USERS = {}
 
 SYSTEM_PROMPT = (
-    "IDENT: Kiyoshi Bot\n"
+    "IDENT: Axon\n"
     "ARCH: @HirohitoKiyoshi\n"
     "TONE: Professional Technical\n"
     "EMOJI: FORBIDDEN\n"
