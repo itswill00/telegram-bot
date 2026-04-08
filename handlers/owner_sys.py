@@ -23,17 +23,20 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ai = await get_setting("ai_global", "ON")
 
         status_text = (
-            "<b>SYSTEM CONTROL PANEL</b>\n\n"
-            f"AUTO_BACKUP: <code>{backup}</code>\n"
-            f"MAINTENANCE: <code>{maint}</code>\n"
-            f"AI_GLOBAL: <code>{ai}</code>\n\n"
+            "<b>SYSTEM_CONTROL_PANEL</b>\n\n"
+            "<code>"
+            f"AUTO_BACKUP : {backup}\n"
+            f"MAINTENANCE : {maint}\n"
+            f"AI_GLOBAL   : {ai}"
+            "</code>\n\n"
             "<b>OPERATIONS:</b>\n"
-            "• $node backup on|off\n"
-            "• $node maintenance on|off\n"
-            "• $node ai on|off\n"
-            "• $node logs [line_count]"
+            "• <code>$node backup [on|off]</code>\n"
+            "• <code>$node maintenance [on|off]</code>\n"
+            "• <code>$node ai [on|off]</code>\n"
+            "• <code>$node logs [line_count]</code>"
         )
         return await msg.reply_text(status_text, parse_mode="HTML")
+
 
     action = context.args[0].lower()
 

@@ -58,12 +58,15 @@ async def admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         stats = gather_system_stats()
         text = (
             "<b>SYSTEM_TOPOLOGY</b>\n"
-            f"• PLATFORM: {stats['sys']['os']}\n"
-            f"• UPTIME: {stats['sys']['uptime']}\n"
-            f"• CPU_LOAD: {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
-            f"• RAM_USAGE: {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
-            f"• STORAGE_PCT: {stats['disk']['pct']:.1f}%"
+            "<code>"
+            f"PLATFORM : {stats['sys']['os']}\n"
+            f"UPTIME   : {stats['sys']['uptime']}\n"
+            f"CPU_LOAD : {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
+            f"RAM_LOAD : {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
+            f"STORAGE  : {stats['disk']['pct']:.1f}%"
+            "</code>"
         )
+
         await query.edit_message_text(text, reply_markup=get_admin_keyboard(), parse_mode="HTML")
 
     elif data == "admin_backup":
