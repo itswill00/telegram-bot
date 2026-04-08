@@ -26,13 +26,13 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 data = await r.json()
 
-            lines = ["💱 <b>Currency List</b>\n"]
+            lines = ["<b>[ VALID CURRENCIES INDEX ]</b>\n<code>──────────────────────────</code>\n"]
             for code, name in sorted(data.items()):
                 lines.append(f"• <b>{code}</b> — {name}")
 
             lines.append(
-                "\n🌐 Data source: "
-                f"<a href=\"{ECB_SOURCE_URL}\">European Central Bank</a>"
+                "\n<code>[DATA SOURCE]</code>\n"
+                f"• <a href=\"{ECB_SOURCE_URL}\">European Central Bank</a>"
             )
 
             return await msg.reply_text(
@@ -46,13 +46,14 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if len(args) < 2:
         return await msg.reply_text(
-            "💱 <b>Currency Exchange</b>\n\n"
-            "Format:\n"
-            "<code>/kurs [amount] FROM TO</code>\n\n"
-            "Example:\n"
-            "<code>/kurs USD IDR</code>\n"
-            "<code>/kurs 10 USD IDR</code>\n"
-            "<code>/kurs list</code>",
+            "<b>[ FINANCIAL EXCHANGE ENGINE ]</b>\n"
+            "<code>─────────────────────────────</code>\n"
+            "Syntax:\n"
+            "• <code>/kurs [amount] FROM TO</code>\n\n"
+            "Examples:\n"
+            "• <code>/kurs USD IDR</code>\n"
+            "• <code>/kurs 10 USD IDR</code>\n"
+            "• <code>/kurs list</code>",
             parse_mode="HTML"
         )
 
@@ -91,11 +92,12 @@ async def kurs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return await msg.reply_text("Invalid currency code.")
 
         await msg.reply_text(
-            "💱 <b>Currency Exchange</b>\n\n"
-            f"{amount:g} <b>{from_cur}</b> ≈ <b>{rate:,.2f} {to_cur}</b>\n\n"
-            f"📅 Date: <code>{date}</code>\n"
-            "🌐 Source: "
-            f"<a href=\"{ECB_SOURCE_URL}\">European Central Bank</a>",
+            "<b>[ FOREX CONVERSION REPORT ]</b>\n"
+            "<code>─────────────────────────────</code>\n"
+            f"• Source   : <code>{amount:g} {from_cur}</code>\n"
+            f"• Target   : <code>{rate:,.2f} {to_cur}</code>\n\n"
+            f"• Date     : <code>{date}</code>\n"
+            f"• Provider : <a href=\"{ECB_SOURCE_URL}\">Central Bank</a>",
             parse_mode="HTML",
             disable_web_page_preview=True
         )

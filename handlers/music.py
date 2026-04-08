@@ -81,15 +81,16 @@ async def music_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = " ".join(context.args).strip()
     if not query:
         return await update.message.reply_text(
-            "🎵 <b>Music Command</b>\n\n"
-            "Use the format:\n"
-            "<code>/music &lt;song title or artist name&gt;</code>",
+            "<b>[ MUSIC REPOSITORY MODULE ]</b>\n"
+            "<code>──────────────────────────</code>\n"
+            "Syntax: <code>/music &lt;query&gt;</code>",
             parse_mode="HTML"
         )
 
     status_msg = await update.message.reply_text(
-        "⏳ <b>Searching for the song...</b>\n\n"
-        "Please wait a moment 🎧",
+        "<b>[ QUERY IN PROGRESS ]</b>\n"
+        "<code>──────────────────────────</code>\n"
+        "Executing remote repository search...",
         reply_to_message_id=update.message.message_id,
         parse_mode="HTML",
     )
@@ -101,7 +102,7 @@ async def music_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             raise Exception("No matching songs or videos were found.")
 
         keyboard = []
-        text = "<b>🎧 Music Search Results</b>\n\n"
+        text = "<b>[ SEARCH RESULTS ]</b>\n<code>──────────────────────────</code>\n\n"
 
         for i, entry in enumerate(entries, 1):
             title = entry.get("title") or "Untitled"
@@ -130,7 +131,7 @@ async def music_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await status_msg.edit_text(
-            f"<b>Failed to search for the song</b>\n\n<code>{html.escape(str(e))}</code>",
+            f"<b>[ SYSTEM ERROR ]</b>\n<code>──────────────────────────</code>\n<code>{html.escape(str(e))}</code>",
             parse_mode="HTML"
         )
 
@@ -153,8 +154,9 @@ async def music_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     output_format = str(settings.get("music_format") or "flac").lower()
 
     await query.edit_message_text(
-        "⏳ <b>Downloading the song</b>\n\n"
-        f"Output format: <b>{html.escape(output_format.upper())}</b>",
+        "<b>[ DOWNLOADING ASSET ]</b>\n"
+        "<code>──────────────────────────</code>\n"
+        f"Format: <code>{html.escape(output_format.upper())}</code>",
         parse_mode="HTML"
     )
 
@@ -174,8 +176,9 @@ async def music_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 performer=entry.get("uploader", "Unknown"),
                 duration=entry.get("duration"),
                 caption=(
-                    "🎵 <b>Download Successful</b>\n\n"
-                    f"<b>Title:</b> {html.escape(entry.get('title') or 'Audio')}"
+                    "<b>[ ACQUISITION COMPLETE ]</b>\n"
+                    f"<code>──────────────────────────</code>\n"
+                    f"• Target = <code>{html.escape(entry.get('title') or 'Audio')}</code>"
                 ),
                 reply_to_message_id=reply_to_id,
                 parse_mode="HTML"
@@ -185,7 +188,7 @@ async def music_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await query.edit_message_text(
-            f"<b>Failed to download the song</b>\n\n<code>{html.escape(str(e))}</code>",
+            f"<b>[ DOWNLOAD FAILED ]</b>\n<code>──────────────────────────</code>\n<code>{html.escape(str(e))}</code>",
             parse_mode="HTML"
         )
 

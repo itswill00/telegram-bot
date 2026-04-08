@@ -96,7 +96,9 @@ def _pick_auto_resolution(res_map: dict[int, dict], preferred_height: int):
 
 async def _start_dl_task(context, message, data, fmt_key, format_id=None, has_audio=False, label=None):
     await message.edit_text(
-        f"<b>Preparing {label or DL_FORMATS[fmt_key]['label']}...</b>",
+        f"<b>[ ACQUISITION INITIATED ]</b>\n"
+        f"<code>─────────────────────────</code>\n"
+        f"Preparing <code>{label or DL_FORMATS[fmt_key]['label']}</code>...",
         parse_mode="HTML",
     )
 
@@ -118,7 +120,7 @@ async def _process_choice(context, message, dl_id: str, data: dict, choice: str,
     url = data["url"]
 
     if choice == "video" and is_youtube(url):
-        await message.edit_text("🔎 <b>Fetching video formats...</b>", parse_mode="HTML")
+        await message.edit_text("<b>[ QUERY IN PROGRESS ]</b>\nParsing metadata...", parse_mode="HTML")
         res_list = await get_resolutions(url)
 
         if not res_list:
@@ -159,7 +161,7 @@ async def _process_choice(context, message, dl_id: str, data: dict, choice: str,
 
         DL_CACHE[dl_id]["res_map"] = res_map
         return await message.edit_text(
-            "<b>Select resolution</b>",
+            "<b>[ RESOLUTION SELECTOR ]</b>\n<code>─────────────────────────</code>",
             reply_markup=res_keyboard(dl_id, res_list),
             parse_mode="HTML",
         )
@@ -192,14 +194,14 @@ async def _is_admin_or_owner(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 def autodl_keyboard(chat_id: int, is_enabled: bool):
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-    status = "✅ AKTIF" if is_enabled else "❌ MATI"
+    status = "ACTIVE" if is_enabled else "DISABLE"
     return InlineKeyboardMarkup([
         [
             InlineKeyboardButton(f"Status AutoDL: {status}", callback_data="autodl_toggle:ignore"),
         ],
         [
-            InlineKeyboardButton("✅ Hidupkan", callback_data=f"autodl_toggle:{chat_id}:enable"),
-            InlineKeyboardButton("❌ Matikan", callback_data=f"autodl_toggle:{chat_id}:disable"),
+            InlineKeyboardButton("ENABLE", callback_data=f"autodl_toggle:{chat_id}:enable"),
+            InlineKeyboardButton("DISABLE", callback_data=f"autodl_toggle:{chat_id}:disable"),
         ],
         [
             InlineKeyboardButton("Tutup Menu", callback_data=f"autodl_toggle:{chat_id}:close")
@@ -235,8 +237,9 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     is_enabled = chat.id in groups
     await msg.reply_text(
-        "<b>⚙️ Pengaturan Fitur Auto-Download</b>\n"
-        "Gunakan menu di bawah untuk mengontrol pendeteksian pengunduh otomatis di grup ini:",
+        "<b>[ AUTO DOWNLOAD PROTOCOL ]</b>\n"
+        "<code>────────────────────────────</code>\n"
+        "Select state below:",
         reply_markup=autodl_keyboard(chat.id, is_enabled),
         parse_mode="HTML"
     )
@@ -296,7 +299,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if is_premium_required(text, PREMIUM_ONLY_DOMAINS) and not is_premium_user(update.effective_user.id):
-        return await msg.reply_text("🔞 This link can only be downloaded by premium users.")
+        return await msg.reply_text("<b>[ ACCESS DENIED ]</b>\nPrivilege error: Domain strict policy.", parse_mode="HTML")
 
     dl_id = uuid.uuid4().hex[:8]
 
@@ -311,7 +314,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await msg.reply_text(
-            f"📥 <b>Auto selecting {auto_choice.upper()}...</b>",
+            f"<b>[ AUTO PIPELINE ]</b>\nSelecting <code>{auto_choice.upper()}</code>...",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -324,7 +327,9 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     
     await msg.reply_text(
-        "👀 <b>Link detected</b>\n\nDo you want me to download it?",
+        "<b>[ URL DETECTED ]</b>\n"
+        "<code>─────────────────────────</code>\n"
+        "Download pipeline standing by.",
         reply_markup=autodl_detect_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -351,7 +356,7 @@ async def dlask_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.message.delete()
 
     await q.edit_message_text(
-        "📥 <b>Select format</b>",
+        "<b>[ FORMAT SELECTOR ]</b>\n<code>─────────────────────────</code>",
         reply_markup=dl_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -476,7 +481,7 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if is_premium_required(url, PREMIUM_ONLY_DOMAINS):
         if not is_premium_user(update.effective_user.id):
-            return await update.message.reply_text("🔞 Download from this website is for premium users only")
+            return await update.message.reply_text("<b>[ ACCESS DENIED ]</b>\nPrivilege error: Domain strict policy", parse_mode="HTML")
 
     dl_id = uuid.uuid4().hex[:8]
     DL_CACHE[dl_id] = {
@@ -490,7 +495,7 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await update.message.reply_text(
-            f"📥 <b>Auto selecting {auto_choice.upper()}...</b>",
+            f"<b>[ AUTO PIPELINE ]</b>\nSelecting <code>{auto_choice.upper()}</code>...",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -503,7 +508,7 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     await update.message.reply_text(
-        "📥 <b>Select format</b>",
+        "<b>[ FORMAT SELECTOR ]</b>\n<code>─────────────────────────</code>",
         reply_markup=dl_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -579,7 +584,9 @@ async def dlres_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     label = f"{height}p" if height else "video"
     await q.edit_message_text(
-        f"<b>Preparing Video ({html.escape(label)})...</b>",
+        f"<b>[ ACQUISITION INITIATED ]</b>\n"
+        f"<code>─────────────────────────</code>\n"
+        f"Preparing <code>{html.escape(label)}</code>...",
         parse_mode="HTML",
     )
 
