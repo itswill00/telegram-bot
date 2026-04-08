@@ -45,18 +45,27 @@ class TechnicalFormatter(logging.Formatter):
 
 
 def setup_logger():
-    handler = logging.StreamHandler()
-    handler.setFormatter(
+    # Stream Handler
+    s_handler = logging.StreamHandler()
+    s_handler.setFormatter(
         TechnicalFormatter("%(asctime)s %(message)s", "%H:%M:%S")
+    )
+
+    # File Handler for remote diagnostics
+    f_handler = logging.FileHandler("bot.log", encoding='utf-8')
+    f_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     )
 
     root = logging.getLogger()
     root.setLevel(logging.WARNING)
     root.handlers.clear()
-    root.addHandler(handler)
+    root.addHandler(s_handler)
+    root.addHandler(f_handler)
 
     # Set specific level for our bot logger
     log.setLevel(logging.INFO)
+
 
 
 log = logging.getLogger(__name__)
