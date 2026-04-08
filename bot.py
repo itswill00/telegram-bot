@@ -174,18 +174,24 @@ async def post_init(app):
             msg_id = data.get("msg_id")
             if chat_id:
                 try:
+                    import socket
+                    host = socket.gethostname()
+                    text = (
+                        "<b>REBOOT_SEQUENCE_COMPLETE</b>\n"
+                        "<code>"
+                        f"STATUS : ACTIVE\n"
+                        f"NODE   : {host}\n"
+                        f"STATE  : OPERATIONAL"
+                        "</code>"
+                    )
                     await app.bot.send_message(
                         chat_id=chat_id,
-                        text="<b>REBOOT_SUCCESS</b>",
+                        text=text,
                         reply_to_message_id=msg_id,
                         parse_mode="HTML"
                     )
                 except Exception:
-                    await app.bot.send_message(
-                        chat_id=chat_id,
-                        text="<b>REBOOT_SUCCESS</b>",
-                        parse_mode="HTML"
-                    )
+                    pass
 
         except Exception as e:
             log.warning(f"Failed to send restart notification: {e}")

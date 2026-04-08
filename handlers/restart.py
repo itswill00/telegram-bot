@@ -18,16 +18,10 @@ async def restart_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not msg or not user or user.id not in OWNER_ID:
         return
 
-    m = await msg.reply_text(
-        "<b>REBOOTING...</b>",
-        parse_mode="HTML"
-    )
-
-
-    # Save state to notify after restart
+    # Save state to notify after restart (Reply to the command message)
     data = {
         "chat_id": msg.chat_id,
-        "msg_id": m.message_id
+        "msg_id": msg.message_id
     }
     
     os.makedirs("data", exist_ok=True)
@@ -40,4 +34,5 @@ async def restart_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     sys.stderr.flush()
 
     os.execv(sys.executable, [sys.executable] + sys.argv)
+
 
