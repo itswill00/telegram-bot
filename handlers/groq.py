@@ -23,8 +23,6 @@ from utils.config import (
 )
 from utils.http import get_http_session
 
-LOCAL_CONTEXTS = load_local_contexts()
-
 from database.ai_memory_db import get_ai_history, save_ai_history, clear_ai_history
 
 _GROQ_ACTIVE_USERS = {}
@@ -47,17 +45,34 @@ def _can(uid: int) -> bool:
     _last_req[uid] = now
     return True
 
+_LOCAL_CONTEXTS = None
+
+async def _get_local_contexts():
+    global _LOCAL_CONTEXTS
+    if _LOCAL_CONTEXTS is None:
+        try:
+            _LOCAL_CONTEXTS = load_local_contexts()
+        except Exception:
+            _LOCAL_CONTEXTS = []
+    return _LOCAL_CONTEXTS
 
 async def build_groq_rag_prompt(user_prompt: str) -> str:
-    contexts = await retrieve_context(
-        user_prompt,
-        LOCAL_CONTEXTS,
-        top_k=3,
-    )
+    try:
+        docs = await _get_local_contexts()
+        if not docs:
+            return user_prompt
+            
+        contexts = await retrieve_context(
+            user_prompt,
+            docs,
+            top_k=3,
+        )
 
-    if contexts:
-        ctx = "\n\n".join(contexts)
-        return f"{ctx}\n\n{user_prompt}"
+        if contexts:
+            ctx = "\n\n".join(contexts)
+            return f"{ctx}\n\n{user_prompt}"
+    except Exception:
+        pass
 
     return user_prompt
 
@@ -170,7 +185,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             prompt = " ".join(context.args).strip()
 
-        clear_ai_history(user_id, "groq")
+        await clear_ai_history(user_id, "groq")
         _GROQ_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
@@ -196,7 +211,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     typing = asyncio.create_task(_typing_loop(context.bot, chat_id, stop))
 
     try:
-        history = get_ai_history(user_id, "groq")
+        history = await get_ai_history(user_id, "groq")
 
         raw = await ask_groq_text(
             prompt=prompt,
@@ -208,7 +223,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             {"role": "user", "content": prompt},
             {"role": "assistant", "content": raw},
         ]
-        save_ai_history(user_id, history, "groq")
+        await save_ai_history(user_id, history, "groq")
 
         stop.set()
         typing.cancel()
@@ -228,6 +243,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         stop.set()
         typing.cancel()
-        clear_ai_history(user_id, "groq")
+        await clear_ai_history(user_id, "groq")
         _GROQ_ACTIVE_USERS.pop(user_id, None)
         await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
+

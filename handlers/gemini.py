@@ -47,23 +47,37 @@ def _ai_history_to_groq(history: list) -> list:
         if ai_text: out.append({"role": "assistant", "content": ai_text})
     return out
 
+_LOCAL_CONTEXTS = None
+
+async def _get_local_contexts():
+    global _LOCAL_CONTEXTS
+    if _LOCAL_CONTEXTS is None:
+        try:
+            _LOCAL_CONTEXTS = load_local_contexts()
+        except Exception:
+            _LOCAL_CONTEXTS = []
+    return _LOCAL_CONTEXTS
 
 async def build_ai_prompt(user_id: int, user_prompt: str) -> str:
-    history = get_ai_history(user_id, "gemini")
+    history = await get_ai_history(user_id, "gemini")
     lines = []
+    
+    # Add history
     for h in history:
         lines.append(f"U: {h.get('user', '')}")
         lines.append(f"A: {h.get('ai', '')}")
 
+    # Add RAG context lazily
     try:
-        contexts = await retrieve_context(user_prompt, LOCAL_CONTEXTS, top_k=3)
+        docs = await _get_local_contexts()
+        if docs:
+            contexts = await retrieve_context(user_prompt, docs, top_k=3)
+            if contexts:
+                lines.append("\n--- CONTEXT DATA ---")
+                lines.extend(contexts)
+                lines.append("--- END CONTEXT ---\n")
     except Exception:
-        contexts = []
-
-    if contexts:
-        lines.append("--- CONTEXT DATA ---")
-        lines.extend(contexts)
-        lines.append("--- END CONTEXT ---")
+        pass
 
     lines.append(f"U: {user_prompt}")
     return "\n".join(lines)
@@ -110,16 +124,25 @@ async def ask_ai_gemini(
             timeout=aiohttp.ClientTimeout(total=60),
         ) as resp:
             if resp.status != 200:
-                return False, await resp.text(), resp.status
+                raw_text = await resp.text()
+                return False, raw_text, resp.status
             data = await resp.json()
 
         candidates = data.get("candidates") or []
         if not candidates:
             return True, "NULL_RESPONSE", 200
 
-        parts = candidates[0].get("content", {}).get("parts", [])
-        if parts:
-            return True, parts[0].get("text", "").strip(), 200
+        content = candidates[0].get("content") or {}
+        parts = content.get("parts") or []
+        
+        # Check for text response
+        text_out = ""
+        for p in parts:
+            if "text" in p:
+                text_out += p["text"]
+        
+        if text_out:
+            return True, text_out.strip(), 200
 
         return True, json.dumps(candidates[0], ensure_ascii=False), 200
 
@@ -138,7 +161,7 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if msg.text and msg.text.startswith("/ask"):
         prompt = " ".join(context.args) if context.args else ""
-        clear_ai_history(user_id, "gemini")
+        await clear_ai_history(user_id, "gemini")
         _AI_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
@@ -161,7 +184,7 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not ok:
             if _is_gemini_quota_error(status, raw):
-                history = get_ai_history(user_id, "gemini")
+                history = await get_ai_history(user_id, "gemini")
                 groq_history = _ai_history_to_groq(history)
                 raw = await ask_groq_text(prompt=prompt, history=groq_history, use_search=False)
             else:
@@ -173,19 +196,32 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         stop.set()
         typing.cancel()
 
-        sent = await msg.reply_text(chunks[0], parse_mode="HTML")
+        # Reply to the original message/reply to maintain thread
+        reply_to_id = msg.message_id
+        
+        sent = await context.bot.send_message(
+            chat_id=chat_id,
+            text=chunks[0],
+            reply_to_message_id=reply_to_id,
+            parse_mode="HTML"
+        )
         _AI_ACTIVE_USERS[user_id] = sent.message_id
 
         for part in chunks[1:]:
-            await msg.reply_text(part, parse_mode="HTML")
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=part,
+                parse_mode="HTML"
+            )
 
-        history = get_ai_history(user_id, "gemini")
+        history = await get_ai_history(user_id, "gemini")
         history.append({"user": prompt, "ai": clean})
-        save_ai_history(user_id, history, "gemini")
+        await save_ai_history(user_id, history, "gemini")
 
     except Exception as e:
         stop.set()
         typing.cancel()
-        clear_ai_history(user_id, "gemini")
+        await clear_ai_history(user_id, "gemini")
         _AI_ACTIVE_USERS.pop(user_id, None)
         await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
+
