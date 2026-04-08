@@ -20,14 +20,14 @@ def is_owner(user_id: int) -> bool:
 def get_admin_keyboard():
     keyboard = [
         [
-            InlineKeyboardButton("System Status ", callback_data="admin_stats"),
-            InlineKeyboardButton("Backup Data ", callback_data="admin_backup"),
+            InlineKeyboardButton("STATUS_CHECK", callback_data="admin_stats"),
+            InlineKeyboardButton("BACKUP_RT", callback_data="admin_backup"),
         ],
         [
-            InlineKeyboardButton("Fetch Logs ", callback_data="admin_logs"),
-            InlineKeyboardButton("Force Restart ", callback_data="admin_restart"),
+            InlineKeyboardButton("GET_LOGS", callback_data="admin_logs"),
+            InlineKeyboardButton("NODE_REBOOT", callback_data="admin_restart"),
         ],
-        [InlineKeyboardButton("Close Terminal ", callback_data="admin_close")]
+        [InlineKeyboardButton("EXIT_SESSION", callback_data="admin_close")]
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -38,8 +38,8 @@ async def admin_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-        "<b>Root Dashboard </b>\n"
-        "Executing core routines. Select operation:"
+        "<b>CORE_INTERFACE</b>\n"
+        "Awaiting instruction:"
     )
     await update.message.reply_text(text, reply_markup=get_admin_keyboard(), parse_mode="HTML")
 
@@ -48,7 +48,7 @@ async def admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     
     if not query or not user or not is_owner(user.id):
-        await query.answer("Access Denied  Unauthorized execution.", show_alert=True)
+        await query.answer("ERROR: UNAUTHORIZED", show_alert=True)
         return
 
     data = query.data
@@ -57,32 +57,29 @@ async def admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "admin_stats":
         stats = gather_system_stats()
         text = (
-            "<b>System Topology Overview </b>\n"
-            f"• <b>Platform:</b> {stats['sys']['os']}\n"
-            f"• <b>Uptime  :</b> {stats['sys']['uptime']}\n"
-            f"• <b>CPU Load:</b> {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} core)\n"
-            f"• <b>Mem RAM :</b> {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
-            f"• <b>Capacity:</b> {stats['disk']['pct']:.1f}% consumed"
+            "<b>SYSTEM_TOPOLOGY</b>\n"
+            f"• PLATFORM: {stats['sys']['os']}\n"
+            f"• UPTIME: {stats['sys']['uptime']}\n"
+            f"• CPU_LOAD: {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
+            f"• RAM_USAGE: {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
+            f"• STORAGE_PCT: {stats['disk']['pct']:.1f}%"
         )
         await query.edit_message_text(text, reply_markup=get_admin_keyboard(), parse_mode="HTML")
 
     elif data == "admin_backup":
-        await query.edit_message_text("<b>Executing Backup Procedure </b>...", parse_mode="HTML")
+        await query.edit_message_text("<b>EXECUTING_BACKUP...</b>", parse_mode="HTML")
         await backup_database(context)
-        await query.edit_message_text("<b>Backup Completed </b> Archive distributed to log terminal.", reply_markup=get_admin_keyboard(), parse_mode="HTML")
+        await query.edit_message_text("<b>BACKUP_SUCCESS</b>", reply_markup=get_admin_keyboard(), parse_mode="HTML")
 
     elif data == "admin_logs":
-        # Simulating log view by reading the last few lines of the session or a log file if configured
-        # For Termux, we can try to send a quick snippet
-        await query.edit_message_text("<b>Log Stream Initiated </b>", parse_mode="HTML")
-        # In a real scenario, you'd log to a file. For now, we'll just show status.
-        await query.edit_message_text("<b>Stdout Watch Active </b> Output piped to system interface.", reply_markup=get_admin_keyboard(), parse_mode="HTML")
+        await query.edit_message_text("<b>FETCHING_LOGS...</b>", parse_mode="HTML")
+        await query.edit_message_text("<b>LOG_READY</b>\nOutput piped to log terminal.", reply_markup=get_admin_keyboard(), parse_mode="HTML")
 
     elif data == "admin_restart":
-        await query.edit_message_text("<b>System Reboot Sequence Initiated </b>\nRestarting main process...", parse_mode="HTML")
-        # Restart logic: execv will replace current process
+        await query.edit_message_text("<b>REBOOT_INITIATED</b>\nRestarting main process...", parse_mode="HTML")
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
     elif data == "admin_close":
         await query.message.delete()
+
