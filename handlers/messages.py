@@ -17,7 +17,7 @@ async def maintenance_filter(update, context):
     if user.id in OWNER_ID:
         return False
 
-    maint = get_setting("maintenance_mode", "OFF")
+    maint = await get_setting("maintenance_mode", "OFF")
     if maint == "ON":
         # Professional tools only warn once or stay silent. 
         # We will send a formal notice.
@@ -36,7 +36,7 @@ async def ai_reply_router(update, context):
     if await maintenance_filter(update, context):
         return
 
-    if get_setting("ai_global", "ON") == "OFF":
+    if (await get_setting("ai_global", "ON")) == "OFF":
         return
 
     user_id = msg.from_user.id
@@ -54,7 +54,7 @@ async def ai_reply_router(update, context):
 
 async def global_maint_check(update, context):
     # Quietly filter messages during maintenance
-    maint = get_setting("maintenance_mode", "OFF")
+    maint = await get_setting("maintenance_mode", "OFF")
     if maint == "ON" and update.effective_user.id not in OWNER_ID:
         # Stop further processing without replying to every single text
         return

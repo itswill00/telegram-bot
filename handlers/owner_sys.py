@@ -15,9 +15,9 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        backup = get_setting("auto_backup", "ON")
-        maint = get_setting("maintenance_mode", "OFF")
-        ai = get_setting("ai_global", "ON")
+        backup = await get_setting("auto_backup", "ON")
+        maint = await get_setting("maintenance_mode", "OFF")
+        ai = await get_setting("ai_global", "ON")
 
         status_text = (
             "<b>SYSTEM CONTROL PANEL</b>\n\n"
@@ -40,7 +40,7 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await msg.reply_text("ERROR: Invalid state.", parse_mode="HTML")
 
     if action == "backup":
-        set_setting("auto_backup", val)
+        await set_setting("auto_backup", val)
         if val == "OFF":
             jobs = context.application.job_queue.get_jobs_by_name("auto_backup")
             for job in jobs: job.schedule_removal()
@@ -51,12 +51,12 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await msg.reply_text(text, parse_mode="HTML")
 
     if action == "maintenance":
-        set_setting("maintenance_mode", val)
+        await set_setting("maintenance_mode", val)
         text = f"SUCCESS: Maintenance mode set to {val}."
         return await msg.reply_text(text, parse_mode="HTML")
 
     if action == "ai":
-        set_setting("ai_global", val)
+        await set_setting("ai_global", val)
         text = f"SUCCESS: Global AI availability set to {val}."
         return await msg.reply_text(text, parse_mode="HTML")
 

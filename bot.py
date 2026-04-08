@@ -20,6 +20,8 @@ from utils.startup import startup_tasks
 from utils.config import BOT_TOKEN, LOG_CHAT_ID
 from utils.backup import backup_database
 from database.system_db import get_setting, init_system_db
+from database.ai_memory_db import init_ai_memory_db
+from database.download_db import init_auto_dl_db
 
 BOT_USERNAME = None
 
@@ -141,19 +143,24 @@ async def post_init(app):
 
     # Initialize System Settings
     try:
-        init_system_db()
+        await init_system_db()
+        await init_ai_memory_db()
+        await init_auto_dl_db()
         log.info("System configuration database initialized")
     except Exception as e:
+
         log.warning(f"Configuration initialization error: {e}")
 
+
     # Auto backup based on setting
-    if app.job_queue and get_setting("auto_backup", "ON") == "ON":
+    if app.job_queue and (await get_setting("auto_backup", "ON")) == "ON":
         app.job_queue.run_repeating(
             backup_database, 
             interval=60 * 60 * 12,
             first=10,
             name="auto_backup"
         )
+
         log.info("Automated backup routine scheduled (12h cycle)")
     else:
         log.info("Automated backup routine is currently suspended")
