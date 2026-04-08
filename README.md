@@ -1,99 +1,90 @@
 # Axon (Technical AI Assistant)
 
-A high-performance Telegram Bot designed as a Unix-style control hub, code executor, utility suite, and AI interface. Built with an asynchronous architecture for low-latency response cycles.
+A high-performance Unix-style Telegram bot engineered for technical operations, administrative automation, and AI integration. Zero gimmick. Cold technical aesthetic.
+
+---
+
+## ARCHITECTURE
+| Layer | Specification |
+| :--- | :--- |
+| **Runtime** | Python 3.12+ (Asynchronous) |
+| **Logic** | custom-built event loop / python-telegram-bot |
+| **Database** | aiosqlite (Persistent local state) |
+| **AI Stack** | Gemini-2.0-Flash / Groq-Llama-3 (Distributed) |
 
 ---
 
 ## CORE_FEATURES
 
 ### AI_MODELS
-- **Gemini**: Google Gemini 2.0 Flash for web-integrated reasoning.
-- **Groq**: Groq LLaMA-3 for high-speed technical/computational logic.
-- **AUTO_FAILOVER**: Automatic provider switching during quota exhaustion.
-- **RAG**: Local markdown ingestion for context-aware responses.
-- **MEMORY**: Persistent conversational history via SQLite.
+- **LOGIC_ENGINE**: Google Gemini 2.0 Flash + Groq LLaMA-3.
+- **STATE_MEMORY**: Conversational persistence across process cycles.
+- **DATA_RAG**: Contextual document retrieval for grounded AI responses.
 
 ### MEDIA_TOOLS
-- **UNIVERSAL_DL**: Download support for TikTok, YouTube (4K/MP3), Instagram, X/Twitter, and 100+ platforms via yt-dlp.
-- **AUTODL**: Passive link detection and processing in groups.
-- **LARGE_FILE_SUPPORT**: Bypasses 50MB limit up to 2GB via Local Bot API.
+- **UNIVERSAL_LOADER**: YouTube (4K/MP3), TikTok (No-Watermark), IG, X, and 100+ others via yt-dlp.
+- **AUTODL_ENGINE**: Background link detection and parsing in group nodes.
+- **LOCAL_BOT_API**: 2GB file overhead bypass via local host integration.
 
 ### SYSTEM_UTILITIES
-- **DIAGNOSTICS**: Latency measurement (.ping), IP lookup (.ip), WHOIS indexing, and DNS extraction (.domain).
-- **WEATHER**: Real-time reports for global locations (.weather).
-- **TRANSLATOR**: Technical and formal cross-language translation (.tr).
+- **NET_DIAGNOSTICS**: Latency probing, IP Geolocation, DNS extraction, and WHOIS.
+- **WEATHER_REPORT**: Professional metrics for any global coordinate.
+- **TECHNICAL_TR**: Zero-pleasantry cross-language translation.
 
 ---
 
 ## USER_DOCUMENTATION
 
-Standard commands for all users:
-
-| Command | Description | Example |
+| Command | Endpoint | Function |
 | :--- | :--- | :--- |
-| .ask <query> | Query Gemini (Web-enabled) | .ask current BTC price |
-| .groq <query> | Query Groq (Code/Logic) | .groq BFS algorithm in C++ |
-| .dl <url> | Download media from link | .dl https://tiktok.com/... |
-| .tr <text> | Translate text | .tr Good morning |
-| .weather <loc> | Fetch weather data | .weather Jakarta |
-| .ip <addr> | IP Geolocation scan | .ip 8.8.8.8 |
-| .stats | System performance stats | .stats |
+| `.ask` | `Gemini` | Reasoning & Search |
+| `.groq` | `Groq` | Technical Logic / Code |
+| `.dl` | `ytdlp` | Media Acquisition |
+| `.tr` | `API` | Translation |
+| `.ping` | `Local` | Network Latency |
+| `.stats` | `System` | Hardware Analytics |
+| `.weather`| `API` | Global Metrics |
 
 ---
 
 ## ADMIN_ACCESS ($ Mode)
 
-Privileged commands restricted to the Owner:
+Privileged commands restricted to **Owner ID** only.
 
 ### NODE_CONTROL ($node)
-- $node status: System module status.
-- $node maintenance on|off: Owner-only mode toggle.
-- $node ai on|off: Global AI toggle.
-- $node backup on|off: Scheduled DB backup (12h).
+| Command | Parameter | Effect |
+| :--- | :--- | :--- |
+| `$node` | `status` | View global heartbeat & active modules |
+| `$node` | `maintenance` | Toggle Owner-only mode (On/Off) |
+| `$node` | `ai` | Toggle global AI availability (On/Off) |
+| `$node` | `backup` | Execute database backup routine |
 
-### DEV_TOOLS
-- $py <code>: Execute Python in live runtime.
-- $sh <cmd>: Execute Linux/WSL shell commands.
-- $sync: Pull repo changes and hot-reload.
-- $reboot: Force process restart.
-- $cfg: View environment configuration (Redacted).
+### ENGINEERING_SUITE
+- `$py <code>`: Execute Python logic in live runtime environments.
+- `$sh <cmd>`: Direct Linux/WSL shell interaction.
+- `$reboot`: Force process termination and state-persistent respawn.
+- `$sync`: Synchronize repository with origin and hot-reload changes.
+- `$cfg`: Redacted inspection of active environment parameters.
 
 ---
 
-## INSTALLATION
+## DEPLOYMENT
 
-### PREREQUISITES
-- Python 3.12+
-- FFmpeg
-- WSL / Linux (Ubuntu/Debian)
+### ENVIRONMENT_SETUP
+1. **Clone**: `git clone https://github.com/itswill00/telegram-bot.git`
+2. **Venv**: `python3 -m venv .venv && source .venv/bin/activate`
+3. **Install**: `pip install -r requirements.txt`
+4. **Config**: `cp .example.env .env` (Add credentials)
+5. **Run**: `python main.py`
 
-### SETUP
-```bash
-# 1. Clone Repo
-git clone https://github.com/itswill00/telegram-bot.git telebot
-cd telebot
-
-# 2. Virtual Env
-python3 -m venv .venv
-source .venv/bin/activate
-
-# 3. Dependencies
-pip install -r requirements.txt
-
-# 4. Config
-cp .example.env .env
-# Edit .env with credentials
-
-# 5. Execute
-python main.py
+### SCHEMA (.env)
+```ini
+BOT_TOKEN=781XXXXXXXX:XXXX...
+OWNER_ID=123456789
+GEMINI_API_KEY=AIzaSyA...
+GROQ_API_KEY=gsk_...
+LOCAL_BOT_API_HOST=127.0.0.1
 ```
-
-### PARAMETERS (.env)
-- BOT_TOKEN: Telegram Bot Token.
-- OWNER_ID: Owner account UID.
-- GEMINI_API_KEY: Google Cloud API Key.
-- GROQ_API_KEY: Groq Cloud API Key.
-- LOCAL_BOT_API_HOST: Local API endpoint (Default: 127.0.0.1).
 
 ---
 
