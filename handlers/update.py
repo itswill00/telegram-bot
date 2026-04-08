@@ -72,17 +72,17 @@ async def update_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "<b>Update successful!</b>\n\n"
 
     if changelog:
-        text += "📝 <b>Changelog:</b>\n"
+        text += "<b>[ CHANGELOG ]</b>\n"
         text += changelog + "\n\n"
     else:
-        text += "📝 <i>No changelog.</i>\n\n"
+        text += "<i>No changelog detected.</i>\n\n"
 
     text += "Restart the bot now?"
 
     kb = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("♻️ Restart Bot", callback_data="update_restart"),
-            InlineKeyboardButton("❌ Cancel", callback_data="update_cancel"),
+            InlineKeyboardButton("EXECUTE RESTART", callback_data="update_restart"),
+            InlineKeyboardButton("ABORT", callback_data="update_cancel"),
         ]
     ])
 

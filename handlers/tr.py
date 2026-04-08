@@ -37,36 +37,36 @@ LANG_NAMES = {
 }
 
 LANG_FLAGS = {
-    "en": "🇬🇧",
-    "id": "🇮🇩",
-    "ja": "🇯🇵",
-    "ko": "🇰🇷",
-    "zh": "🇨🇳",
-    "fr": "🇫🇷",
-    "de": "🇩🇪",
-    "es": "🇪🇸",
-    "it": "🇮🇹",
-    "ru": "🇷🇺",
-    "ar": "🇸🇦",
-    "hi": "🇮🇳",
-    "pt": "🇵🇹",
-    "tr": "🇹🇷",
-    "vi": "🇻🇳",
-    "th": "🇹🇭",
-    "ms": "🇲🇾",
-    "nl": "🇳🇱",
-    "pl": "🇵🇱",
-    "uk": "🇺🇦",
-    "sv": "🇸🇪",
-    "fi": "🇫🇮",
+    "en": "[EN]",
+    "id": "[ID]",
+    "ja": "[JA]",
+    "ko": "[KO]",
+    "zh": "[ZH]",
+    "fr": "[FR]",
+    "de": "[DE]",
+    "es": "[ES]",
+    "it": "[IT]",
+    "ru": "[RU]",
+    "ar": "[AR]",
+    "hi": "[HI]",
+    "pt": "[PT]",
+    "tr": "[TR]",
+    "vi": "[VI]",
+    "th": "[TH]",
+    "ms": "[MS]",
+    "nl": "[NL]",
+    "pl": "[PL]",
+    "uk": "[UK]",
+    "sv": "[SV]",
+    "fi": "[FI]",
 }
 
 async def trlist_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lines = ["<b>Supported Languages</b>\n"]
+    lines = ["<b>[ VALID LANGUAGE CODES ]</b>\n<code>──────────────────────────</code>\n"]
     for code in sorted(VALID_LANGS):
         name = LANG_NAMES.get(code, code.upper())
-        flag = LANG_FLAGS.get(code, "🏳️")
-        lines.append(f"{flag} <code>{code}</code> — {name}")
+        flag = LANG_FLAGS.get(code, "[??]")
+        lines.append(f"• <code>{code.upper()}</code> — {name}")
 
     await update.message.reply_text(
         "\n".join(lines),
@@ -94,36 +94,37 @@ async def tr_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text = update.message.reply_to_message.text
         else:
             return await update.message.reply_text(
-                "<b>Translator</b>\n\n"
-                "Usage:\n"
-                "<code>/tr en hello</code>\n"
-                "<code>/tr id good morning</code>\n"
-                "<code>/tr apa kabar?</code>\n\n"
-                "Reply message:\n"
-                "<code>/tr en</code>",
+                "<b>[ TRANSLATION ENGINE ]</b>\n"
+                "<code>────────────────────────</code>\n"
+                "Syntax mapping:\n"
+                "• <code>/tr en &lt;text&gt;</code>\n"
+                "• <code>/tr id &lt;text&gt;</code>\n\n"
+                "Context routing (Reply):\n"
+                "• <code>/tr en</code>",
                 parse_mode="HTML"
             )
 
-    msg = await update.message.reply_text("Translating...")
+    msg = await update.message.reply_text("<b>[ EXECUTING TRANSLATION ]</b>\nQuerying engine...", parse_mode="HTML")
 
     try:
         translated = await asyncio.to_thread(
             lambda: GoogleTranslator(source="auto", target=target).translate(text)
         )
 
-        flag = LANG_FLAGS.get(target, "🏳️")
+        flag = LANG_FLAGS.get(target, "[??]")
 
         await msg.edit_text(
-            f"<b>Translation Result</b>\n\n"
-            f"Target: {flag} <b>{target.upper()}</b>\n\n"
-            f"{html.escape(translated)}\n\n"
-            f"Engine: <code>Google Translate</code>",
+            f"<b>[ TRANSLATION OUTPUT ]</b>\n"
+            f"<code>────────────────────────</code>\n"
+            f"Target : <code>{target.upper()}</code>\n"
+            f"Engine : <code>Google Translate</code>\n\n"
+            f"{html.escape(translated)}",
             parse_mode="HTML"
         )
 
     except Exception as e:
         await msg.edit_text(
-            f"<b>Translator unavailable</b>\n"
+            f"<b>[ ENGINE UNAVAILABLE ]</b>\n"
             f"<code>{html.escape(str(e))}</code>",
             parse_mode="HTML"
         )
