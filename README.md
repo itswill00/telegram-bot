@@ -7,8 +7,8 @@ A high-performance Unix-style Telegram bot engineered for technical operations, 
 ## ARCHITECTURE
 | Layer | Specification |
 | :--- | :--- |
-| **Runtime** | Python 3.12+ (Asynchronous) |
-| **Logic** | custom-built event loop / python-telegram-bot |
+| **Runtime** | Python 3.12+ (Asynchronous / uvloop) |
+| **Logic** | Custom-built event loop / python-telegram-bot |
 | **Database** | aiosqlite (Persistent local state) |
 | **AI Stack** | Gemini-2.0-Flash / Groq-Llama-3 (Distributed) |
 
@@ -47,7 +47,7 @@ A high-performance Unix-style Telegram bot engineered for technical operations, 
 
 ---
 
-## ADMIN_ACCESS ($ Mode)
+## ADMIN_INTERFACE ($ Mode)
 
 Privileged commands restricted to **Owner ID** only.
 
@@ -58,13 +58,23 @@ Privileged commands restricted to **Owner ID** only.
 | `$node` | `maintenance` | Toggle Owner-only mode (On/Off) |
 | `$node` | `ai` | Toggle global AI availability (On/Off) |
 | `$node` | `backup` | Execute database backup routine |
+| `$node` | `logs` | Remote technical log monitoring |
 
-### ENGINEERING_SUITE
-- `$py <code>`: Execute Python logic in live runtime environments.
-- `$sh <cmd>`: Direct Linux/WSL shell interaction.
-- `$reboot`: Force process termination and state-persistent respawn.
-- `$sync`: Synchronize repository with origin and hot-reload changes.
-- `$cfg`: Redacted inspection of active environment parameters.
+### DEV_TOOLS
+| Cmd | Function |
+| :--- | :--- |
+| `$core` | System dashboard (Inline keyboard) |
+| `$py` | Execute Python in live runtime |
+| `$sh` | Native shell / WSL interaction |
+| `$cfg` | Environment configuration suite |
+| `$live` | Toggle Watchdog (Auto-reboot on change) |
+| `$sync` | Force repository synchronization |
+| `$reboot`| Force-kill and respawn process |
+
+### MODERATION_OPS
+- `$purge / $revive`: Permanent ban / Unban operation.
+- `$hush / $speak`: Mute / Unmute restriction.
+- `$grant / $revoke`: Sudoer privilege management.
 
 ---
 
@@ -74,7 +84,7 @@ Privileged commands restricted to **Owner ID** only.
 1. **Clone**: `git clone https://github.com/itswill00/telegram-bot.git`
 2. **Venv**: `python3 -m venv .venv && source .venv/bin/activate`
 3. **Install**: `pip install -r requirements.txt`
-4. **Config**: `cp .example.env .env` (Add credentials)
+4. **Config**: `cp .example.env .env`
 5. **Run**: `python main.py`
 
 ### SCHEMA (.env)
