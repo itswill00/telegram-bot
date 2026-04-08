@@ -38,7 +38,7 @@ async def admin_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-        "<b>CORE_INTERFACE</b>\n"
+        "<b>CORE INTERFACE</b>\n"
         "Awaiting instruction:"
     )
     await update.message.reply_text(text, reply_markup=get_admin_keyboard(), parse_mode="HTML")
@@ -57,12 +57,12 @@ async def admin_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "admin_stats":
         stats = gather_system_stats()
         text = (
-            "<b>SYSTEM_TOPOLOGY</b>\n"
+            "<b>SYSTEM TOPOLOGY</b>\n"
             "<code>"
             f"PLATFORM : {stats['sys']['os']}\n"
             f"UPTIME   : {stats['sys']['uptime']}\n"
-            f"CPU_LOAD : {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
-            f"RAM_LOAD : {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
+            f"CPU LOAD : {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
+            f"RAM LOAD : {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
             f"STORAGE  : {stats['disk']['pct']:.1f}%"
             "</code>"
         )

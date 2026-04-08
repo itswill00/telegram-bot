@@ -1,0 +1,359 @@
+2026-04-08 13:18:35,181 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:18:35,184 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:18:35,980 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:18:35,986 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:18:37,021 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:18:37,389 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:18:38,024 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:18:38,037 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:18:38,118 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:18:40,371 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:19:59,904 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:19:59,907 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:20:00,343 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:20:00,345 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:20:01,034 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:20:01,250 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:20:01,460 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:20:01,464 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:20:01,853 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:20:01,857 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:20:02,247 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:20:02,513 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:20:02,537 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:20:02,612 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:20:02,612 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:20:02,757 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:20:02,884 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:20:04,888 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:20:05,088 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:20:05,093 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:20:05,095 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:20:14,801 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:20:24,792 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:20:35,580 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:20:45,333 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:20:55,361 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:06,204 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:15,952 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:25,985 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:36,798 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:46,593 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:21:56,604 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:07,402 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:17,393 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:27,265 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:37,327 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:48,159 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:22:57,911 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:07,955 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:18,654 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:28,549 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:38,555 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:49,312 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:23:59,231 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:24:09,203 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:24:20,028 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:24:29,983 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:24:39,975 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:24:50,090 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:00,690 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:10,557 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:20,688 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:31,492 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:41,166 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:51,316 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:25:55,196 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:26:05,917 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:26:15,750 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:26:22,767 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:26:24,136 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:26:24,186 - handlers.restart - INFO - [INFO] Rebooting process... (Signal from 6661463582)
+2026-04-08 13:26:31,926 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:26:31,928 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:26:32,250 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:26:32,251 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:26:32,886 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:26:33,082 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:26:33,277 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:26:33,280 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:26:33,639 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:26:33,643 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:26:34,001 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:26:34,257 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:26:34,271 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:26:34,738 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:26:34,739 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:26:34,950 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:26:35,054 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:26:37,055 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:26:37,234 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:26:37,240 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:26:37,242 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:26:40,423 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:26:40,867 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:26:50,384 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:00,569 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:11,323 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:11,544 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:13,440 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-04-08 13:27:13,823 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/editMessageText "HTTP/1.1 200 OK"
+2026-04-08 13:27:18,064 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:27:18,066 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:27:18,370 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:27:18,370 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:27:18,981 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:27:19,179 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:27:19,370 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:27:19,374 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:27:19,733 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:27:19,735 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:27:20,090 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:27:20,348 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:27:20,360 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:27:20,413 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:27:20,414 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:27:20,578 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:27:20,736 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:27:22,739 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:27:22,928 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:27:22,935 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:27:22,938 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:27:33,541 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:43,553 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:53,203 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:53,702 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:27:54,891 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:28:04,054 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:28:09,874 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:28:10,968 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:28:11,007 - handlers.restart - INFO - [INFO] Rebooting process... (Signal from 6661463582)
+2026-04-08 13:28:14,321 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:28:14,323 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:28:14,559 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:28:14,560 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:28:16,467 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:28:16,664 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:28:16,858 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:28:16,861 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:28:17,229 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:28:17,232 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:28:17,594 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:28:17,840 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:28:17,849 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:28:17,943 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:28:17,944 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:28:18,155 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:28:18,376 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:28:20,379 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:28:20,576 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:28:20,583 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:28:20,585 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:28:33,935 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:28:42,731 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:28:43,598 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:28:47,391 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:28:47,785 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-04-08 13:28:48,163 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/editMessageText "HTTP/1.1 200 OK"
+2026-04-08 13:28:48,555 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/editMessageText "HTTP/1.1 200 OK"
+2026-04-08 13:28:57,558 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:06,008 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:07,295 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:29:14,094 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:15,422 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:29:21,868 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:22,848 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:29:31,684 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:41,848 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:29:52,677 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:02,664 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:12,781 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:19,424 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:20,870 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:30:20,914 - handlers.restart - INFO - [INFO] Rebooting process... (Signal from 6661463582)
+2026-04-08 13:30:29,381 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:30:29,386 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:30:30,040 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:30:30,041 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:30:30,644 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:30:30,847 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:30:31,038 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:30:31,041 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:30:31,395 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:30:31,398 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:30:31,748 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:30:32,004 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:30:32,014 - __main__ - WARNING - [WARN] Failed to send restart notification: name 'json' is not defined
+2026-04-08 13:30:32,102 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:30:32,103 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:30:32,318 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:30:32,499 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:30:34,501 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:30:34,686 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:30:34,692 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:30:34,694 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:30:45,156 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:46,397 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:30:48,903 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:30:57,048 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:07,057 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:17,085 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:27,638 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:37,655 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:47,651 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:31:58,250 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:32:08,285 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:32:18,307 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:32:28,310 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:32:31,478 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:32:35,188 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:32:35,210 - handlers.restart - INFO - [INFO] Rebooting process... (Signal from 6661463582)
+2026-04-08 13:32:40,242 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:32:40,244 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:32:40,542 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:32:40,543 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:32:41,145 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:32:41,344 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:32:41,534 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:32:41,537 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:32:41,912 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:32:41,913 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:32:42,261 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:32:42,426 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:32:42,804 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:32:42,901 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:32:42,903 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:32:43,068 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:32:43,184 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:32:45,187 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:32:45,375 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:32:45,384 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:32:45,386 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:32:55,816 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:06,528 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:16,429 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:26,407 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:37,153 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:47,122 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:33:57,013 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:06,975 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:17,922 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:28,026 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:38,018 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:48,639 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:34:58,426 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:35:08,444 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:35:21,099 - asyncio - ERROR - [ERR ] Unhandled exception in event loop
+Traceback (most recent call last):
+  File "/home/bayu/.local/lib/python3.12/site-packages/telegram/ext/_application.py", line 1073, in __run
+    loop.run_until_complete(self.updater.stop())  # type: ignore[union-attr]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1512, in uvloop.loop.Loop.run_until_complete
+  File "uvloop/loop.pyx", line 1505, in uvloop.loop.Loop.run_until_complete
+  File "uvloop/loop.pyx", line 1379, in uvloop.loop.Loop.run_forever
+  File "uvloop/loop.pyx", line 557, in uvloop.loop.Loop._run
+  File "uvloop/loop.pyx", line 476, in uvloop.loop.Loop._on_idle
+  File "uvloop/cbhandles.pyx", line 83, in uvloop.loop.Handle._run
+  File "uvloop/cbhandles.pyx", line 61, in uvloop.loop.Handle._run
+  File "/home/bayu/.local/lib/python3.12/site-packages/telegram/ext/_application.py", line 449, in _raise_system_exit
+    raise SystemExit
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "uvloop/dns.pyx", line 448, in uvloop.loop.__on_addrinfo_resolved
+  File "uvloop/loop.pyx", line 928, in uvloop.loop.Loop._getaddrinfo.callback
+  File "uvloop/loop.pyx", line 1281, in uvloop.loop.Loop.call_soon
+  File "uvloop/loop.pyx", line 669, in uvloop.loop.Loop._call_soon
+  File "uvloop/loop.pyx", line 678, in uvloop.loop.Loop._call_soon_handle
+  File "uvloop/loop.pyx", line 673, in uvloop.loop.Loop._append_ready_handle
+  File "uvloop/loop.pyx", line 705, in uvloop.loop.Loop._check_closed
+RuntimeError: Event loop is closed
+2026-04-08 13:35:29,671 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:35:29,674 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:35:29,934 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:35:29,935 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:35:30,604 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:35:30,899 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:35:31,086 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:35:31,089 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:35:31,437 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:35:31,440 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:35:31,785 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:35:31,913 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:35:31,964 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:35:31,965 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:35:32,084 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:35:32,200 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:35:34,203 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:35:34,392 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:35:34,398 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:35:34,400 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:35:36,893 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:35:37,003 - handlers.restart - INFO - [INFO] Rebooting process... (Signal from 6661463582)
+2026-04-08 13:35:40,274 - __main__ - INFO - [INFO] Initializing system kernel
+2026-04-08 13:35:40,276 - __main__ - WARNING - [WARN] Local Telegram Bot API unavailable, using remote endpoint
+2026-04-08 13:35:40,525 - __main__ - INFO - [INFO] --- SYSTEM ONLINE ---
+2026-04-08 13:35:40,526 - __main__ - INFO - [INFO] Polling service active
+2026-04-08 13:35:41,116 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:35:41,315 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:35:41,503 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:35:41,506 - __main__ - INFO - [INFO] Identity loaded: @noticesas_bot
+2026-04-08 13:35:41,928 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/setMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:35:41,930 - __main__ - INFO - [INFO] Global command set synchronized (Prefix: '.')
+2026-04-08 13:35:42,334 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMyCommands "HTTP/1.1 200 OK"
+2026-04-08 13:35:42,566 - __main__ - INFO - [INFO] System configuration database initialized
+2026-04-08 13:35:42,999 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:35:43,092 - __main__ - INFO - [INFO] Automated backup routine is currently suspended
+2026-04-08 13:35:43,093 - utils.startup - INFO - [INFO] ✓ Running startup tasks...
+2026-04-08 13:35:43,223 - utils.startup - INFO - [INFO] ✓ Welcome cache loaded
+2026-04-08 13:35:43,318 - utils.startup - INFO - [INFO] ✓ Premium cache initialized
+2026-04-08 13:35:45,321 - __main__ - INFO - [INFO] Boot sequence completed successfully
+2026-04-08 13:35:45,514 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-08 13:35:45,520 - apscheduler.scheduler - INFO - [INFO] Scheduler started
+2026-04-08 13:35:45,521 - telegram.ext.Application - INFO - [INFO] Application started
+2026-04-08 13:35:56,576 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:06,445 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:16,457 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:27,254 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:37,187 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:47,142 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:36:57,874 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:07,822 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:17,811 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:28,566 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:38,534 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:48,498 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:37:59,249 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:09,230 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:19,158 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:29,138 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:39,933 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:49,863 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:52,228 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:38:53,185 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/sendMessage "HTTP/1.1 200 OK"
+2026-04-08 13:38:53,372 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getMe "HTTP/1.1 200 OK"
+2026-04-08 13:38:54,031 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getFile "HTTP/1.1 200 OK"
+2026-04-08 13:38:54,296 - httpx - INFO - [INFO] HTTP Request: GET https://api.telegram.org/file/bot8780321748%3AAAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/stickers/file_1.webp "HTTP/1.1 200 OK"
+2026-04-08 13:38:55,631 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getStickerSet "HTTP/1.1 400 Bad Request"
+2026-04-08 13:38:58,267 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/createNewStickerSet "HTTP/1.1 200 OK"
+2026-04-08 13:38:58,681 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/editMessageText "HTTP/1.1 200 OK"
+2026-04-08 13:39:02,218 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:39:12,959 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:39:22,994 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:39:33,105 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:39:43,854 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:39:53,804 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:03,753 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:14,532 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:24,494 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:34,453 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:45,188 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:40:55,149 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:05,096 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:15,051 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:26,747 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:36,690 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:46,646 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"
+2026-04-08 13:41:57,405 - httpx - INFO - [INFO] HTTP Request: POST https://api.telegram.org/bot8780321748:AAFBdXQW8JWeR2lr3cpsyrydZz62lXBOExg/getUpdates "HTTP/1.1 200 OK"

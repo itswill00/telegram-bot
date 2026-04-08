@@ -29,7 +29,7 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
             if resp.status != 200:
-                await status_msg.edit_text("<b>ERROR</b>\nMETEOR_SERVER_UNREACHABLE", parse_mode="HTML")
+                await status_msg.edit_text("<b>ERROR</b>\nMETEOR SERVER UNREACHABLE", parse_mode="HTML")
                 await asyncio.sleep(5)
                 return await status_msg.delete()
             data = await resp.json()
@@ -55,10 +55,11 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         loc_str = loc_str.upper()
 
     except Exception:
-        return await status_msg.edit_text("<b>ERROR</b>\nDATA_PARSING_FAILED", parse_mode="HTML")
+        return await status_msg.edit_text("<b>ERROR</b>\nDATA PARSING FAILED", parse_mode="HTML")
 
     report = (
-        f"<b>WEATHER_REPORT</b>\n"
+        f"<b>WEATHER REPORT</b>\n"
+
         f"• LOCATION: <code>{html.escape(loc_str)}</code>\n"
         f"• SUMMARY : <code>{weather_desc.upper()}</code>\n"
         f"• TEMP    : <code>{temp_c}°C</code> (Feels like {feels}°C)\n"

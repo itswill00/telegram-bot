@@ -177,13 +177,14 @@ async def post_init(app):
                     import socket
                     host = socket.gethostname()
                     text = (
-                        "<b>REBOOT_SEQUENCE_COMPLETE</b>\n"
+                        "<b>REBOOT SEQUENCE COMPLETE</b>\n"
                         "<code>"
                         f"STATUS : ACTIVE\n"
                         f"NODE   : {host}\n"
                         f"STATE  : OPERATIONAL"
                         "</code>"
                     )
+
                     await app.bot.send_message(
                         chat_id=chat_id,
                         text=text,

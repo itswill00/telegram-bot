@@ -9,9 +9,7 @@ async def ping_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     end = time.perf_counter()
     latency = int((end - start) * 1000)
     await msg.edit_text(
-        f"<b>CONNECTION_STATUS</b>\n"
+        f"<b>CONNECTION STATUS</b>\n"
         f"• LATENCY: <code>{latency} ms</code>",
         parse_mode="HTML"
     )
-
-
