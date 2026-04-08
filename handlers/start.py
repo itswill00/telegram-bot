@@ -13,10 +13,8 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     name = (user.first_name or "").strip() or "Anonymous"
     text = (
-        f"<b>SYSTEM DAEMON ONLINE</b>\n"
-        f"• USER IDENTITY : <code>{name}</code>\n"
-        f"• REGISTRY ID   : <code>{user.id}</code>\n"
-        f"• STATUS        : <code>ACTIVE</code>\n\n"
-        f"<i>Ketik /help untuk mengakses indeks utilitas publik bot ini.</i>"
+        f"<b>Telebot Internal Network</b>\n\n"
+        f"Session initialized. Welcome, <code>{name}</code>.\n\n"
+        f"Use /help to view command reference."
     )
     await update.message.reply_text(text, parse_mode="HTML")
