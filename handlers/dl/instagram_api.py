@@ -167,6 +167,27 @@ def _pick_media_for_format(candidates: list[tuple[str, str]], fmt_key: str) -> t
     return candidates[0]
 
 
+async def cobalt_api_fetch(url: str) -> dict | None:
+    session = await get_http_session()
+    try:
+        async with session.post(
+            "https://cobalt.tools/api/json",
+            json={"url": url, "videoQuality": "1080", "isAudioOnly": False},
+            headers={
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Origin": "https://cobalt.tools",
+                "Referer": "https://cobalt.tools/",
+            },
+            timeout=aiohttp.ClientTimeout(total=20),
+        ) as resp:
+            data = await resp.json()
+            if data.get("status") == "stream" or data.get("status") == "picker":
+                return data
+    except Exception as e:
+        print("Cobalt API Error", e)
+    return None
+
 async def instagram_api_download(
     raw_url: str,
     fmt_key: str,
@@ -176,97 +197,71 @@ async def instagram_api_download(
 ):
     session = await get_http_session()
 
-    try:
-        await bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=status_msg_id,
-            text="Querying metadata...",
-            parse_mode="HTML",
-        )
-    except Exception:
-        pass
+    async def update_status(text: str):
+        try:
+            await bot.edit_message_text(
+                chat_id=chat_id,
+                message_id=status_msg_id,
+                text=text,
+                parse_mode="HTML",
+            )
+        except Exception:
+            pass
 
+    await update_status("Querying metadata...")
+
+    # Primary: Sonzai
     try:
         async with session.get(
             INSTAGRAM_API_URL,
             params={"url": raw_url},
-            timeout=aiohttp.ClientTimeout(total=25),
+            timeout=aiohttp.ClientTimeout(total=20),
         ) as resp:
             data = await resp.json(content_type=None)
 
-        if not isinstance(data, dict):
-            raise RuntimeError("Instagram API returned invalid response")
-
-        if str(data.get("status") or "").lower() != "success":
-            raise RuntimeError(data.get("message") or "Instagram API request failed")
-
-        candidates = _extract_media_candidates(data)
-        picked = _pick_media_for_format(candidates, fmt_key)
-
-        if not picked:
-            if fmt_key == "mp3":
-                raise RuntimeError("Instagram image post does not contain audio")
-            raise RuntimeError("No downloadable Instagram media found")
-
-        media_type, media_url = picked
-        title = _build_title(data, media_type)
-
-        async with session.get(
-            media_url,
-            timeout=aiohttp.ClientTimeout(total=180),
-        ) as media_resp:
-            if media_resp.status >= 400:
-                raise RuntimeError(f"Failed to download media: HTTP {media_resp.status}")
-
-            total = int(media_resp.headers.get("Content-Length", 0))
-            content_type = media_resp.headers.get("Content-Type", "")
-            ext = _guess_ext(content_type, media_type, media_url)
-
-            safe_title = sanitize_filename(title)
-            out_path = os.path.join(TMP_DIR, f"{uuid.uuid4().hex}_{safe_title}{ext}")
-
-            downloaded = 0
-            last = 0.0
-
-            async with aiofiles.open(out_path, "wb") as f:
-                async for chunk in media_resp.content.iter_chunked(64 * 1024):
-                    await f.write(chunk)
-                    downloaded += len(chunk)
-
-                    if total and time.time() - last >= 1.0:
-                        pct = downloaded / total * 100
-                        try:
-                            await bot.edit_message_text(
-                                chat_id=chat_id,
-                                message_id=status_msg_id,
-                                text=(
-                                    "Executing acquisition...\n"
-                                    f"<code>{progress_bar(pct)}</code>"
-                                ),
-                                parse_mode="HTML",
-                            )
-                        except Exception:
-                            pass
-                        last = time.time()
-
-        return {
-            "path": out_path,
-            "title": title,
-        }
-
+        if isinstance(data, dict) and str(data.get("status") or "").lower() == "success":
+            candidates = _extract_media_candidates(data)
+            picked = _pick_media_for_format(candidates, fmt_key)
+            if picked:
+                media_type, media_url = picked
+                title = _build_title(data, media_type)
+                
+                # Try download
+                path = await _download_file(session, media_url, title, bot, chat_id, status_msg_id)
+                if path:
+                    return {"path": path, "title": title}
     except Exception as e:
         print("Instagram Sonzai Failed", repr(e))
 
+    # Secondary: Cobalt
+    await update_status("Synchronizing secondary node...")
     try:
-        await bot.edit_message_text(
-            chat_id=chat_id,
-            message_id=status_msg_id,
-            text="Metadata source failed. Switching to secondary index...",
-            parse_mode="HTML",
-        )
-    except Exception:
-        pass
+        data = await cobalt_api_fetch(raw_url)
+        if data:
+            if data.get("status") == "stream":
+                media_url = data.get("url")
+                title = "Instagram Media"
+                path = await _download_file(session, media_url, title, bot, chat_id, status_msg_id)
+                if path:
+                    return {"path": path, "title": title}
+            elif data.get("status") == "picker":
+                picker_items = data.get("picker") or []
+                # If picker, we return multiple items
+                downloaded = []
+                for idx, item in enumerate(picker_items):
+                    p_url = item.get("url")
+                    if p_url:
+                        p_path = await _download_file(session, p_url, f"Item {idx}", bot, chat_id, status_msg_id, silent=True)
+                        if p_path:
+                            downloaded.append({"path": p_path, "type": "video" if "video" in (item.get("type") or "") else "photo"})
+                
+                if downloaded:
+                    return {"items": downloaded, "title": "Instagram Media"}
+    except Exception as e:
+        print("Cobalt Failed", e)
 
+    # Tertiary: Scraper Fallback (Indown/SnapSave)
+    await update_status("Executing legacy fallback protocol...")
     return await igdl_download_for_fallback(
         bot=bot,
         chat_id=chat_id,
@@ -274,6 +269,57 @@ async def instagram_api_download(
         status_msg_id=status_msg_id,
         url=raw_url,
     )
+
+async def _download_file(session, url, title, bot, chat_id, status_msg_id, silent=False):
+    # Standard header mimic
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+        "Accept": "*/*",
+    }
+    
+    # Referer logic
+    if "cdninstagram.com" in url or "fbcdn.net" in url:
+        headers["Referer"] = "https://www.instagram.com/"
+        headers["Origin"] = "https://www.instagram.com"
+
+    try:
+        async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=300)) as resp:
+            if resp.status >= 400:
+                print(f"Download Error {resp.status} for {url}")
+                return None
+                
+            total = int(resp.headers.get("Content-Length", 0))
+            content_type = resp.headers.get("Content-Type", "")
+            
+            # Simplified media type for ext guessing
+            m_type = "video" if "video" in content_type else "photo"
+            ext = _guess_ext(content_type, m_type, url)
+            
+            out_path = os.path.join(TMP_DIR, f"{uuid.uuid4().hex}_{sanitize_filename(title)}{ext}")
+            
+            downloaded = 0
+            last_edit = 0.0
+            
+            async with aiofiles.open(out_path, "wb") as f:
+                async for chunk in resp.content.iter_chunked(128 * 1024):
+                    await f.write(chunk)
+                    downloaded += len(chunk)
+                    
+                    if not silent and total and time.time() - last_edit >= 1.5:
+                        pct = (downloaded / total) * 100
+                        try:
+                            await bot.edit_message_text(
+                                chat_id=chat_id,
+                                message_id=status_msg_id,
+                                text=f"Executing acquisition...\n<code>{progress_bar(pct)}</code>",
+                                parse_mode="HTML"
+                            )
+                        except Exception: pass
+                        last_edit = time.time()
+            return out_path
+    except Exception as e:
+        print(f"File download failed: {e}")
+        return None
 
 
 async def send_instagram_result(bot, chat_id: int, reply_to: int, result: dict):

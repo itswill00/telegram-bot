@@ -383,10 +383,13 @@ async def _download_remote_media(url: str, source: str = "") -> dict:
     lower_url = (url or "").lower()
     source = (source or "").lower()
 
-    if "rapidcdn.app" in lower_url or source == "snapsave":
+    if "indown.io" in lower_url or source == "indown":
+        headers["Referer"] = "https://indown.io/"
+        headers["Origin"] = "https://indown.io"
+    elif "snapsave.app" in lower_url or "rapidcdn.app" in lower_url or source == "snapsave":
         headers["Referer"] = "https://snapsave.app/"
         headers["Origin"] = "https://snapsave.app"
-    elif "cdninstagram.com" in lower_url or "fbcdn.net" in lower_url or source == "indown":
+    elif "cdninstagram.com" in lower_url or "fbcdn.net" in lower_url:
         headers["Referer"] = "https://www.instagram.com/"
         headers["Origin"] = "https://www.instagram.com"
 
@@ -400,6 +403,13 @@ async def _download_remote_media(url: str, source: str = "") -> dict:
                 allow_redirects=True,
                 timeout=aiohttp.ClientTimeout(total=180),
             ) as resp:
+                # If 403 on a proxy URL, try direct
+                if resp.status == 403 and "indown.io/fetch" in lower_url:
+                    direct_url = _decode_indown_fetch(url)
+                    if direct_url != url:
+                        print(f"Indown Proxy 403 → Trying direct: {direct_url}")
+                        return await _download_remote_media(direct_url, source="")
+
                 if resp.status >= 400:
                     raise RuntimeError(f"Failed to download media: HTTP {resp.status}")
 
