@@ -96,7 +96,7 @@ def _pick_auto_resolution(res_map: dict[int, dict], preferred_height: int):
 
 async def _start_dl_task(context, message, data, fmt_key, format_id=None, has_audio=False, label=None):
     await message.edit_text(
-        f"<b>Acquisition Initiated </b>\n"
+        "Acquisition initiated.\n"
         f"Preparing <code>{label or DL_FORMATS[fmt_key]['label']}</code>...",
         parse_mode="HTML",
     )
@@ -119,7 +119,7 @@ async def _process_choice(context, message, dl_id: str, data: dict, choice: str,
     url = data["url"]
 
     if choice == "video" and is_youtube(url):
-        await message.edit_text("<b>Query In Progress </b>\nParsing metadata...", parse_mode="HTML")
+        await message.edit_text("Parsing metadata...", parse_mode="HTML")
         res_list = await get_resolutions(url)
 
         if not res_list:
@@ -215,15 +215,15 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not await _is_admin_or_owner(update, context):
-        return await msg.reply_text("<b>ERROR:</b> Hanya Admin / Owner yang dapat menyetel ini.", parse_mode="HTML")
+        return await msg.reply_text("<b>ERROR:</b> Access restricted to administrators.", parse_mode="HTML")
 
     groups = load_auto_dl()
     arg = context.args[0].lower() if context.args else ""
 
     if arg == "list" and user_id in OWNER_ID:
         if not groups:
-            return await msg.reply_text("Tidak ada grup dengan Auto-detect nyala.", parse_mode="HTML")
-        lines = ["<b>Daftar Grup Auto-detect Aktif:</b>\n"]
+            return await msg.reply_text("Registry empty. No active nodes found.", parse_mode="HTML")
+        lines = ["<b>Active Network Nodes:</b>\n"]
         for gid in groups:
             try:
                 c = await context.bot.get_chat(gid)
@@ -311,7 +311,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await msg.reply_text(
-            f"<b>Auto Pipeline </b>\nSelecting <code>{auto_choice.upper()}</code>...",
+            f"Automated pipeline active. Target: <code>{auto_choice.upper()}</code>",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -324,8 +324,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     
     await msg.reply_text(
-        "<b>Url Detected </b>\n"
-        "Download pipeline standing by.",
+        "Link detected. Standing by for operation.",
         reply_markup=autodl_detect_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -490,7 +489,7 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await update.message.reply_text(
-            f"<b>Auto Pipeline </b>\nSelecting <code>{auto_choice.upper()}</code>...",
+            f"Automated pipeline active. Target: <code>{auto_choice.upper()}</code>",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -578,8 +577,7 @@ async def dlres_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     label = f"{height}p" if height else "video"
     await q.edit_message_text(
-        f"<b>Acquisition Initiated </b>\n"
-        f"Preparing <code>{html.escape(label)}</code>...",
+        f"Acquisition initiated. Preparing <code>{html.escape(label)}</code>...",
         parse_mode="HTML",
     )
 

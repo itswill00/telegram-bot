@@ -56,8 +56,8 @@ def _build_safe_caption(title: str, bot_name: str, max_len: int = 1024) -> str:
     clean_title = (title or "Media").strip()
     safe_bot = html.escape(bot_name or "Bot")
 
-    suffix = f"\n\n🪄 <i>Powered by {safe_bot}</i>"
-    prefix = "<blockquote expandable>🎬 "
+    suffix = f"\n\n<i>Verified by {safe_bot}</i>"
+    prefix = "<blockquote expandable>Target: "
     closing = "</blockquote>"
 
     full = f"{prefix}{html.escape(clean_title)}{closing}{suffix}"
@@ -76,8 +76,8 @@ def _build_safe_photo_caption(title: str, bot_name: str, max_len: int = 1024) ->
     clean_title = (title or "Image").strip()
     safe_bot = html.escape(bot_name or "Bot")
 
-    suffix = f"\n\n🪄 <i>Powered by {safe_bot}</i>"
-    prefix = "<blockquote expandable>🖼️ "
+    suffix = f"\n\n<i>Verified by {safe_bot}</i>"
+    prefix = "<blockquote expandable>Target: "
     closing = "</blockquote>"
 
     full = f"{prefix}{html.escape(clean_title)}{closing}{suffix}"
@@ -182,7 +182,7 @@ async def send_downloaded_media(
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=status_msg_id,
-            text="<b>Uploading...</b>",
+            text="Transmitting assets...",
             parse_mode="HTML",
         )
 
@@ -207,7 +207,7 @@ async def send_downloaded_media(
     await bot.edit_message_text(
         chat_id=chat_id,
         message_id=status_msg_id,
-        text="<b>Uploading...</b>",
+        text="Transmitting assets...",
         parse_mode="HTML",
     )
 
@@ -281,7 +281,7 @@ async def download_non_tiktok(
                 await bot.edit_message_text(
                     chat_id=chat_id,
                     message_id=status_msg_id,
-                    text="<b>Trying yt-dlp...</b>",
+                    text="Executing extraction (Primary)...",
                     parse_mode="HTML",
                 )
             except Exception:
@@ -310,10 +310,7 @@ async def download_non_tiktok(
                 await bot.edit_message_text(
                     chat_id=chat_id,
                     message_id=status_msg_id,
-                    text=(
-                        "<b>yt-dlp failed</b>\n\n"
-                        "<i>Fallback to Sonzai API...</i>"
-                    ),
+                    text="Primary extraction failed. Switching to secondary index...",
                     parse_mode="HTML",
                 )
             except Exception:

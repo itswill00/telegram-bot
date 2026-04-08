@@ -41,21 +41,22 @@ async def igdl_download_for_fallback(bot, chat_id: int, reply_to: int, status_ms
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=status_msg_id,
-            text="<b>Downloading Instagram media...</b>",
+            text="Downloading assets...",
             parse_mode="HTML",
         )
     except Exception:
         pass
 
-    failed_count = 0
-
-    for media_url in urls:
+    async def download_task(m_url):
         try:
-            downloaded.append(await _download_remote_media(media_url, source=source))
+            return await _download_remote_media(m_url, source=source)
         except Exception as e:
-            failed_count += 1
-            print("Ig Scraper Download Error", media_url, repr(e))
-            continue
+            print("Ig Scraper Download Error", m_url, repr(e))
+            return None
+
+    tasks = [download_task(m_url) for m_url in urls]
+    downloaded_results = await asyncio.gather(*tasks)
+    downloaded = [d for d in downloaded_results if d is not None]
 
     if not downloaded:
         raise RuntimeError("All media downloads failed")
@@ -158,25 +159,25 @@ def _build_caption(source: str, count: int, bot_name: str, max_len: int = 1024) 
 
     def plain_len(t: str, d: str) -> int:
         if d:
-            return len(f"📸 {t}\n\n{d}\n\n{footer_plain}")
-        return len(f"📸 {t}\n\n{footer_plain}")
+            return len(f"Target: {t}\n\n{d}\n\nRegistry ID: {clean_bot}")
+        return len(f"Target: {t}\n\nRegistry ID: {clean_bot}")
 
     short_title = clean_title
     short_desc = clean_desc
 
     if short_desc:
-        allowed_desc = max_len - len(f"📸 {short_title}\n\n\n\n{footer_plain}")
+        allowed_desc = max_len - len(f"Target: {short_title}\n\n\n\nRegistry ID: {clean_bot}")
         short_desc = _truncate_text(short_desc, allowed_desc)
 
     if plain_len(short_title, short_desc) > max_len:
         if short_desc:
-            allowed_title = max_len - len(f"📸 \n\n{short_desc}\n\n{footer_plain}")
+            allowed_title = max_len - len(f"Target: \n\n{short_desc}\n\nRegistry ID: {clean_bot}")
         else:
-            allowed_title = max_len - len(f"📸 \n\n{footer_plain}")
+            allowed_title = max_len - len(f"Target: \n\nRegistry ID: {clean_bot}")
         short_title = _truncate_text(short_title, allowed_title)
 
     if short_desc and plain_len(short_title, short_desc) > max_len:
-        allowed_desc = max_len - len(f"📸 {short_title}\n\n\n\n{footer_plain}")
+        allowed_desc = max_len - len(f"Target: {short_title}\n\n\n\nRegistry ID: {clean_bot}")
         short_desc = _truncate_text(short_desc, allowed_desc)
 
     if not short_title:
@@ -184,13 +185,13 @@ def _build_caption(source: str, count: int, bot_name: str, max_len: int = 1024) 
 
     if short_desc:
         return (
-            f"<blockquote expandable>📸 {html.escape(short_title)}</blockquote>\n\n"
-            f"🪄 <i>Powered by {html.escape(clean_bot)}</i>"
+            f"<blockquote expandable>Registry: {html.escape(short_title)}</blockquote>\n\n"
+            f"<i>Verified by {html.escape(clean_bot)}</i>"
         )
 
     return (
-        f"<blockquote expandable>📸 {html.escape(short_title)}</blockquote>\n\n"
-        f"🪄 <i>Powered by {html.escape(clean_bot)}</i>"
+        f"<blockquote expandable>Registry: {html.escape(short_title)}</blockquote>\n\n"
+        f"<i>Verified by {html.escape(clean_bot)}</i>"
     )
 
 
@@ -580,7 +581,7 @@ async def ig_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await msg.reply_text("Invalid Instagram link.")
 
     status = await msg.reply_text(
-        "<b>Fetching Instagram media...</b>",
+        "Parsing metadata...",
         parse_mode="HTML",
         reply_to_message_id=msg.message_id,
     )
@@ -596,49 +597,36 @@ async def ig_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             await status.edit_text(
-                "<b>Downloading Instagram media...</b>",
+                "Acquiring assets...",
                 parse_mode="HTML",
             )
         except Exception:
             pass
 
-        failed_count = 0
-
-        for media_url in urls:
+        async def download_task(m_url):
             try:
-                downloaded.append(await _download_remote_media(media_url, source=source))
+                return await _download_remote_media(m_url, source=source)
             except Exception as e:
-                failed_count += 1
-                print("Ig Scraper Download Error", media_url, repr(e))
-                continue
+                print("Ig Scraper Download Error", m_url, repr(e))
+                return None
+
+        # Execute parallel downloads
+        tasks = [download_task(m_url) for m_url in urls]
+        downloaded_results = await asyncio.gather(*tasks)
+        downloaded = [d for d in downloaded_results if d is not None]
 
         if not downloaded:
             raise RuntimeError("All media downloads failed")
 
         downloaded = _dedupe_downloaded_items(downloaded)
 
-        if not downloaded:
-            raise RuntimeError("All media downloads were duplicates or invalid")
-
-        if failed_count:
-            try:
-                await status.edit_text(
-                    (
-                        "<b>Uploading Instagram media...</b>\n\n"
-                        f"<i>Downloaded {len(downloaded)} item(s), skipped {failed_count} item(s).</i>"
-                    ),
-                    parse_mode="HTML",
-                )
-            except Exception:
-                pass
-        else:
-            try:
-                await status.edit_text(
-                    "<b>Uploading Instagram media...</b>",
-                    parse_mode="HTML",
-                )
-            except Exception:
-                pass
+        try:
+            await status.edit_text(
+                "Indexing items...",
+                parse_mode="HTML",
+            )
+        except Exception:
+            pass
 
         await _send_ig_result(
             bot=context.bot,
@@ -655,7 +643,7 @@ async def ig_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await status.edit_text(
-            f"<b>Failed to download Instagram media</b>\n\n<code>{html.escape(str(e))}</code>",
+            f"<b>Acquisition failed</b>\n\n<code>{html.escape(str(e))}</code>",
             parse_mode="HTML",
         )
     finally:

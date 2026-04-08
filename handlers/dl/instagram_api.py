@@ -180,7 +180,7 @@ async def instagram_api_download(
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=status_msg_id,
-            text="<b>Fetching Instagram media...</b>",
+            text="Querying metadata...",
             parse_mode="HTML",
         )
     except Exception:
@@ -240,7 +240,7 @@ async def instagram_api_download(
                                 chat_id=chat_id,
                                 message_id=status_msg_id,
                                 text=(
-                                    "<b>Download use sonzai api...</b>\n\n"
+                                    "Executing acquisition...\n"
                                     f"<code>{progress_bar(pct)}</code>"
                                 ),
                                 parse_mode="HTML",
@@ -261,7 +261,7 @@ async def instagram_api_download(
         await bot.edit_message_text(
             chat_id=chat_id,
             message_id=status_msg_id,
-            text="<b>Sonzai failed, fallback to Indown...</b>",
+            text="Metadata source failed. Switching to secondary index...",
             parse_mode="HTML",
         )
     except Exception:
