@@ -96,8 +96,7 @@ def _pick_auto_resolution(res_map: dict[int, dict], preferred_height: int):
 
 async def _start_dl_task(context, message, data, fmt_key, format_id=None, has_audio=False, label=None):
     await message.edit_text(
-        "Acquisition initiated.\n"
-        f"Preparing <code>{label or DL_FORMATS[fmt_key]['label']}</code>...",
+        f"Processing: <code>{label or DL_FORMATS[fmt_key]['label']}</code>...",
         parse_mode="HTML",
     )
 
@@ -119,13 +118,13 @@ async def _process_choice(context, message, dl_id: str, data: dict, choice: str,
     url = data["url"]
 
     if choice == "video" and is_youtube(url):
-        await message.edit_text("Parsing metadata...", parse_mode="HTML")
+        await message.edit_text("Fetching metadata...", parse_mode="HTML")
         res_list = await get_resolutions(url)
 
         if not res_list:
             DL_CACHE.pop(dl_id, None)
             return await message.edit_text(
-                "No valid resolutions available (possibly all exceed Telegram limit).",
+                "ERROR: NO_VALID_RESOLUTIONS",
                 parse_mode="HTML",
             )
 
@@ -192,17 +191,17 @@ async def _is_admin_or_owner(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 def autodl_keyboard(chat_id: int, is_enabled: bool):
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-    status = "ACTIVE" if is_enabled else "DISABLE"
+    status = "ON" if is_enabled else "OFF"
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton(f"Status AutoDL: {status}", callback_data="autodl_toggle:ignore"),
+            InlineKeyboardButton(f"AutoDL: {status}", callback_data="autodl_toggle:ignore"),
         ],
         [
             InlineKeyboardButton("ENABLE", callback_data=f"autodl_toggle:{chat_id}:enable"),
             InlineKeyboardButton("DISABLE", callback_data=f"autodl_toggle:{chat_id}:disable"),
         ],
         [
-            InlineKeyboardButton("Tutup Menu", callback_data=f"autodl_toggle:{chat_id}:close")
+            InlineKeyboardButton("CLOSE", callback_data=f"autodl_toggle:{chat_id}:close")
         ]
     ])
 
@@ -215,15 +214,15 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not await _is_admin_or_owner(update, context):
-        return await msg.reply_text("<b>ERROR:</b> Access restricted to administrators.", parse_mode="HTML")
+        return await msg.reply_text("<b>ERROR:</b> ADMIN_ONLY", parse_mode="HTML")
 
     groups = await load_auto_dl()
     arg = context.args[0].lower() if context.args else ""
 
     if arg == "list" and user_id in OWNER_ID:
         if not groups:
-            return await msg.reply_text("Registry empty. No active nodes found.", parse_mode="HTML")
-        lines = ["<b>Active Network Nodes:</b>\n"]
+            return await msg.reply_text("List empty.", parse_mode="HTML")
+        lines = ["<b>Active Nodes:</b>\n"]
         for gid in groups:
             try:
                 c = await context.bot.get_chat(gid)
@@ -235,8 +234,8 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     is_enabled = chat.id in (await load_auto_dl())
     await msg.reply_text(
-        "<b>Auto Download Protocol </b>\n"
-        "Select state below:",
+        "<b>AutoDL Settings</b>\n"
+        "Select state:",
         reply_markup=autodl_keyboard(chat.id, is_enabled),
         parse_mode="HTML"
     )
@@ -258,11 +257,11 @@ async def autodl_toggle_callback(update: Update, context: ContextTypes.DEFAULT_T
     if action == "enable":
         groups.add(chat_id)
         await save_auto_dl(groups)
-        await q.answer("Pengaturan Disimpan: AKTIF")
+        await q.answer("AUTO_DL: ON")
     elif action == "disable":
         groups.discard(chat_id)
         await save_auto_dl(groups)
-        await q.answer("Pengaturan Disimpan: MATI")
+        await q.answer("AUTO_DL: OFF")
         
     is_enabled = chat_id in groups
     try:
@@ -279,7 +278,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
     text = normalize_url(msg.text)
 
-    if text.startswith("/"):
+    if text.startswith("."):
         return
 
     if not is_supported_platform(text):
@@ -296,7 +295,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if is_premium_required(text, PREMIUM_ONLY_DOMAINS) and not is_premium_user(update.effective_user.id):
-        return await msg.reply_text("<b>Access Denied </b>\nPrivilege error: Domain strict policy.", parse_mode="HTML")
+        return await msg.reply_text("<b>ERROR:</b> PREMIUM_DOMAIN_ONLY", parse_mode="HTML")
 
     dl_id = uuid.uuid4().hex[:8]
 
@@ -311,7 +310,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await msg.reply_text(
-            f"Automated pipeline active. Target: <code>{auto_choice.upper()}</code>",
+            f"AutoDL: <code>{auto_choice.upper()}</code>",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -324,7 +323,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     
     await msg.reply_text(
-        "Link detected. Standing by for operation.",
+        "Link detected. Select format:",
         reply_markup=autodl_detect_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -341,17 +340,17 @@ async def dlask_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     data = DL_CACHE.get(dl_id)
     if not data:
-        return await q.edit_message_text("Request expired")
+        return await q.edit_message_text("EXPIRED")
 
     if q.from_user.id != data["user"]:
-        return await q.answer("This is not your request", show_alert=True)
+        return await q.answer("UNAUTHORIZED", show_alert=True)
 
     if action == "close":
         DL_CACHE.pop(dl_id, None)
         return await q.message.delete()
 
     await q.edit_message_text(
-        text="Select operation format:",
+        text="Format:",
         reply_markup=dl_keyboard(dl_id),
         parse_mode="HTML",
     )
@@ -379,7 +378,7 @@ async def _dl_worker(app, chat_id, reply_to, raw_url, fmt_key, status_msg_id, fo
                         os.remove(path)
                     except Exception:
                         pass
-                    raise RuntimeError("Static video")
+                    raise RuntimeError("STATIC_VIDEO")
 
                 return (False, path)
 
@@ -451,7 +450,7 @@ async def _dl_worker(app, chat_id, reply_to, raw_url, fmt_key, status_msg_id, fo
             await bot.edit_message_text(
                 chat_id=chat_id,
                 message_id=status_msg_id,
-                text=f"Failed: {e}",
+                text=f"ERROR: {e}",
             )
         except Exception:
             pass
@@ -470,13 +469,13 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        return await update.message.reply_text("Send a TikTok link / YT-dlp supported platform link")
+        return await update.message.reply_text("Usage: .dl [url]")
 
     url = context.args[0]
 
     if is_premium_required(url, PREMIUM_ONLY_DOMAINS):
         if not is_premium_user(update.effective_user.id):
-            return await update.message.reply_text("<b>Access Denied </b>\nPrivilege error: Domain strict policy", parse_mode="HTML")
+            return await update.message.reply_text("<b>ERROR:</b> PREMIUM_DOMAIN_ONLY", parse_mode="HTML")
 
     dl_id = uuid.uuid4().hex[:8]
     DL_CACHE[dl_id] = {
@@ -490,7 +489,7 @@ async def dl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if auto_choice in ("video", "mp3"):
         status = await update.message.reply_text(
-            f"Automated pipeline active. Target: <code>{auto_choice.upper()}</code>",
+            f"AutoDL: <code>{auto_choice.upper()}</code>",
             parse_mode="HTML",
         )
         return await _process_choice(
@@ -519,14 +518,14 @@ async def dl_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     data = DL_CACHE.get(dl_id)
     if not data:
-        return await q.edit_message_text("Data expired")
+        return await q.edit_message_text("EXPIRED")
 
     if q.from_user.id != data["user"]:
-        return await q.answer("This is not your request", show_alert=True)
+        return await q.answer("UNAUTHORIZED", show_alert=True)
 
     if choice == "cancel":
         DL_CACHE.pop(dl_id, None)
-        return await q.edit_message_text("Cancelled")
+        return await q.edit_message_text("CANCELLED")
 
     return await _process_choice(
         context=context,
@@ -549,10 +548,10 @@ async def dlres_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     data = DL_CACHE.get(dl_id)
     if not data:
-        return await q.edit_message_text("Data expired")
+        return await q.edit_message_text("EXPIRED")
 
     if q.from_user.id != data["user"]:
-        return await q.answer("This is not your request", show_alert=True)
+        return await q.answer("UNAUTHORIZED", show_alert=True)
 
     try:
         height = int(h)
@@ -569,8 +568,7 @@ async def dlres_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if total_size and total_size > MAX_TG_SIZE:
         DL_CACHE.pop(dl_id, None)
         return await q.edit_message_text(
-            "<b>File too large</b> (Exceeds Telegram 2GB limit).\n"
-            "Please choose a lower resolution.",
+            "<b>ERROR:</b> FILE_LARGE (MAX 2GB)",
             parse_mode="HTML",
         )
 
@@ -578,7 +576,7 @@ async def dlres_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     label = f"{height}p" if height else "video"
     await q.edit_message_text(
-        f"Acquisition initiated. Preparing <code>{html.escape(label)}</code>...",
+        f"Processing: <code>{html.escape(label)}</code>...",
         parse_mode="HTML",
     )
 

@@ -18,7 +18,7 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
     city = " ".join(context.args).strip()
-    status_msg = await msg.reply_text(f"<b>SCANNING...</b>\nEstablishing meteorological uplink for <code>{html.escape(city.title())}</code>...", parse_mode="HTML")
+    status_msg = await msg.reply_text(f"Fetching data for: <code>{html.escape(city.title())}</code>...", parse_mode="HTML")
 
     session = await get_http_session()
     # format=j1 gives full JSON, but we can also use format=3 for a simpler string if needed.
@@ -29,12 +29,12 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
             if resp.status != 200:
-                await status_msg.edit_text("<b>UPLINK FAILURE</b>\nMeteorological server returned non-standard status.", parse_mode="HTML")
+                await status_msg.edit_text("<b>ERROR</b>\nMETEOR_SERVER_UNREACHABLE", parse_mode="HTML")
                 await asyncio.sleep(5)
                 return await status_msg.delete()
             data = await resp.json()
     except Exception as e:
-        await status_msg.edit_text(f"<b>TIMEOUT / ERROR</b>\nConnection dropped: <code>{html.escape(str(e))}</code>", parse_mode="HTML")
+        await status_msg.edit_text(f"<b>ERROR</b>\n<code>{html.escape(str(e))}</code>", parse_mode="HTML")
         await asyncio.sleep(5)
         return await status_msg.delete()
 
@@ -52,19 +52,21 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         area = nearest.get("areaName", [{"value": city.title()}])[0]["value"]
         country = nearest.get("country", [{"value": ""}])[0]["value"]
         loc_str = f"{area}, {country}" if country else area
+        loc_str = loc_str.upper()
 
     except Exception:
-        return await status_msg.edit_text("<b>STRUCTURAL FAULT</b>\nFailed to parse meteorological data stream.", parse_mode="HTML")
+        return await status_msg.edit_text("<b>ERROR</b>\nDATA_PARSING_FAILED", parse_mode="HTML")
 
     report = (
-        f"<b>METEOROLOGICAL REPORT</b>\n"
-        f"• NODE      : <code>{html.escape(loc_str)}</code>\n"
-        f"• CONDITION : <code>{weather_desc}</code>\n"
-        f"• THERMAL   : <code>{temp_c}°C</code> (RealFeel: {feels}°C)\n"
-        f"• HUMIDITY  : <code>{humidity}%</code>\n"
-        f"• WIND      : <code>{wind}</code>\n"
-        f"• VISIBILITY: <code>{vis}</code>\n\n"
-        f"<i>Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}</i>"
+        f"<b>WEATHER_REPORT</b>\n"
+        f"• LOCATION: <code>{html.escape(loc_str)}</code>\n"
+        f"• SUMMARY : <code>{weather_desc.upper()}</code>\n"
+        f"• TEMP    : <code>{temp_c}°C</code> (Feels like {feels}°C)\n"
+        f"• HUMIDITY: <code>{humidity}%</code>\n"
+        f"• WIND    : <code>{wind}</code>\n"
+        f"• VISIB   : <code>{vis}</code>\n\n"
+        f"<i>{time.strftime('%Y-%m-%d %H:%M:%S UTC')}</i>"
     )
+
     
     await status_msg.edit_text(report, parse_mode="HTML")

@@ -19,10 +19,10 @@ async def restart_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     m = await msg.reply_text(
-        "<b>SYSTEM REBOOT INITIALIZED</b>\n"
-        "Killing active process and respawning...",
+        "<b>REBOOTING...</b>",
         parse_mode="HTML"
     )
+
 
     # Save state to notify after restart
     data = {

@@ -164,16 +164,17 @@ async def post_init(app):
                 try:
                     await app.bot.send_message(
                         chat_id=chat_id,
-                        text="<b>REBOOT SUCCESSFUL</b>\nDaemon is now online and operational.",
+                        text="<b>REBOOT_SUCCESS</b>",
                         reply_to_message_id=msg_id,
                         parse_mode="HTML"
                     )
                 except Exception:
                     await app.bot.send_message(
                         chat_id=chat_id,
-                        text="<b>REBOOT SUCCESSFUL</b>\nDaemon is now online and operational.",
+                        text="<b>REBOOT_SUCCESS</b>",
                         parse_mode="HTML"
                     )
+
         except Exception as e:
             log.warning(f"Failed to send restart notification: {e}")
 

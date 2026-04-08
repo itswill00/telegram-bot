@@ -16,7 +16,8 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-        "<b>SYSTEM COMMAND INDEX</b>\n"
+        "<b>CORE_ACCESS</b>\n"
+
 
         "<b>System </b>  —  Prefix: <code>$</code>\n"
         "• <code>$core</code>      : Buka panel admin\n"
