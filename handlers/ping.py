@@ -5,12 +5,13 @@ from telegram.ext import ContextTypes
 #ping
 async def ping_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     start = time.perf_counter()
-    msg = await update.message.reply_text("🏓 Sedang menguji koneksi...")
+    msg = await update.message.reply_text("Probing...")
     end = time.perf_counter()
     latency = int((end - start) * 1000)
     await msg.edit_text(
-        f"🏓 <b>Koneksi Kecepatan Server</b>\n"
-        f"• Latensi Jaringan: <code>{latency} ms</code>",
+        f"<b>CONNECTION_STATUS</b>\n"
+        f"• LATENCY: <code>{latency} ms</code>",
         parse_mode="HTML"
     )
+
 

@@ -10,20 +10,19 @@ async def donate_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not DONATE_URL:
         return await msg.reply_text(
-            "Donate link is not configured.",
+            "<b>ERROR:</b> DONATE_LINK_UNDEFINED",
+            parse_mode="HTML"
         )
 
     kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Donate (QRIS)", url=DONATE_URL)]
+        [InlineKeyboardButton("DONATE_VIA_QRIS", url=DONATE_URL)]
     ])
 
     text = (
-        "<b>Support the Bot</b>\n\n"
-        "If you enjoy using this bot and would like to support its development, "
-        "you can donate through the button below.\n\n"
-        "Once the donation is completed, contact the bot owner via private message "
-        "to activate premium access."
+        "<b>DONATION_PORTAL</b>\n\n"
+        "Direct contribution link below. Post-transaction, send a manual notification to the @HirohitoKiyoshi to synchronize premium status."
     )
+
 
     await msg.reply_text(
         text,

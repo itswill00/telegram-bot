@@ -15,10 +15,10 @@ async def groups_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     group_ids = _load_groups()
     if not group_ids:
-        return await msg.reply_text("📭 <b>No groups recorded yet.</b>", parse_mode="HTML")
+        return await msg.reply_text("<b>EMPTY_REGISTRY</b>", parse_mode="HTML")
 
     total = len(group_ids)
-    lines = [f"📋 <b>Current Bot Groups</b> — <b>{total}</b>\n"]
+    lines = [f"<b>ACTIVE_NODES</b> (Count: <code>{total}</code>)\n"]
 
     for gid in group_ids:
         try:
@@ -28,18 +28,19 @@ async def groups_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             if username:
                 link = f"https://t.me/{html.escape(username)}"
-                lines.append(f"• 🔗 <a href=\"{link}\">{title}</a> <code>{gid}</code>")
+                lines.append(f"• <a href=\"{link}\">{title}</a> <code>{gid}</code>")
             else:
-                lines.append(f"• 🏷️ {title} <code>{gid}</code>")
+                lines.append(f"• {title} <code>{gid}</code>")
 
         except Exception:
-            lines.append(f"• ⚠️ <code>{gid}</code>")
+            lines.append(f"• ERROR: <code>{gid}</code>")
 
     await msg.reply_text(
         "\n".join(lines),
         parse_mode="HTML",
         disable_web_page_preview=True
     )
+
 
 
 try:

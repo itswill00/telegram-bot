@@ -46,26 +46,26 @@ def _cb(user_id: int, source: str, action: str, key: str, value: str | int | Non
 def _settings_text(user_id: int) -> str:
     s = get_user_settings(user_id)
     return (
-        f"<b>USER CONFIGURATION MATRIX</b>\n"
-        f"• AutoDL [Group Engine] : <code>{_fmt_bool(s['force_autodl'])}</code>\n"
-        f"• Default DL Format     : <code>{_fmt_autodl_format(s['autodl_format'])}</code>\n"
-        f"• Video Resolution      : <code>{_fmt_res(s['youtube_resolution'])}</code>\n"
-        f"• Audio Codec Standard  : <code>{_fmt_music(s['music_format'])}</code>\n\n"
-        f"<i>Select a configuration parameter below to bind modifications.</i>"
+        f"<b>USER_SETTINGS</b>\n\n"
+        f"• AUTODL_GLOBAL : <code>{_fmt_bool(s['force_autodl'])}</code>\n"
+        f"• DL_FORMAT     : <code>{_fmt_autodl_format(s['autodl_format'])}</code>\n"
+        f"• RESOLUTION    : <code>{_fmt_res(s['youtube_resolution'])}</code>\n"
+        f"• AUDIO_CODEC   : <code>{_fmt_music(s['music_format'])}</code>"
     )
+
 
 
 def _footer_buttons(user_id: int, source: str):
     if source == "help":
         return [
             [
-                InlineKeyboardButton("Back", callback_data=f"help:{user_id}:settings"),
-                InlineKeyboardButton("Close", callback_data=_cb(user_id, source, "close", "x")),
+                InlineKeyboardButton("BACK", callback_data=f"help:{user_id}:settings"),
+                InlineKeyboardButton("CLOSE", callback_data=_cb(user_id, source, "close", "x")),
             ]
         ]
     return [
         [
-            InlineKeyboardButton("Close", callback_data=_cb(user_id, source, "close", "x")),
+            InlineKeyboardButton("CLOSE", callback_data=_cb(user_id, source, "close", "x")),
         ]
     ]
 
@@ -75,25 +75,25 @@ def _main_keyboard(user_id: int, source: str = "direct") -> InlineKeyboardMarkup
     rows = [
         [
             InlineKeyboardButton(
-                f"AutoDL All Groups: {_fmt_bool(s['force_autodl'])}",
+                f"AUTODL_GLOBAL: {_fmt_bool(s['force_autodl'])}",
                 callback_data=_cb(user_id, source, "toggle", "force_autodl"),
             )
         ],
         [
             InlineKeyboardButton(
-                f"Downloader Format: {_fmt_autodl_format(s['autodl_format'])}",
+                f"DL_FORMAT: {_fmt_autodl_format(s['autodl_format'])}",
                 callback_data=_cb(user_id, source, "menu", "autodl_format"),
             )
         ],
         [
             InlineKeyboardButton(
-                f"YouTube Resolution: {_fmt_res(s['youtube_resolution'])}",
+                f"RESOLUTION: {_fmt_res(s['youtube_resolution'])}",
                 callback_data=_cb(user_id, source, "menu", "youtube_resolution"),
             )
         ],
         [
             InlineKeyboardButton(
-                f"Music Format: {_fmt_music(s['music_format'])}",
+                f"AUDIO_FORMAT: {_fmt_music(s['music_format'])}",
                 callback_data=_cb(user_id, source, "menu", "music_format"),
             )
         ],
@@ -111,12 +111,12 @@ def _autodl_format_keyboard(user_id: int, source: str = "direct") -> InlineKeybo
 
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton(label("ask", "Ask"), callback_data=_cb(user_id, source, "set", "autodl_format", "ask")),
-            InlineKeyboardButton(label("video", "Video"), callback_data=_cb(user_id, source, "set", "autodl_format", "video")),
+            InlineKeyboardButton(label("ask", "ASK"), callback_data=_cb(user_id, source, "set", "autodl_format", "ask")),
+            InlineKeyboardButton(label("video", "VIDEO"), callback_data=_cb(user_id, source, "set", "autodl_format", "video")),
             InlineKeyboardButton(label("mp3", "MP3"), callback_data=_cb(user_id, source, "set", "autodl_format", "mp3")),
         ],
         [
-            InlineKeyboardButton("Back", callback_data=_cb(user_id, source, "menu", "main"))
+            InlineKeyboardButton("BACK", callback_data=_cb(user_id, source, "menu", "main"))
         ],
     ])
 
@@ -126,7 +126,7 @@ def _youtube_resolution_keyboard(user_id: int, source: str = "direct") -> Inline
     current = int(s["youtube_resolution"] or 0)
 
     def label(v: int) -> str:
-        text = "Ask" if v == 0 else f"{v}p"
+        text = "ASK" if v == 0 else f"{v}P"
         return f"• {text}" if current == v else text
 
     return InlineKeyboardMarkup([
@@ -140,7 +140,7 @@ def _youtube_resolution_keyboard(user_id: int, source: str = "direct") -> Inline
             InlineKeyboardButton(label(1080), callback_data=_cb(user_id, source, "set", "youtube_resolution", 1080)),
         ],
         [
-            InlineKeyboardButton("Back", callback_data=_cb(user_id, source, "menu", "main"))
+            InlineKeyboardButton("BACK", callback_data=_cb(user_id, source, "menu", "main"))
         ],
     ])
 
@@ -158,9 +158,10 @@ def _music_format_keyboard(user_id: int, source: str = "direct") -> InlineKeyboa
             InlineKeyboardButton(label("mp3", "MP3"), callback_data=_cb(user_id, source, "set", "music_format", "mp3")),
         ],
         [
-            InlineKeyboardButton("Back", callback_data=_cb(user_id, source, "menu", "main"))
+            InlineKeyboardButton("BACK", callback_data=_cb(user_id, source, "menu", "main"))
         ],
     ])
+
 
 
 async def render_settings_message(message, user_id: int, source: str = "direct"):
@@ -200,7 +201,7 @@ async def setting_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.answer("Invalid setting menu.", show_alert=True)
 
     if q.from_user.id != owner_id:
-        return await q.answer("Ini bukan menu setting kamu.", show_alert=True)
+        return await q.answer("UNAUTHORIZED", show_alert=True)
 
     source = parts[2]
     action = parts[3]
@@ -213,12 +214,13 @@ async def setting_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if action == "toggle" and key == "force_autodl":
         current = get_user_settings(owner_id)
         set_force_autodl(owner_id, not bool(current["force_autodl"]))
-        await q.answer("Setting updated.")
+        await q.answer("SUCCESS: CONFIG_UPDATED")
         return await q.message.edit_text(
             _settings_text(owner_id),
             parse_mode="HTML",
             reply_markup=_main_keyboard(owner_id, source),
         )
+
 
     if action == "menu":
         await q.answer()
@@ -274,7 +276,7 @@ async def setting_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             return await q.answer("Unknown setting.", show_alert=True)
 
-        await q.answer("Setting updated.")
+        await q.answer("SUCCESS: CONFIG_UPDATED")
         return await q.message.edit_text(
             _settings_text(owner_id),
             parse_mode="HTML",

@@ -64,7 +64,7 @@ def generate_math_question(user_id: int, chat_id: int):
     ]
 
     text = (
-        "Answer the following math question\n\n"
+        "USER_VERIFICATION: Solve Equation\n\n"
         f"<b>{a} {op} {b} = ?</b>\n\n"
     )
 
@@ -75,11 +75,12 @@ def verify_keyboard(user_id: int, chat_id: int, bot_username: str):
     return InlineKeyboardMarkup([
         [
             InlineKeyboardButton(
-                "Verify",
+                "VERIFY_IDENTITY",
                 url=f"https://t.me/{bot_username}?start=verify_{chat_id}_{user_id}"
             )
         ]
     ])
+
 
 
 async def is_admin_or_owner(update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
@@ -185,12 +186,13 @@ async def welcome_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chatname = chat.title or "this group"
 
         caption = (
-            f"<b>Access Granted </b>\n"
-            f"User Identity : <code>{fullname}</code>\n"
-            f"Registry ID   : <code>{user.id}</code>\n"
-            f"Sys Username  : {username}\n\n"
-            f"<i>Execution requires verification clearance.</i>"
+            f"<b>USER_JOINED</b>\n"
+            f"NAME   : <code>{fullname}</code>\n"
+            f"ID     : <code>{user.id}</code>\n"
+            f"HANDLE : {username}\n\n"
+            f"<b>VERIFICATION_REQUIRED</b>"
         )
+
 
         try:
             photos = await context.bot.get_user_profile_photos(user_id=user.id, limit=1)
