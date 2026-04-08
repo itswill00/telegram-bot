@@ -58,10 +58,11 @@ def setup_logger():
     )
 
     root = logging.getLogger()
-    root.setLevel(logging.WARNING)
+    root.setLevel(logging.INFO)
     root.handlers.clear()
     root.addHandler(s_handler)
     root.addHandler(f_handler)
+
 
     # Set specific level for our bot logger
     log.setLevel(logging.INFO)
