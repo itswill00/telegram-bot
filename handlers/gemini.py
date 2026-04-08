@@ -10,8 +10,10 @@ from telegram.ext import ContextTypes
 from utils.system_prompt import split_message, sanitize_ai_output
 from utils.config import GEMINI_API_KEY
 from utils.http import get_http_session
+from utils.ratelimit import rate_limit
 
 from rag.retriever import retrieve_context
+
 from rag.loader import load_local_contexts
 
 from .groq import ask_groq_text
@@ -150,7 +152,10 @@ async def ask_ai_gemini(
         return False, str(e), None
 
 
+@rate_limit(limit=3, window=30)
 async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+
     msg = update.message
     if not msg or not msg.from_user:
         return

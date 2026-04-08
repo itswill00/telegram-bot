@@ -11,6 +11,8 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from rag.retriever import retrieve_context
+from utils.ratelimit import rate_limit
+
 from rag.loader import load_local_contexts
 
 from utils.system_prompt import split_message, sanitize_ai_output
@@ -168,7 +170,10 @@ async def _typing_loop(bot, chat_id, stop_event: asyncio.Event):
         pass
 
 
+@rate_limit(limit=3, window=30)
 async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+
     msg = update.message
     if not msg or not msg.from_user:
         return
