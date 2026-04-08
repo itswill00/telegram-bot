@@ -43,8 +43,10 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in OWNER_ID:
         return
 
-    # Join the arguments to get the full code
-    code = " ".join(context.args)
+    raw_text = update.message.text or ""
+    parts = raw_text.split(None, 1)
+    code = parts[1].strip() if len(parts) > 1 else ""
+    
     if not code:
         return await update.message.reply_text("Contoh: <code>$eval print(1+1)</code>", parse_mode="HTML")
 
