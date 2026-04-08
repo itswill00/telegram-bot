@@ -11,9 +11,13 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return await start_verify_pm(update, context)
             
     user = update.effective_user
-    name = (user.first_name or "").strip() or "there"
+    name = (user.first_name or "").strip() or "Anonymous"
     text = (
-        f"👋 Hello {name}!\n\n"
-        "Type /help to see the menu."
+        f"<b>SYSTEM DAEMON ONLINE</b>\n"
+        f"<code>────────────────────────────────────────</code>\n"
+        f"• USER IDENTITY : <code>{name}</code>\n"
+        f"• REGISTRY ID   : <code>{user.id}</code>\n"
+        f"• STATUS        : <code>ACTIVE</code>\n\n"
+        f"<i>Ketik /help untuk mengakses indeks utilitas publik bot ini.</i>"
     )
-    await update.message.reply_text(text)
+    await update.message.reply_text(text, parse_mode="HTML")

@@ -46,11 +46,13 @@ def _cb(user_id: int, source: str, action: str, key: str, value: str | int | Non
 def _settings_text(user_id: int) -> str:
     s = get_user_settings(user_id)
     return (
-        "<b>User Settings</b>\n\n"
-        f"<b>AutoDL in all groups:</b> <code>{_fmt_bool(s['force_autodl'])}</code>\n"
-        f"<b>Default downloader format:</b> <code>{_fmt_autodl_format(s['autodl_format'])}</code>\n"
-        f"<b>YouTube resolution:</b> <code>{_fmt_res(s['youtube_resolution'])}</code>\n"
-        f"<b>Music output format:</b> <code>{_fmt_music(s['music_format'])}</code>"
+        f"<b>USER CONFIGURATION MATRIX</b>\n"
+        f"<code>────────────────────────────────────────</code>\n"
+        f"• AutoDL [Group Engine] : <code>{_fmt_bool(s['force_autodl'])}</code>\n"
+        f"• Default DL Format     : <code>{_fmt_autodl_format(s['autodl_format'])}</code>\n"
+        f"• Video Resolution      : <code>{_fmt_res(s['youtube_resolution'])}</code>\n"
+        f"• Audio Codec Standard  : <code>{_fmt_music(s['music_format'])}</code>\n\n"
+        f"<i>Select a configuration parameter below to bind modifications.</i>"
     )
 
 

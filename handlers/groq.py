@@ -25,7 +25,8 @@ from utils.http import get_http_session
 
 LOCAL_CONTEXTS = load_local_contexts()
 
-GROQ_MEMORY = {}
+from database.ai_memory_db import get_ai_history, save_ai_history, clear_ai_history
+
 _GROQ_ACTIVE_USERS = {}
 
 SYSTEM_PROMPT = (
@@ -169,7 +170,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             prompt = " ".join(context.args).strip()
 
-        GROQ_MEMORY.pop(user_id, None)
+        clear_ai_history(user_id, "groq")
         _GROQ_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
@@ -195,7 +196,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     typing = asyncio.create_task(_typing_loop(context.bot, chat_id, stop))
 
     try:
-        history = GROQ_MEMORY.get(user_id, {"history": []})["history"]
+        history = get_ai_history(user_id, "groq")
 
         raw = await ask_groq_text(
             prompt=prompt,
@@ -207,7 +208,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             {"role": "user", "content": prompt},
             {"role": "assistant", "content": raw},
         ]
-        GROQ_MEMORY[user_id] = {"history": history}
+        save_ai_history(user_id, history, "groq")
 
         stop.set()
         typing.cancel()
@@ -227,6 +228,6 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         stop.set()
         typing.cancel()
-        GROQ_MEMORY.pop(user_id, None)
+        clear_ai_history(user_id, "groq")
         _GROQ_ACTIVE_USERS.pop(user_id, None)
         await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")

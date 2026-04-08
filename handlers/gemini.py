@@ -18,7 +18,8 @@ from .groq import ask_groq_text
 
 LOCAL_CONTEXTS = load_local_contexts()
 
-AI_MEMORY = {}
+from database.ai_memory_db import get_ai_history, save_ai_history, clear_ai_history
+
 _AI_ACTIVE_USERS = {}
 
 
@@ -48,11 +49,11 @@ def _ai_history_to_groq(history: list) -> list:
 
 
 async def build_ai_prompt(user_id: int, user_prompt: str) -> str:
-    history = AI_MEMORY.get(user_id, {"history": []})["history"]
+    history = get_ai_history(user_id, "gemini")
     lines = []
     for h in history:
-        lines.append(f"U: {h['user']}")
-        lines.append(f"A: {h['ai']}")
+        lines.append(f"U: {h.get('user', '')}")
+        lines.append(f"A: {h.get('ai', '')}")
 
     try:
         contexts = await retrieve_context(user_prompt, LOCAL_CONTEXTS, top_k=3)
@@ -137,7 +138,7 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if msg.text and msg.text.startswith("/ask"):
         prompt = " ".join(context.args) if context.args else ""
-        AI_MEMORY.pop(user_id, None)
+        clear_ai_history(user_id, "gemini")
         _AI_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
@@ -160,7 +161,7 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not ok:
             if _is_gemini_quota_error(status, raw):
-                history = AI_MEMORY.get(user_id, {"history": []})["history"]
+                history = get_ai_history(user_id, "gemini")
                 groq_history = _ai_history_to_groq(history)
                 raw = await ask_groq_text(prompt=prompt, history=groq_history, use_search=False)
             else:
@@ -178,13 +179,13 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for part in chunks[1:]:
             await msg.reply_text(part, parse_mode="HTML")
 
-        history = AI_MEMORY.get(user_id, {"history": []})["history"]
+        history = get_ai_history(user_id, "gemini")
         history.append({"user": prompt, "ai": clean})
-        AI_MEMORY[user_id] = {"history": history}
+        save_ai_history(user_id, history, "gemini")
 
     except Exception as e:
         stop.set()
         typing.cancel()
-        AI_MEMORY.pop(user_id, None)
+        clear_ai_history(user_id, "gemini")
         _AI_ACTIVE_USERS.pop(user_id, None)
         await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
