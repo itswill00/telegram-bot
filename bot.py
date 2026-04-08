@@ -151,6 +151,32 @@ async def post_init(app):
         log.warning(f"Configuration initialization error: {e}")
 
 
+    # Check for restart notification
+    if os.path.exists("data/restart.json"):
+        try:
+            with open("data/restart.json", "r") as f:
+                data = json.load(f)
+            os.remove("data/restart.json")
+            
+            chat_id = data.get("chat_id")
+            msg_id = data.get("msg_id")
+            if chat_id:
+                try:
+                    await app.bot.send_message(
+                        chat_id=chat_id,
+                        text="<b>REBOOT SUCCESSFUL</b>\nDaemon is now online and operational.",
+                        reply_to_message_id=msg_id,
+                        parse_mode="HTML"
+                    )
+                except Exception:
+                    await app.bot.send_message(
+                        chat_id=chat_id,
+                        text="<b>REBOOT SUCCESSFUL</b>\nDaemon is now online and operational.",
+                        parse_mode="HTML"
+                    )
+        except Exception as e:
+            log.warning(f"Failed to send restart notification: {e}")
+
     # Auto backup based on setting
     if app.job_queue and (await get_setting("auto_backup", "ON")) == "ON":
         app.job_queue.run_repeating(
