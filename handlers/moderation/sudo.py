@@ -44,7 +44,7 @@ async def addsudo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use: <code>/addsudo user_id</code> / <code>/addsudo @username</code>",
+            "Reply to a user or use: <code>.addsudo user_id</code> / <code>.addsudo @username</code>",
             parse_mode="HTML",
         )
 
@@ -73,7 +73,7 @@ async def rmsudo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use: <code>/rmsudo user_id</code> / <code>/rmsudo @username</code>",
+            "Reply to a user or use: <code>.rmsudo user_id</code> / <code>.rmsudo @username</code>",
             parse_mode="HTML",
         )
 

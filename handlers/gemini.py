@@ -159,17 +159,17 @@ async def ai_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     prompt = ""
 
-    if msg.text and msg.text.startswith("/ask"):
+    if msg.text and msg.text.startswith(".ask"):
         prompt = " ".join(context.args) if context.args else ""
         await clear_ai_history(user_id, "gemini")
         _AI_ACTIVE_USERS.pop(user_id, None)
 
         if not prompt:
-            return await msg.reply_text("<b>USAGE:</b> <code>/ask &lt;query&gt;</code>", parse_mode="HTML")
+            return await msg.reply_text("<b>USAGE:</b> <code>.ask &lt;query&gt;</code>", parse_mode="HTML")
 
     elif msg.reply_to_message:
         if user_id not in _AI_ACTIVE_USERS:
-            return await msg.reply_text("<b>ERROR:</b> Session required. Use /ask.")
+            return await msg.reply_text("<b>ERROR:</b> Session required. Use .ask.")
         prompt = (msg.text or "").strip()
 
     if not prompt:

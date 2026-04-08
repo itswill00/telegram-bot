@@ -43,18 +43,18 @@ async def moderation_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     return await msg.reply_text(
         "<b>Moderation</b>\n\n"
-        "<code>/moderation enable</code>\n"
-        "<code>/moderation disable</code>\n"
-        "<code>/moderation status</code>\n\n"
+        "<code>.moderation enable</code>\n"
+        "<code>.moderation disable</code>\n"
+        "<code>.moderation status</code>\n\n"
         "<b>Actions</b>\n"
-        "<code>/ban @username/id 7d [reason]</code>\n"
-        "<code>/unban @username/id</code>\n"
-        "<code>/mute @username/id 7d [reason]</code>\n"
-        "<code>/unmute @username/id </code>\n"
-        "<code>/kick @username/id [reason]</code>\n\n"
+        "<code>.ban @username/id 7d [reason]</code>\n"
+        "<code>.unban @username/id</code>\n"
+        "<code>.mute @username/id 7d [reason]</code>\n"
+        "<code>.unmute @username/id </code>\n"
+        "<code>.kick @username/id [reason]</code>\n\n"
         "<b>Owner</b>\n"
-        "<code>/addsudo @username/id</code>\n"
-        "<code>/rmsudo @username/id</code>\n"
-        "<code>/sudolist show all sudo</code>",
+        "<code>.addsudo @username/id</code>\n"
+        "<code>.rmsudo @username/id</code>\n"
+        "<code>.sudolist show all sudo</code>",
         parse_mode="HTML",
     )

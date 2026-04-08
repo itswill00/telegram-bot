@@ -127,9 +127,10 @@ def register_commands(app):
             group=-1
         )
     
-    # Register Public Commands with '/' prefix
+    # Register Public Commands with '.' prefix to avoid collisions
     for name, handler, blocking in COMMAND_HANDLERS:
         app.add_handler(
-            CommandHandler(name, handler, block=blocking),
+            PrefixHandler(".", name, handler, block=blocking),
             group=-1
         )
+

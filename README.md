@@ -30,13 +30,14 @@ General commands accessible to all registered nodes:
 
 | Command | Description | Example |
 | :--- | :--- | :--- |
-| /ask <query> | Query the AI engine (Web-enabled) | /ask what is the current BTC price? |
-| /groq <query> | Query the Groq engine (Pure logic/code) | /groq write a BFS algorithm in C++ |
-| /dl <url> | Process media acquisition from link | /dl https://tiktok.com/... |
-| /tr <text> | Execute professional translation | /tr Good morning |
-| /weather <loc> | Fetch meteorological report | /weather Jakarta |
-| /ip <addr> | Perform IP Geolocation scan | /ip 8.8.8.8 |
-| /stats | View system performance metrics | /stats |
+| .ask <query> | Query the AI engine (Web-enabled) | .ask what is the current BTC price? |
+| .groq <query> | Query the Groq engine (Pure logic/code) | .groq write a BFS algorithm in C++ |
+| .dl <url> | Process media acquisition from link | .dl https://tiktok.com/... |
+| .tr <text> | Execute professional translation | .tr Good morning |
+| .weather <loc> | Fetch meteorological report | .weather Jakarta |
+| .ip <addr> | Perform IP Geolocation scan | .ip 8.8.8.8 |
+| .stats | View system performance metrics | .stats |
+
 
 ---
 

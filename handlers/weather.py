@@ -1,6 +1,7 @@
 import time
 import asyncio
 import aiohttp
+import html
 
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -13,7 +14,8 @@ async def weather_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args:
-        return await msg.reply_text("<b>USAGE:</b> <code>/weather [location]</code>\nExample: <code>/weather Jakarta</code>", parse_mode="HTML")
+        return await msg.reply_text("<b>USAGE:</b> <code>.weather [location]</code>\nExample: <code>.weather Jakarta</code>", parse_mode="HTML")
+
 
     city = " ".join(context.args).strip()
     status_msg = await msg.reply_text(f"<b>SCANNING...</b>\nEstablishing meteorological uplink for <code>{html.escape(city.title())}</code>...", parse_mode="HTML")

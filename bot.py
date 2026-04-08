@@ -116,24 +116,23 @@ async def post_init(app):
 
     try:
         await app.bot.set_my_commands([
-            ("start", "Initialize bot session"),
-            ("donate", "Support development"),
-            ("help", "Access command documentation"),
-            ("settings", "Configure user preferences"),
-            ("quiz", "Execute technical assessment"),
-            ("ping", "Measure network latency"),
-            ("ship", "Run compatibility analysis"),
-            ("stats", "View system metrics"),
-            ("dl", "Process media download"),
-            ("ask", "Query Gemini AI engine"),
-            ("music", "Query audio repository"),
-            ("groq", "Query Groq AI engine"),
-            ("gsearch", "Execute web search"),
-            ("tr", "Execute text translation"),
+            ("start", "Initialize bot session (.)"),
+            ("help", "Access command documentation (.)"),
+            ("settings", "Configure user preferences (.)"),
+            ("quiz", "Execute technical assessment (.)"),
+            ("ping", "Measure network latency (.)"),
+            ("ship", "Run compatibility analysis (.)"),
+            ("stats", "View system metrics (.)"),
+            ("dl", "Process media download (.)"),
+            ("ask", "Query AI engine (.)"),
+            ("groq", "Query technical reasoning (.)"),
+            ("gsearch", "Execute web search (.)"),
+            ("tr", "Execute text translation (.)"),
         ])
-        log.info("Global command set synchronized")
+        log.info("Global command set synchronized (Prefix: '.')")
     except Exception as e:
         log.warning(f"Failed to synchronize commands: {e}")
+
 
     try:
         cmds = await app.bot.get_my_commands()

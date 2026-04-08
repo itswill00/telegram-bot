@@ -56,8 +56,8 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not target_id:
         return await msg.reply_text(
             "Reply to a user or use:\n"
-            "<code>/ban 7d user_id toxic</code>\n"
-            "<code>/ban 7d @username toxic</code>",
+            "<code>.ban 7d user_id toxic</code>\n"
+            "<code>.ban 7d @username toxic</code>",
             parse_mode="HTML",
         )
 
@@ -101,7 +101,7 @@ async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use: <code>/unban user_id</code> / <code>/unban @username</code>",
+            "Reply to a user or use: <code>.unban user_id</code> / <code>.unban @username</code>",
             parse_mode="HTML",
         )
 
@@ -143,8 +143,8 @@ async def mute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not target_id:
         return await msg.reply_text(
             "Reply to a user or use:\n"
-            "<code>/mute 10m user_id reason</code>\n"
-            "<code>/mute 10m @username reason</code>",
+            "<code>.mute 10m user_id reason</code>\n"
+            "<code>.mute 10m @username reason</code>",
             parse_mode="HTML",
         )
 
@@ -193,7 +193,7 @@ async def unmute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use: <code>/unmute user_id</code> / <code>/unmute @username</code>",
+            "Reply to a user or use: <code>.unmute user_id</code> / <code>.unmute @username</code>",
             parse_mode="HTML",
         )
 
@@ -240,8 +240,8 @@ async def kick_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not target_id:
         return await msg.reply_text(
             "Reply to a user or use:\n"
-            "<code>/kick userid reason</code>\n"
-            "<code>/kick @username reason</code>",
+            "<code>.kick userid reason</code>\n"
+            "<code>.kick @username reason</code>",
             parse_mode="HTML",
         )
 

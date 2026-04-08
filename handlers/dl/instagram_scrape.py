@@ -582,7 +582,7 @@ async def ig_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not context.args:
         return await msg.reply_text(
-            "Send an Instagram link.\n\n<code>/ig https://www.instagram.com/p/...</code>",
+            "Send an Instagram link.\n\n<code>.ig https://www.instagram.com/p/...</code>",
             parse_mode="HTML",
         )
 

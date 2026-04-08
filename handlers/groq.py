@@ -178,7 +178,7 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     prompt = ""
     use_search = False
 
-    if msg.text and msg.text.startswith("/groq"):
+    if msg.text and msg.text.startswith(".groq"):
         if context.args and context.args[0].lower() == "search":
             use_search = True
             prompt = " ".join(context.args[1:]).strip()
@@ -191,14 +191,14 @@ async def groq_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not prompt:
             return await msg.reply_text(
                 "<b>USAGE</b>\n"
-                "<code>/groq &lt;query&gt;</code>\n"
-                "<code>/groq search &lt;query&gt;</code>",
+                "<code>.groq &lt;query&gt;</code>\n"
+                "<code>.groq search &lt;query&gt;</code>",
                 parse_mode="HTML"
             )
 
     elif msg.reply_to_message:
         if user_id not in _GROQ_ACTIVE_USERS:
-            return await msg.reply_text("<b>ERROR:</b> Session required. Use /groq.")
+            return await msg.reply_text("<b>ERROR:</b> Session required. Use .groq.")
         prompt = (msg.text or "").strip()
 
     if not prompt:
