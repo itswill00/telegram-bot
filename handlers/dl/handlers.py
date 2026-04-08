@@ -217,7 +217,7 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await _is_admin_or_owner(update, context):
         return await msg.reply_text("<b>ERROR:</b> Access restricted to administrators.", parse_mode="HTML")
 
-    groups = load_auto_dl()
+    groups = await load_auto_dl()
     arg = context.args[0].lower() if context.args else ""
 
     if arg == "list" and user_id in OWNER_ID:
@@ -233,7 +233,7 @@ async def autodl_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 lines.append(f"• <code>{gid}</code>")
         return await msg.reply_text("\n".join(lines), parse_mode="HTML")
 
-    is_enabled = chat.id in groups
+    is_enabled = chat.id in (await load_auto_dl())
     await msg.reply_text(
         "<b>Auto Download Protocol </b>\n"
         "Select state below:",
@@ -254,14 +254,14 @@ async def autodl_toggle_callback(update: Update, context: ContextTypes.DEFAULT_T
         await q.answer()
         return await q.message.delete()
         
-    groups = load_auto_dl()
+    groups = await load_auto_dl()
     if action == "enable":
         groups.add(chat_id)
-        save_auto_dl(groups)
+        await save_auto_dl(groups)
         await q.answer("Pengaturan Disimpan: AKTIF")
     elif action == "disable":
         groups.discard(chat_id)
-        save_auto_dl(groups)
+        await save_auto_dl(groups)
         await q.answer("Pengaturan Disimpan: MATI")
         
     is_enabled = chat_id in groups
@@ -288,7 +288,7 @@ async def auto_dl_detect(update: Update, context: ContextTypes.DEFAULT_TYPE):
     settings = get_user_settings(update.effective_user.id)
 
     if chat.type in ("group", "supergroup"):
-        groups = load_auto_dl()
+        groups = await load_auto_dl()
         if chat.id not in groups and not bool(settings.get("force_autodl")):
             return
 

@@ -1,17 +1,13 @@
 import os
 import time
-import sqlite3
 from utils.config import OWNER_ID
 from database.premium import is_premium
 from handlers.dl.constants import AUTO_DL_DB
+from database.db import db_session_async
 
-def _auto_dl_db_init():
-    os.makedirs("data", exist_ok=True)
-    con = sqlite3.connect(AUTO_DL_DB)
-    try:
-        con.execute("PRAGMA journal_mode=WAL;")
-        con.execute("PRAGMA synchronous=NORMAL;")
-        con.execute(
+async def init_auto_dl_db():
+    async with db_session_async(AUTO_DL_DB) as con:
+        await con.execute(
             """
             CREATE TABLE IF NOT EXISTS auto_dl_groups (
                 chat_id INTEGER PRIMARY KEY,
@@ -20,30 +16,19 @@ def _auto_dl_db_init():
             )
             """
         )
-        con.commit()
-    finally:
-        con.close()
 
-def _auto_dl_db():
-    _auto_dl_db_init()
-    return sqlite3.connect(AUTO_DL_DB)
+async def load_auto_dl() -> set[int]:
+    async with db_session_async(AUTO_DL_DB) as con:
+        cur = await con.execute("SELECT chat_id FROM auto_dl_groups WHERE enabled=1")
+        rows = await cur.fetchall()
+        return {int(r[0]) for r in rows if r and r[0] is not None}
 
-def load_auto_dl() -> set[int]:
-    con = _auto_dl_db()
-    try:
-        cur = con.execute("SELECT chat_id FROM auto_dl_groups WHERE enabled=1")
-        return {int(r[0]) for r in cur.fetchall() if r and r[0] is not None}
-    finally:
-        con.close()
-
-def save_auto_dl(groups: set[int]):
-    con = _auto_dl_db()
-    try:
+async def save_auto_dl(groups: set[int]):
+    async with db_session_async(AUTO_DL_DB) as con:
         now = time.time()
-        con.execute("BEGIN")
-        con.execute("UPDATE auto_dl_groups SET enabled=0, updated_at=?", (float(now),))
+        await con.execute("UPDATE auto_dl_groups SET enabled=0, updated_at=?", (float(now),))
         if groups:
-            con.executemany(
+            await con.executemany(
                 """
                 INSERT INTO auto_dl_groups (chat_id, enabled, updated_at)
                 VALUES (?, 1, ?)
@@ -53,15 +38,6 @@ def save_auto_dl(groups: set[int]):
                 """,
                 [(int(cid), float(now)) for cid in groups],
             )
-        con.execute("COMMIT")
-    except Exception:
-        try:
-            con.execute("ROLLBACK")
-        except Exception:
-            pass
-        raise
-    finally:
-        con.close()
 
 def extract_domain(url: str) -> str:
     import re
