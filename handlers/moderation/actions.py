@@ -47,7 +47,7 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not await is_admin_or_owner(update, context):
-        return await msg.reply_text("You are not an admin.")
+        return await msg.reply_text("ERROR: UNAUTHORIZED")
 
     has_reply = bool(msg.reply_to_message and msg.reply_to_message.from_user)
     until, dur_human, target_token, reason = extract_duration_target_reason(context.args or [], has_reply)
@@ -55,86 +55,69 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use:\n"
-            "<code>.ban 7d user_id toxic</code>\n"
-            "<code>.ban 7d @username toxic</code>",
+            "<b>USAGE:</b>\n"
+            "• <code>.ban 7d [id|@user] [reason]</code>\n"
+            "• Reply with <code>.ban 7d [reason]</code>",
             parse_mode="HTML",
         )
 
     try:
         await context.bot.ban_chat_member(chat_id=chat.id, user_id=int(target_id), until_date=until)
-        duration_text = f"<b>Duration:</b> {html.escape(dur_human)}\n" if dur_human else "<b>Duration:</b> Permanent\n"
+        duration_text = f"<b>DURATION:</b> {html.escape(dur_human)}\n" if dur_human else "<b>DURATION:</b> PERMANENT\n"
         return await msg.reply_text(
-            "<b>Banned</b>\n"
-            f"<b>User:</b> {who}\n"
+            "<b>BANNED</b>\n"
+            f"<b>USER:</b> {who}\n"
             f"{duration_text}"
-            f"<b>Reason:</b> <code>{html.escape(reason)}</code>",
+            f"<b>REASON:</b> <code>{html.escape(reason)}</code>",
             parse_mode="HTML",
             disable_web_page_preview=True,
         )
     except Exception as e:
         return await msg.reply_text(
-            f"Failed: <code>{html.escape(str(e))}</code>",
+            f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>",
             parse_mode="HTML",
         )
-
 
 async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     chat = update.effective_chat
-
-    if not msg or not chat:
-        return
-
-    if chat.type not in ("group", "supergroup"):
-        return
-
-    if not moderation_is_enabled(chat.id):
-        return
+    if not msg or not chat: return
+    if chat.type not in ("group", "supergroup"): return
+    if not moderation_is_enabled(chat.id): return
 
     if not await is_admin_or_owner(update, context):
-        return await msg.reply_text("You are not an admin.")
+        return await msg.reply_text("ERROR: UNAUTHORIZED")
 
     has_reply = bool(msg.reply_to_message and msg.reply_to_message.from_user)
     _, _, target_token, _ = extract_duration_target_reason(context.args or [], has_reply)
 
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
-        return await msg.reply_text(
-            "Reply to a user or use: <code>.unban user_id</code> / <code>.unban @username</code>",
-            parse_mode="HTML",
-        )
+        return await msg.reply_text("<b>USAGE:</b> <code>.unban [id|@user]</code>", parse_mode="HTML")
 
     try:
         await context.bot.unban_chat_member(chat_id=chat.id, user_id=int(target_id))
         return await msg.reply_text(
-            "<b>Unbanned</b>\n"
-            f"<b>User:</b> {who}",
+            "<b>RESTORED</b>\n"
+            f"<b>USER:</b> {who}",
             parse_mode="HTML",
             disable_web_page_preview=True,
         )
     except Exception as e:
         return await msg.reply_text(
-            f"Failed: <code>{html.escape(str(e))}</code>",
+            f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>",
             parse_mode="HTML",
         )
-
 
 async def mute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     chat = update.effective_chat
-
-    if not msg or not chat:
-        return
-
-    if chat.type not in ("group", "supergroup"):
-        return
-
-    if not moderation_is_enabled(chat.id):
-        return
+    if not msg or not chat: return
+    if chat.type not in ("group", "supergroup"): return
+    if not moderation_is_enabled(chat.id): return
 
     if not await is_admin_or_owner(update, context):
-        return await msg.reply_text("You are not an admin.")
+        return await msg.reply_text("ERROR: UNAUTHORIZED")
 
     has_reply = bool(msg.reply_to_message and msg.reply_to_message.from_user)
     until, dur_human, target_token, reason = extract_duration_target_reason(context.args or [], has_reply)
@@ -142,9 +125,9 @@ async def mute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use:\n"
-            "<code>.mute 10m user_id reason</code>\n"
-            "<code>.mute 10m @username reason</code>",
+            "<b>USAGE:</b>\n"
+            "• <code>.mute 10m [id|@user] [reason]</code>\n"
+            "• Reply with <code>.mute 10m [reason]</code>",
             parse_mode="HTML",
         )
 
@@ -155,47 +138,34 @@ async def mute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             permissions=MUTED_PERMISSIONS,
             until_date=until,
         )
-        duration_text = f"<b>Duration:</b> {html.escape(dur_human)}\n" if dur_human else "<b>Duration:</b> Permanent\n"
+        duration_text = f"<b>DURATION:</b> {html.escape(dur_human)}\n" if dur_human else "<b>DURATION:</b> PERMANENT\n"
         return await msg.reply_text(
-            "<b>Muted</b>\n"
-            f"<b>User:</b> {who}\n"
+            "<b>MUTED</b>\n"
+            f"<b>USER:</b> {who}\n"
             f"{duration_text}"
-            f"<b>Reason:</b> <code>{html.escape(reason)}</code>",
+            f"<b>REASON:</b> <code>{html.escape(reason)}</code>",
             parse_mode="HTML",
             disable_web_page_preview=True,
         )
     except Exception as e:
-        return await msg.reply_text(
-            f"Failed: <code>{html.escape(str(e))}</code>",
-            parse_mode="HTML",
-        )
-
+        return await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
 
 async def unmute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     chat = update.effective_chat
-
-    if not msg or not chat:
-        return
-
-    if chat.type not in ("group", "supergroup"):
-        return
-
-    if not moderation_is_enabled(chat.id):
-        return
+    if not msg or not chat: return
+    if chat.type not in ("group", "supergroup"): return
+    if not moderation_is_enabled(chat.id): return
 
     if not await is_admin_or_owner(update, context):
-        return await msg.reply_text("You are not an admin.")
+        return await msg.reply_text("ERROR: UNAUTHORIZED")
 
     has_reply = bool(msg.reply_to_message and msg.reply_to_message.from_user)
     _, _, target_token, _ = extract_duration_target_reason(context.args or [], has_reply)
 
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
-        return await msg.reply_text(
-            "Reply to a user or use: <code>.unmute user_id</code> / <code>.unmute @username</code>",
-            parse_mode="HTML",
-        )
+        return await msg.reply_text("<b>USAGE:</b> <code>.unmute [id|@user]</code>", parse_mode="HTML")
 
     try:
         await context.bot.restrict_chat_member(
@@ -205,33 +175,23 @@ async def unmute_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             until_date=None,
         )
         return await msg.reply_text(
-            "<b>Unmuted</b>\n"
-            f"<b>User:</b> {who}",
+            "<b>ACTIVE</b>\n"
+            f"<b>USER:</b> {who}",
             parse_mode="HTML",
             disable_web_page_preview=True,
         )
     except Exception as e:
-        return await msg.reply_text(
-            f"Failed: <code>{html.escape(str(e))}</code>",
-            parse_mode="HTML",
-        )
-
+        return await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
 
 async def kick_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     chat = update.effective_chat
-
-    if not msg or not chat:
-        return
-
-    if chat.type not in ("group", "supergroup"):
-        return
-
-    if not moderation_is_enabled(chat.id):
-        return
+    if not msg or not chat: return
+    if chat.type not in ("group", "supergroup"): return
+    if not moderation_is_enabled(chat.id): return
 
     if not await is_admin_or_owner(update, context):
-        return await msg.reply_text("You are not an admin.")
+        return await msg.reply_text("ERROR: UNAUTHORIZED")
 
     has_reply = bool(msg.reply_to_message and msg.reply_to_message.from_user)
     target_token, reason = extract_target_reason(context.args or [], has_reply)
@@ -239,33 +199,22 @@ async def kick_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target_id, who = await _resolve_target_display(update, context, target_token)
     if not target_id:
         return await msg.reply_text(
-            "Reply to a user or use:\n"
-            "<code>.kick userid reason</code>\n"
-            "<code>.kick @username reason</code>",
+            "<b>USAGE:</b>\n"
+            "• <code>.kick [id|@user] [reason]</code>\n"
+            "• Reply with <code>.kick [reason]</code>",
             parse_mode="HTML",
         )
 
     try:
         until = datetime.now(timezone.utc) + timedelta(seconds=45)
-        await context.bot.ban_chat_member(
-            chat_id=chat.id,
-            user_id=int(target_id),
-            until_date=until,
-        )
-        await context.bot.unban_chat_member(
-            chat_id=chat.id,
-            user_id=int(target_id),
-            only_if_banned=True,
-        )
+        await context.bot.ban_chat_member(chat_id=chat.id, user_id=int(target_id), until_date=until)
+        await context.bot.unban_chat_member(chat_id=chat.id, user_id=int(target_id), only_if_banned=True)
         return await msg.reply_text(
-            "<b>Kicked</b>\n"
-            f"<b>User:</b> {who}\n"
-            f"<b>Reason:</b> <code>{html.escape(reason)}</code>",
+            "<b>EJECTED</b>\n"
+            f"<b>USER:</b> {who}\n"
+            f"<b>REASON:</b> <code>{html.escape(reason)}</code>",
             parse_mode="HTML",
             disable_web_page_preview=True,
         )
     except Exception as e:
-        return await msg.reply_text(
-            f"Failed: <code>{html.escape(str(e))}</code>",
-            parse_mode="HTML",
-        )
+        return await msg.reply_text(f"<b>ERROR:</b> <code>{html.escape(str(e))}</code>", parse_mode="HTML")
