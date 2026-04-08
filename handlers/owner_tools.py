@@ -47,17 +47,14 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     parts = raw_text.split(None, 1)
     code = parts[1].strip() if len(parts) > 1 else ""
     
-    
     if not code:
         return await update.message.reply_text("USAGE: <code>$py &lt;code&gt;</code>", parse_mode="HTML")
 
-    # Clean the code from backticks if user wraps it in a code block
     if code.startswith("```") and code.endswith("```"):
         code = "\n".join(code.split("\n")[1:-1])
 
     import json, math, re, datetime, subprocess, random, urllib, requests, aiohttp, inspect, telegram
     
-    # Provide useful local variables and heavily declared modules
     env = {
         "update": update,
         "context": context,
@@ -82,51 +79,45 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "OWNER_ID": OWNER_ID,
     }
 
-    # Output capture
     stdout = io.StringIO()
-    
-    # Pre-formatting for multiline support
     to_compile = f"async def func():\n" + "\n".join(f"    {line}" for line in code.split("\n"))
 
     try:
-        # Define the function
         exec(to_compile, env)
         func = env["func"]
         
-        # Execute and redirect stdout
         with redirect_stdout(stdout):
-            start_time = time.time()
+            start_time = time.perf_counter()
             await func()
-            duration = time.time() - start_time
+            duration = (time.perf_counter() - start_time) * 1000
             
-        output = stdout.getvalue()
+        output = str(stdout.getvalue()).strip()
         
-        # Format the response in In/Out style
-        result_text = (
-            f"<b>REPL IN:</b>\n"
-            f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
-            f"<b>REPL OUT:</b> (<code>{duration:.4f}s</code>)\n"
+        header = (
+            f"<b>REPL OUT</b>\n"
+            f"<code>TIME : {duration:.2f}ms</code>\n"
         )
         
-        if output:
-            if len(output) > 3500:
-                output = output[:3500] + "\n[TRUNCATED]"
-            result_text += f"<pre><code>{html.escape(output)}</code></pre>"
-        else:
-            result_text += "<code>NULL OUTPUT</code>"
+        if not output:
+            return await update.message.reply_text(f"{header}<code>NULL OUTPUT</code>", parse_mode="HTML")
 
-        await update.message.reply_text(result_text, parse_mode="HTML")
+        if len(output) > 3500:
+            out_file = io.BytesIO(output.encode())
+            out_file.name = "repl_output.txt"
+            return await update.message.reply_document(
+                document=out_file,
+                caption=header,
+                parse_mode="HTML"
+            )
+
+        await update.message.reply_text(f"{header}<pre><code>{html.escape(output)}</code></pre>", parse_mode="HTML")
 
     except Exception:
-        # Capture error and traceback
         error_msg = traceback.format_exc()
-        error_text = (
-            f"<b>REPL IN:</b>\n"
-            f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
-            f"<b>ERROR:</b>\n"
-            f"<pre><code>{html.escape(error_msg[-3500:])}</code></pre>"
+        await update.message.reply_text(
+            f"<b>ERROR</b>\n<pre><code>{html.escape(error_msg[-3500:])}</code></pre>", 
+            parse_mode="HTML"
         )
-        await update.message.reply_text(error_text, parse_mode="HTML")
 
 
 # --- SHELL TOOLS ---
@@ -143,20 +134,40 @@ async def sh_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("<code>EXECUTING...</code>", parse_mode="HTML")
     
     try:
+        start_time = time.perf_counter()
         process = await asyncio.create_subprocess_shell(
             cmd,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
+        pid = process.pid
         stdout, stderr = await process.communicate()
-        output = (stdout.decode() or stderr.decode() or "NULL OUTPUT").strip()
+        duration = (time.perf_counter() - start_time) * 1000
+        exit_code = process.returncode
         
-        if len(output) > 3800:
-            output = output[:3800] + "\n[TRUNCATED]"
+        output = (stdout.decode().strip() or stderr.decode().strip() or "NULL OUTPUT")
+        
+        header = (
+            f"<b>SHELL OUT</b>\n"
+            f"<code>PID  : {pid}</code>\n"
+            f"<code>EXIT : {exit_code}</code>\n"
+            f"<code>TIME : {duration:.2f}ms</code>\n"
+        )
+
+        if len(output) > 3500:
+            out_file = io.BytesIO(output.encode())
+            out_file.name = "shell_output.txt"
+            await update.message.reply_document(
+                document=out_file,
+                caption=header,
+                parse_mode="HTML"
+            )
+            return await msg.delete()
             
-        await msg.edit_text(f"<b>REPL OUT:</b>\n<code>{html.escape(output)}</code>", parse_mode="HTML")
+        await msg.edit_text(f"{header}<pre><code>{html.escape(output)}</code></pre>", parse_mode="HTML")
     except Exception as e:
-        await msg.edit_text(f"<b>ERROR:</b>\n<code>{html.escape(str(e))}</code>", parse_mode="HTML")
+        await msg.edit_text(f"<b>ERROR</b>\n<code>{html.escape(str(e))}</code>", parse_mode="HTML")
+
 
 # --- BLACKLIST TOOLS ---
 

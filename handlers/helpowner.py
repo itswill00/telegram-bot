@@ -5,7 +5,7 @@ from utils.config import OWNER_ID
 
 def helpowner_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("Tutup Menu", callback_data="helpowner:close")]
+        [InlineKeyboardButton("TERMINATE", callback_data="helpowner:close")]
     ])
 
 async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -16,39 +16,37 @@ async def helpowner_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-        "<b>CORE_ACCESS</b>\n"
+        "<b>CORE ACCESS</b>\n"
+        "Root privilege interface:\n\n"
 
+        "<b>System Operations</b> — <code>$</code>\n"
+        "• <code>$core</code>   : Administration portal\n"
+        "• <code>$node</code>   : System control utility\n"
+        "• <code>$sh</code> / <code>$py</code> : Executor (Shell/Python)\n"
+        "• <code>$sync</code>   : Repository synchronization\n"
+        "• <code>$reboot</code> : Process replacement\n"
+        "• <code>$live</code>   : Toggle watchdog state\n"
+        "• <code>$env</code>    : Environment configuration\n"
+        "• <code>$dump</code>   : Data archive generation\n"
+        "• <code>$load</code>   : Database restoration\n\n"
 
-        "<b>System </b>  —  Prefix: <code>$</code>\n"
-        "• <code>$core</code>      : Buka panel admin\n"
-        "• <code>$meter</code>     : Tampilkan metrik server\n"
-        "• <code>$sh</code> / <code>$py</code> : Eksekusi shell / python\n"
-        "• <code>$sync</code>      : Sinkronisasi git pull\n"
-        "• <code>$reboot</code>    : Muat ulang daemon\n"
-        "• <code>$live</code>      : Toggle live-reload\n"
-        "• <code>$token</code>     : Perbarui token cookies\n"
-        "• <code>$dump</code>      : Generate arsip ZIP\n"
-        "• <code>$load</code>      : Restore DB via ZIP\n\n"
+        "<b>Control Suite</b> — <code>$</code>\n"
+        "• <code>$purge</code>  : Global ID banishment\n"
+        "• <code>$revive</code> : Restriction reversal\n"
+        "• <code>$hush</code>   : Direct communication block\n"
+        "• <code>$eject</code>  : Cluster member removal\n"
+        "• <code>$grant</code>  : Privilege escalation\n"
+        "• <code>$revoke</code> : Privilege revocation\n"
+        "• <code>$push</code>   : Global packet broadcast\n"
+        "• <code>$node status</code> : Hardware diagnosis\n"
+        "• <code>$node logs</code>   : Internal log stream\n\n"
 
-        "<b>Moderation </b>  —  Prefix: <code>$</code>\n"
-        "• <code>$purge</code>     : Ban dari grup\n"
-        "• <code>$revive</code>    : Cabut ban grup\n"
-        "• <code>$hush</code>      : Restriksi chat\n"
-        "• <code>$eject</code>      : Kick dari grup\n"
-        "• <code>$grant</code>      : Berikan akses sudo\n"
-        "• <code>$revoke</code>     : Cabut akses sudo\n"
-        "• <code>$trusted</code>    : List user sudo\n"
-        "• <code>$nodes</code>      : Identifikasi daftar grup\n"
-        "• <code>$push</code>       : Transmisi pesan massal\n\n"
-
-        "<b>Utilities </b>  —  Prefix: <code>.</code>\n"
-        "• <code>.wlc</code>       : Konfigurasi welcome menu\n"
-        "• <code>.autodl</code>    : Konfigurasi auto-download\n"
-        "• <code>.ask</code>       : Query AI text\n"
-        "• <code>.dl</code>        : Download media URL\n"
-        "• <code>.weather</code>   : Pengesanan parameter cuaca\n"
-        "• <code>.speedtest</code> : Pengujian bandwidth server\n"
+        "<b>External Nodes</b> — <code>.</code>\n"
+        "• <code>.wlc</code>      : Entrance protocol config\n"
+        "• <code>.autodl</code>   : Automated capture config\n"
+        "• <code>.speedtest</code> : Bandwidth verification\n"
     )
+
 
 
 
