@@ -25,9 +25,9 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"MAINTENANCE: <code>{maint}</code>\n"
             f"AI_GLOBAL: <code>{ai}</code>\n\n"
             "<b>OPERATIONS:</b>\n"
-            "• $sys backup on|off\n"
-            "• $sys maintenance on|off\n"
-            "• $sys ai on|off"
+            "• $node backup on|off\n"
+            "• $node maintenance on|off\n"
+            "• $node ai on|off"
         )
         return await msg.reply_text(status_text, parse_mode="HTML")
 

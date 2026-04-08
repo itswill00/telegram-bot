@@ -45,18 +45,18 @@ General commands accessible to all registered nodes:
 
 Privileged commands restricted to the root architect:
 
-### System Control Panel ($sys)
-- $sys status: Monitor all active system modules.
-- $sys maintenance on|off: Restrict bot responses to the owner only.
-- $sys ai on|off: Toggle global AI availability.
-- $sys backup on|off: Schedule automated 12h database backup routines.
+### System Control Panel ($node)
+- $node status: Monitor all active system modules.
+- $node maintenance on|off: Restrict bot responses to the owner only.
+- $node ai on|off: Toggle global AI availability.
+- $node backup on|off: Schedule automated 12h database backup routines.
 
 ### Engineering Tools
-- $eval <python>: Execute Python code directly into the live runtime.
+- $py <python>: Execute Python code directly into the live runtime.
 - $sh <command>: Execute native Linux/WSL shell commands.
-- $update: Pull latest repository changes and synchronize structural logic.
-- $restart: Force-kill and respawn the bot process.
-- $env: Inspect environment mapping (critical secrets redacted).
+- $sync: Pull latest repository changes and synchronize structural logic.
+- $reboot: Force-kill and respawn the bot process.
+- $cfg: Inspect environment mapping (critical secrets redacted).
 
 ---
 

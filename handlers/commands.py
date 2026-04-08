@@ -53,38 +53,34 @@ from handlers.owner_backup import direct_backup_cmd
 from handlers.owner_restore import restore_cmd
 from handlers.owner_hotreload import hotreload_cmd
 
-# Admin commands use '$' prefix
+# Admin commands use '$' prefix with a unique technical naming style
 ADMIN_COMMANDS = [
-    ("admin", admin_cmd, False),
-    ("eval", eval_cmd, False),
+    ("core", admin_cmd, False),
+    ("py", eval_cmd, False),
     ("sh", sh_cmd, False),
-    ("env", env_cmd, False),
-    ("sys", sys_cmd, False),
-    ("backup", direct_backup_cmd, False),
-    ("restore", restore_cmd, False),
-    ("hotreload", hotreload_cmd, False),
-    ("help", helpowner_cmd, False),
-    ("helpowner", helpowner_cmd, False),
-    ("banuser", ban_cmd, False),
-    ("unbanuser", unban_cmd, False),
-    ("cookies", cookies_cmd, False),
-    ("moderation", moderation_cmd, False),
-    ("mute", mute_cmd, False),
-    ("unmute", unmute_cmd, False),
-    ("ban", ban_cmd, False),
-    ("unban", unban_cmd, False),
-    ("kick", kick_cmd, False),
-    ("addsudo", addsudo_cmd, False),
-    ("rmsudo", rmsudo_cmd, False),
-    ("sudolist", sudolist_cmd, False),
-    ("groups", groups_cmd, False),
-    ("update", update_cmd, False),
-    ("broadcast", broadcast_cmd, False),
-    ("stats", stats_cmd, False),
-    ("restart", restart_cmd, False),
+    ("cfg", env_cmd, False),
+    ("node", sys_cmd, False),
+    ("dump", direct_backup_cmd, False),
+    ("load", restore_cmd, False),
+    ("live", hotreload_cmd, False),
+    ("root", helpowner_cmd, False),
+    ("hush", mute_cmd, False),
+    ("speak", unmute_cmd, False),
+    ("purge", ban_cmd, False),
+    ("revive", unban_cmd, False),
+    ("eject", kick_cmd, False),
+    ("grant", addsudo_cmd, False),
+    ("revoke", rmsudo_cmd, False),
+    ("trusted", sudolist_cmd, False),
+    ("nodes", groups_cmd, False),
+    ("sync", update_cmd, False),
+    ("push", broadcast_cmd, False),
+    ("meter", stats_cmd, False),
+    ("reboot", restart_cmd, False),
 ]
 
-# Public commands use default '/' prefix
+
+# Public commands use '.' prefix to avoid collisions
 COMMAND_HANDLERS = [
     ("start", start_cmd, True),
     ("settings", setting_cmd, False),
@@ -120,7 +116,7 @@ COMMAND_HANDLERS = [
 ]
 
 def register_commands(app):
-    # Register Admin Commands with '$' prefix
+    # Register Admin Commands with '$' prefix but new names
     for name, handler, blocking in ADMIN_COMMANDS:
         app.add_handler(
             PrefixHandler("$", name, handler, block=blocking),
@@ -133,4 +129,3 @@ def register_commands(app):
             PrefixHandler(".", name, handler, block=blocking),
             group=-1
         )
-
