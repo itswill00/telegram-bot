@@ -14,26 +14,26 @@ A high-performance Unix-style Telegram bot engineered for technical operations, 
 
 ---
 
-## CORE_FEATURES
+## CORE FEATURES
 
-### AI_MODELS
-- **LOGIC_ENGINE**: Google Gemini 2.0 Flash + Groq LLaMA-3.
-- **STATE_MEMORY**: Conversational persistence across process cycles.
-- **DATA_RAG**: Contextual document retrieval for grounded AI responses.
+### AI MODELS
+- **LOGIC ENGINE**: Google Gemini 2.0 Flash + Groq LLaMA-3.
+- **STATE MEMORY**: Conversational persistence across process cycles.
+- **DATA RAG**: Contextual document retrieval for grounded AI responses.
 
-### MEDIA_TOOLS
-- **UNIVERSAL_LOADER**: YouTube (4K/MP3), TikTok (No-Watermark), IG, X, and 100+ others via yt-dlp.
-- **AUTODL_ENGINE**: Background link detection and parsing in group nodes.
-- **LOCAL_BOT_API**: 2GB file overhead bypass via local host integration.
+### MEDIA TOOLS
+- **UNIVERSAL LOADER**: YouTube (4K/MP3), TikTok (No-Watermark), IG, X, and 100+ others via yt-dlp.
+- **AUTODL ENGINE**: Background link detection and parsing in group nodes.
+- **LOCAL BOT API**: 2GB file overhead bypass via local host integration.
 
-### SYSTEM_UTILITIES
-- **NET_DIAGNOSTICS**: Latency probing, IP Geolocation, DNS extraction, and WHOIS.
-- **WEATHER_REPORT**: Professional metrics for any global coordinate.
-- **TECHNICAL_TR**: Zero-pleasantry cross-language translation.
+### SYSTEM UTILITIES
+- **NET DIAGNOSTICS**: Latency probing, IP Geolocation, DNS extraction, and WHOIS.
+- **WEATHER REPORT**: Professional metrics for any global coordinate.
+- **TECHNICAL TR**: Zero-pleasantry cross-language translation.
 
 ---
 
-## USER_DOCUMENTATION
+## USER DOCUMENTATION
 
 | Command | Endpoint | Function |
 | :--- | :--- | :--- |
@@ -47,40 +47,40 @@ A high-performance Unix-style Telegram bot engineered for technical operations, 
 
 ---
 
-## ADMIN_INTERFACE ($ Mode)
+## ADMIN INTERFACE ($ Mode)
 
 Privileged commands restricted to **Owner ID** only.
 
-### NODE_CONTROL ($node)
+### NODE CONTROL ($node)
 | Command | Parameter | Effect |
 | :--- | :--- | :--- |
-| `$node` | `status` | View global heartbeat & active modules |
+| `$node` | `status` | Hardware diagnosis & active modules |
 | `$node` | `maintenance` | Toggle Owner-only mode (On/Off) |
 | `$node` | `ai` | Toggle global AI availability (On/Off) |
 | `$node` | `backup` | Execute database backup routine |
 | `$node` | `logs` | Remote technical log monitoring |
 
-### DEV_TOOLS
+### DEV TOOLS
 | Cmd | Function |
 | :--- | :--- |
 | `$core` | System dashboard (Inline keyboard) |
-| `$py` | Execute Python in live runtime |
-| `$sh` | Native shell / WSL interaction |
-| `$cfg` | Environment configuration suite |
+| `$py` | Executor (Python) with PID/Time metrics |
+| `$sh` | Executor (Shell) with PID/Time metrics |
+| `$env` | Environment configuration suite |
 | `$live` | Toggle Watchdog (Auto-reboot on change) |
-| `$sync` | Force repository synchronization |
-| `$reboot`| Force-kill and respawn process |
+| `$sync` | Repository synchronization |
+| `$reboot`| Process replacement |
 
-### MODERATION_OPS
-- `$purge / $revive`: Permanent ban / Unban operation.
-- `$hush / $speak`: Mute / Unmute restriction.
-- `$grant / $revoke`: Sudoer privilege management.
+### MODERATION OPS
+- `$purge / $revive`: Global ID banishment / Restoration.
+- `$hush / $speak`: Communication restriction / Reversal.
+- `$grant / $revoke`: Privilege management.
 
 ---
 
 ## DEPLOYMENT
 
-### ENVIRONMENT_SETUP
+### ENVIRONMENT SETUP
 1. **Clone**: `git clone https://github.com/itswill00/telegram-bot.git`
 2. **Venv**: `python3 -m venv .venv && source .venv/bin/activate`
 3. **Install**: `pip install -r requirements.txt`

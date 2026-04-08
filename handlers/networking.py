@@ -20,7 +20,7 @@ def fmt_date(d):
 async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         return await update.message.reply_text(
-            "<b>WHOIS_QUERY</b>\n\n"
+            "<b>WHOIS QUERY</b>\n\n"
             "<b>Usage:</b>\n"
             "<code>.whoisdomain google.com</code>",
             parse_mode="HTML"
@@ -35,7 +35,7 @@ async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not re.match(r"^[\w.-]+$", domain) or domain.startswith("-"):
         return await update.message.reply_text(
-            "<b>ERROR</b>\nINVALID_DOMAIN_FORMAT",
+            "<b>ERROR</b>\nINVALID DOMAIN FORMAT",
             parse_mode="HTML"
         )
 
@@ -54,7 +54,7 @@ async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ns_text = html.escape(str(ns)) if ns else "N/A"
 
         result = (
-            "<b>WHOIS_INFORMATION</b>\n\n"
+            "<b>WHOIS INFORMATION</b>\n\n"
             f"<b>Domain:</b> <code>{html.escape(domain)}</code>\n"
             f"<b>Registrar:</b> {html.escape(str(w.registrar or 'N/A'))}\n"
             f"<b>WHOIS Server:</b> {html.escape(str(w.whois_server or 'N/A'))}\n\n"
@@ -73,10 +73,10 @@ async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"<b>Status:</b> {html.escape(str(w.status or 'N/A'))}\n"
             f"<b>DNSSEC:</b> {html.escape(str(w.dnssec or 'N/A'))}\n\n"
 
-            "<b>NAME_SERVERS</b>\n"
+            "<b>NAME SERVERS</b>\n"
             f"{ns_text}\n\n"
 
-            "<b>IANA_ID:</b> {html.escape(str(w.registrar_iana_id or 'N/A'))}\n"
+            f"<b>IANA ID:</b> {html.escape(str(w.registrar_iana_id or 'N/A'))}\n"
             f"<b>URL:</b> {html.escape(str(w.registrar_url or 'N/A'))}"
         )
 
@@ -88,7 +88,7 @@ async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await msg.edit_text(
-            f"<b>ERROR</b>\nWHOIS_FAILED: <code>{html.escape(str(e))}</code>",
+            f"<b>ERROR</b>\nWHOIS FAILED: <code>{html.escape(str(e))}</code>",
             parse_mode="HTML"
         )
         
@@ -96,7 +96,7 @@ async def whoisdomain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def ip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         return await update.message.reply_text(
-            "<b>IP_QUERY</b>\n\n"
+            "<b>IP QUERY</b>\n\n"
             "<b>Usage:</b>\n"
             "<code>.ip 8.8.8.8</code>",
             parse_mode="HTML"
@@ -119,7 +119,7 @@ async def ip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         session = await get_http_session()
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=15)) as resp:
             if resp.status != 200:
-                return await msg.edit_text("<b>ERROR</b>\nFETCH_IP_FAILED")
+                return await msg.edit_text("<b>ERROR</b>\nFETCH IP FAILED")
 
             data = await resp.json()
 
@@ -130,7 +130,7 @@ async def ip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
         text = (
-            "<b>IP_INFORMATION</b>\n\n"
+            "<b>IP INFORMATION</b>\n\n"
             f"<b>IP:</b> <code>{data.get('query')}</code>\n"
             f"<b>ISP:</b> {html.escape(data.get('isp','N/A'))}\n"
             f"<b>Org:</b> {html.escape(data.get('org','N/A'))}\n"
@@ -147,7 +147,7 @@ async def ip_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"<b>TZ:</b> {html.escape(data.get('timezone','N/A'))}\n"
             f"<b>UTC Offset:</b> {data.get('offset','N/A')}\n\n"
 
-            "<b>REVERSE_DNS:</b> {html.escape(data.get('reverse','N/A'))}\n"
+            f"<b>REVERSE DNS:</b> {html.escape(data.get('reverse','N/A'))}\n"
             f"<b>Mobile:</b> {'Yes' if data.get('mobile') else 'No'}\n"
             f"<b>Proxy:</b> {'Yes' if data.get('proxy') else 'No'}\n"
             f"<b>Hosting:</b> {'Yes' if data.get('hosting') else 'No'}"
@@ -177,7 +177,7 @@ async def domain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not re.match(r"^[\w.-]+$", domain) or domain.startswith("-"):
         return await msg.reply_text(
-            "<b>ERROR</b>\nINVALID_DOMAIN_FORMAT",
+            "<b>ERROR</b>\nINVALID DOMAIN FORMAT",
             parse_mode="HTML"
         )
 
@@ -244,7 +244,7 @@ async def domain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ns_text = "N/A"
 
     text = (
-        "<b>DOMAIN_INFO</b>\n\n"
+        "<b>DOMAIN INFO</b>\n\n"
         f"<b>Domain:</b> <code>{html.escape(domain)}</code>\n"
         f"<b>IP Address:</b> <code>{info['ip']}</code>\n"
         f"<b>HTTP Status:</b> <code>{info['http_status']}</code>\n"
@@ -253,8 +253,11 @@ async def domain_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"<b>Registrar:</b> {html.escape(info['registrar'])}\n"
         f"<b>Created:</b> {html.escape(info['created'])}\n"
         f"<b>Expires:</b> {html.escape(info['expires'])}\n\n"
-        "<b>NAME_SERVERS</b>\n"
+        "<b>NAME SERVERS</b>\n"
         f"{ns_text}"
     )
+
+    await loading.edit_text(text, parse_mode="HTML")
+
 
     await loading.edit_text(text, parse_mode="HTML")
