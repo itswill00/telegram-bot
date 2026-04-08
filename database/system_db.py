@@ -1,5 +1,7 @@
 import time
-from database.db import db_session_async, DB_PATH
+from database.db import db_session_async
+
+DB_PATH = "data/system.sqlite3"
 
 async def init_system_db():
     async with db_session_async(DB_PATH) as con:
