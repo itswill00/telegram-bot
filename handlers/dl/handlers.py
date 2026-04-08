@@ -351,6 +351,7 @@ async def dlask_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await q.message.delete()
 
     await q.edit_message_text(
+        text="Select operation format:",
         reply_markup=dl_keyboard(dl_id),
         parse_mode="HTML",
     )
