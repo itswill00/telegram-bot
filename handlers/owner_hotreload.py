@@ -40,7 +40,7 @@ async def watcher_loop(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
                 try:
                     await context.bot.send_message(
                         chat_id=chat_id,
-                        text=f"<b>RELOAD_TRIGGERED</b>\n\nSOURCE: <code>{file_name}</code>\nREBOOTING...",
+                        text=f"<b>REBOOT TRIGGERED</b>\n\nSOURCE: <code>{file_name}</code>\nREBOOTING...",
                         parse_mode="HTML"
                     )
                 except Exception:
@@ -64,8 +64,9 @@ async def hotreload_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if HOTRELOAD_TASK and not HOTRELOAD_TASK.done():
         HOTRELOAD_TASK.cancel()
         HOTRELOAD_TASK = None
-        await update.message.reply_text("<b>WATCHDOG_TERMINATED</b>", parse_mode="HTML")
+        await update.message.reply_text("<b>WATCHDOG TERMINATED</b>", parse_mode="HTML")
     else:
         HOTRELOAD_TASK = context.application.create_task(watcher_loop(context, update.message.chat_id))
-        await update.message.reply_text("<b>WATCHDOG_ACTIVE</b>\nNode will auto-reboot on source modification.", parse_mode="HTML")
+        await update.message.reply_text("<b>WATCHDOG ACTIVE</b>\nNode will auto-reboot on source modification.", parse_mode="HTML")
+
 

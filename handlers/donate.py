@@ -10,17 +10,17 @@ async def donate_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not DONATE_URL:
         return await msg.reply_text(
-            "<b>ERROR:</b> DONATE_LINK_UNDEFINED",
+            "<b>ERROR:</b> DONATE LINK UNDEFINED",
             parse_mode="HTML"
         )
 
     kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("DONATE_VIA_QRIS", url=DONATE_URL)]
+        [InlineKeyboardButton("PORTAL", url=DONATE_URL)]
     ])
 
     text = (
-        "<b>DONATION_PORTAL</b>\n\n"
-        "Direct contribution link below. Post-transaction, send a manual notification to the @HirohitoKiyoshi to synchronize premium status."
+        "<b>DONATION PORTAL</b>\n\n"
+        "Direct contribution link below. Post-transaction, notify @HirohitoKiyoshi to verify premium status."
     )
 
 

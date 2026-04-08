@@ -19,7 +19,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not context.args:
         if not os.path.exists(ENV_PATH):
-            return await msg.reply_text("STATUS: ENV_MISSING", parse_mode="HTML")
+            return await msg.reply_text("STATUS: ENV MISSING", parse_mode="HTML")
         
         with open(ENV_PATH, "r") as f:
             lines = f.readlines()
@@ -32,7 +32,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 keys.append(f"• {key}")
         
         text = (
-            "<b>ENV_CONFIG</b>\n\n"
+            "<b>ENV CONFIG</b>\n\n"
             + "\n".join(keys) + "\n\n"
             "<b>OPERATIONS:</b>\n"
             "• $env GET &lt;KEY&gt;\n"
@@ -46,7 +46,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if action == "PULL":
         if not os.path.exists(ENV_PATH):
-            return await msg.reply_text("ERROR: ENV_MISSING")
+            return await msg.reply_text("ERROR: ENV MISSING")
         
         try:
             with open(ENV_PATH, "rb") as f:
@@ -54,15 +54,15 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     chat_id=msg.chat_id,
                     document=f,
                     filename=".env",
-                    caption="<b>ENV_BACKUP</b>"
+                    caption="<b>ENV BACKUP</b>"
                 )
         except Exception:
-            await msg.reply_text("ERROR: SEND_FAILED")
+            await msg.reply_text("ERROR: SEND FAILED")
         return
 
     if action == "PUSH":
         if not msg.reply_to_message or not msg.reply_to_message.document:
-            return await msg.reply_text("ERROR: DOCUMENT_REQUIRED")
+            return await msg.reply_text("ERROR: DOCUMENT REQUIRED")
         
         status_msg = await msg.reply_text("EXECUTING...")
         try:
@@ -70,7 +70,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             new_file = await context.bot.get_file(doc.file_id)
             await new_file.download_to_drive(ENV_PATH)
             load_dotenv(ENV_PATH, override=True)
-            await status_msg.edit_text("SUCCESS: ENV_OVERWRITTEN")
+            await status_msg.edit_text("SUCCESS: ENV OVERWRITTEN")
             await asyncio.sleep(2)
             await status_msg.delete()
         except Exception as e:
@@ -81,7 +81,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         key = context.args[1].strip()
         val = os.getenv(key)
         if val is None:
-            return await msg.reply_text(f"ERROR: KEY_UNDEFINED ({key})", parse_mode="HTML")
+            return await msg.reply_text(f"ERROR: KEY UNDEFINED ({key})", parse_mode="HTML")
         
         return await msg.reply_text(
             f"KEY: {key}\n"
@@ -92,7 +92,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if action == "SET" and len(context.args) > 1:
         raw = " ".join(context.args[1:]).strip()
         if "=" not in raw:
-            return await msg.reply_text("ERROR: INVALID_SYNTAX (KEY=VALUE)", parse_mode="HTML")
+            return await msg.reply_text("ERROR: INVALID SYNTAX (KEY=VALUE)", parse_mode="HTML")
         
         key, val = raw.split("=", 1)
         key = key.strip()
@@ -104,7 +104,7 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             load_dotenv(ENV_PATH, override=True)
 
             res_msg = await msg.reply_text(
-                f"SUCCESS: CONFIG_UPDATED\n"
+                f"SUCCESS: CONFIG UPDATED\n"
                 f"KEY: {key}\n"
                 "STATUS: RELOADED",
                 parse_mode="HTML"
@@ -115,5 +115,6 @@ async def env_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await msg.reply_text(f"ERROR: {html.escape(str(e))}", parse_mode="HTML")
         return
 
-    return await msg.reply_text("ERROR: UNKNOWN_ACTION", parse_mode="HTML")
+    return await msg.reply_text("ERROR: UNKNOWN ACTION", parse_mode="HTML")
+
 

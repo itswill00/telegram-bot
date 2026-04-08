@@ -103,9 +103,9 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Format the response in In/Out style
         result_text = (
-            f"<b>REPL_IN:</b>\n"
+            f"<b>REPL IN:</b>\n"
             f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
-            f"<b>REPL_OUT:</b> (<code>{duration:.4f}s</code>)\n"
+            f"<b>REPL OUT:</b> (<code>{duration:.4f}s</code>)\n"
         )
         
         if output:
@@ -113,7 +113,7 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 output = output[:3500] + "\n[TRUNCATED]"
             result_text += f"<pre><code>{html.escape(output)}</code></pre>"
         else:
-            result_text += "<code>NULL_OUTPUT</code>"
+            result_text += "<code>NULL OUTPUT</code>"
 
         await update.message.reply_text(result_text, parse_mode="HTML")
 
@@ -121,7 +121,7 @@ async def eval_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Capture error and traceback
         error_msg = traceback.format_exc()
         error_text = (
-            f"<b>REPL_IN:</b>\n"
+            f"<b>REPL IN:</b>\n"
             f"<pre><code class=\"language-python\">{html.escape(code)}</code></pre>\n\n"
             f"<b>ERROR:</b>\n"
             f"<pre><code>{html.escape(error_msg[-3500:])}</code></pre>"
@@ -149,12 +149,12 @@ async def sh_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             stderr=asyncio.subprocess.PIPE
         )
         stdout, stderr = await process.communicate()
-        output = (stdout.decode() or stderr.decode() or "NULL_OUTPUT").strip()
+        output = (stdout.decode() or stderr.decode() or "NULL OUTPUT").strip()
         
         if len(output) > 3800:
             output = output[:3800] + "\n[TRUNCATED]"
             
-        await msg.edit_text(f"<b>REPL_OUT:</b>\n<code>{html.escape(output)}</code>", parse_mode="HTML")
+        await msg.edit_text(f"<b>REPL OUT:</b>\n<code>{html.escape(output)}</code>", parse_mode="HTML")
     except Exception as e:
         await msg.edit_text(f"<b>ERROR:</b>\n<code>{html.escape(str(e))}</code>", parse_mode="HTML")
 
@@ -168,15 +168,15 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif context.args:
         try: target_id = int(context.args[0])
         except: pass
-    if not target_id: return await update.message.reply_text("ERROR: TARGET_ID_REQUIRED")
+    if not target_id: return await update.message.reply_text("ERROR: TARGET ID REQUIRED")
     
     blacklist = _load_blacklist()
     if target_id not in blacklist:
         blacklist.append(target_id)
         _save_blacklist(blacklist)
-        await update.message.reply_text(f"SUCCESS: ID_BLACKLISTED (<code>{target_id}</code>)", parse_mode="HTML")
+        await update.message.reply_text(f"SUCCESS: ID BANNED (<code>{target_id}</code>)", parse_mode="HTML")
     else:
-        await update.message.reply_text("ERROR: ID_ALREADY_BLACKLISTED")
+        await update.message.reply_text("ERROR: ID ALREADY BANNED")
 
 async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id not in OWNER_ID: return
@@ -186,9 +186,10 @@ async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if target_id in blacklist:
             blacklist.remove(target_id)
             _save_blacklist(blacklist)
-            await update.message.reply_text(f"SUCCESS: ID_RESTORED (<code>{target_id}</code>)", parse_mode="HTML")
+            await update.message.reply_text(f"SUCCESS: ID RESTORED (<code>{target_id}</code>)", parse_mode="HTML")
         else:
-            await update.message.reply_text("ERROR: ID_NOT_FOUND")
+            await update.message.reply_text("ERROR: ID NOT FOUND")
     except:
-        await update.message.reply_text("ERROR: TARGET_ID_REQUIRED")
+        await update.message.reply_text("ERROR: TARGET ID REQUIRED")
+
 

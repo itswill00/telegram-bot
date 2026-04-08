@@ -15,10 +15,10 @@ async def groups_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     group_ids = _load_groups()
     if not group_ids:
-        return await msg.reply_text("<b>EMPTY_REGISTRY</b>", parse_mode="HTML")
+        return await msg.reply_text("<b>EMPTY REGISTRY</b>", parse_mode="HTML")
 
     total = len(group_ids)
-    lines = [f"<b>ACTIVE_NODES</b> (Count: <code>{total}</code>)\n"]
+    lines = [f"<b>ACTIVE NODES</b> (Count: <code>{total}</code>)\n"]
 
     for gid in group_ids:
         try:
@@ -41,9 +41,8 @@ async def groups_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         disable_web_page_preview=True
     )
 
-
-
 try:
+
     _db_init()
 except Exception:
     pass

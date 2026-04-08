@@ -64,10 +64,10 @@ async def premium_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not context.args:
         return await msg.reply_text(
-            "<b>Premium Control</b>\n\n"
-            "<code>/premium add &lt;user_id | @username&gt;</code>\n"
-            "<code>/premium del &lt;user_id | @username&gt;</code>\n"
-            "<code>/premium list</code>",
+            "<b>PREMIUM OPS</b>\n\n"
+            "• <code>$premium add &lt;id | @user&gt;</code>\n"
+            "• <code>$premium del &lt;id | @user&gt;</code>\n"
+            "• <code>$premium list</code>",
             parse_mode="HTML"
         )
 
@@ -77,52 +77,54 @@ async def premium_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         uid = await resolve_target_user_id(update, context)
         if not uid:
             return await msg.reply_text(
-                "<b>Target user not found.</b>\n\n"
-                "Use:\n"
-                "• <code>/premium add 123456</code>\n"
-                "• <code>/premium add @username</code>\n"
-                "• Or reply to their message with <code>/premium add</code>",
+                "<b>ERROR: USER NOT FOUND</b>\n\n"
+                "USAGE:\n"
+                "• <code>$premium add &lt;uid&gt;</code>\n"
+                "• <code>$premium add &lt;@user&gt;</code>\n"
+                "• Reply to message with <code>$premium add</code>",
                 parse_mode="HTML"
             )
 
         if cmd == "add":
             premium_service.add(uid)
             return await msg.reply_text(
-                f"<b>Premium added</b>: <code>{uid}</code>",
+                f"<b>SUCCESS: ID UPGRADED</b>\nID: <code>{uid}</code>",
                 parse_mode="HTML"
             )
 
         premium_service.remove(uid)
         return await msg.reply_text(
-            f"<b>Premium removed</b>: <code>{uid}</code>",
+            f"<b>SUCCESS: ID REVOKED</b>\nID: <code>{uid}</code>",
             parse_mode="HTML"
         )
 
     if cmd == "list":
         ids = premium_service.list_users()
         if not ids:
-            return await msg.reply_text("No premium users yet.", parse_mode="HTML")
+            return await msg.reply_text("<b>EMPTY REGISTRY</b>", parse_mode="HTML")
 
-        lines = []
+        lines = [f"<b>ENROLLED NODES</b> (Count: <code>{len(ids)}</code>)\n"]
         for uid in ids[:200]:
             try:
                 u = await context.bot.get_chat(uid)
                 name = html.escape(u.full_name)
             except Exception:
-                name = "Unknown User"
+                name = "Unknown Node"
             lines.append(f"• <a href=\"tg://user?id={uid}\">{name}</a> <code>{uid}</code>")
 
         return await msg.reply_text(
-            "👑 <b>Premium Users:</b>\n" + "\n".join(lines),
+            "\n".join(lines),
             parse_mode="HTML",
             disable_web_page_preview=True
         )
 
     return await msg.reply_text(
-        "<b>Unknown command.</b>\n\n"
-        "Use:\n"
-        "<code>/premium add</code>\n"
-        "<code>/premium del</code>\n"
-        "<code>/premium list</code>",
+        "<b>ERROR: UNKNOWN ACTION</b>\n\n"
+        "USAGE:\n"
+        "<code>$premium add</code>\n"
+        "<code>$premium del</code>\n"
+        "<code>$premium list</code>",
         parse_mode="HTML"
     )
+
+
