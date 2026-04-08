@@ -8,6 +8,7 @@ from telegram.ext import ContextTypes
 from utils.config import OWNER_ID
 from database.system_db import get_setting, set_setting
 from utils.backup import backup_database
+from handlers.stats.system_info import gather_system_stats
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"AI_GLOBAL   : {ai}"
             "</code>\n\n"
             "<b>OPERATIONS:</b>\n"
+            "• <code>$node status</code>\n"
             "• <code>$node backup [on|off]</code>\n"
             "• <code>$node maintenance [on|off]</code>\n"
             "• <code>$node ai [on|off]</code>\n"
@@ -37,8 +39,22 @@ async def sys_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return await msg.reply_text(status_text, parse_mode="HTML")
 
-
     action = context.args[0].lower()
+
+    if action in ("status", "stats"):
+        stats = gather_system_stats()
+        text = (
+            "<b>SYSTEM_TOPOLOGY</b>\n"
+            "<code>"
+            f"PLATFORM : {stats['sys']['os']}\n"
+            f"UPTIME   : {stats['sys']['uptime']}\n"
+            f"CPU_LOAD : {stats['cpu']['load']:.1f}% ({stats['cpu']['cores']} cores)\n"
+            f"RAM_LOAD : {stats['ram']['pct']:.1f}% ({stats['ram']['used']//1024//1024}/{stats['ram']['total']//1024//1024} MB)\n"
+            f"STORAGE  : {stats['disk']['pct']:.1f}%"
+            "</code>"
+        )
+        return await msg.reply_text(text, parse_mode="HTML")
+
 
     if action == "logs":
         try:
